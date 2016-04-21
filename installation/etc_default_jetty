@@ -1,0 +1,5 @@
+SOLR_HOME=/opt/aagregator/solr
+JAVA_OPTIONS="-Dsolr.solr.home=$SOLR_HOME/installation $JAVA_OPTIONS"
+JAVA_HOME=/usr/java/default
+JETTY_HOME=$SOLR_HOME/
+JETTY_LOGS=$SOLR_HOME/logs

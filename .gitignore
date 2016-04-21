@@ -1,0 +1,6 @@
+settings.js
+.idea
+*.log
+node_modules
+*.bak
+vendor
