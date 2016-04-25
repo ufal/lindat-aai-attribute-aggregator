@@ -71,15 +71,14 @@ function handle(req, res) {
             if(err){
                 log.error(err);
             }else{
-                log.log('Solr response:', obj);
+                client.commit(function(err,obj){
+                    if(err){
+                        log.error(err);
+                    }
+                });
             }
         });
         
-        client.commit(function(err,obj){
-            if(err){
-                log.error(err);
-            }
-        });
         ret["ok"] = true;
 
     }catch(err) {
