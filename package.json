@@ -1,12 +1,11 @@
 {
   "name": "clarin-aa",
   "author": "for CLARIN+ by lindat (jm)",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": false,
-  "repository" :
-  {
-    "type" : "git",
-    "url" : "https://github.com/ufal/lindat-aai-attribute-aggregator.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ufal/lindat-aai-attribute-aggregator.git"
   },
   "license": "MIT",
   "scripts": {
