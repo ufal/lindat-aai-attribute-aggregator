@@ -6,7 +6,7 @@
       "args": [
         "start",
         "-h",
-        "127.0.0.1",
+        "localhost",
         "-d",
         "server",
         "-s",

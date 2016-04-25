@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# use iptables or similar (or check the listening spec cause seems new solr has some issues)
+# - https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-iptables-on-ubuntu-14-04
+#
+
 ip=`LANG=c ifconfig eth1 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}'`
 PREF="\n\n==========================\n"
 DIR=/opt/aaggregator/installation
@@ -49,6 +53,7 @@ cd $IDIR
 git clone https://github.com/ufal/lindat-aai-attribute-aggregator.git $PROJ
 cd $PROJ
 npm install
+ln -s $PROJDIR/settings $PROJDIR/www/settings
 
 
 echo -e $PREF "Running all applications through pm2 - from $DIR/pm2.apps.json"
