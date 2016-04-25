@@ -8,6 +8,7 @@ mkdir -p $IDIR
 PROJ=aaggreg
 PROJDIR=$IDIR/$PROJ
 DEPLOYDIR=$IDIR/deploy/$PROJ.git
+export SOLRURL=http://localhost:8983
 
 echo -e $PREF "Installing basic goodies"
 cd $IDIR
@@ -41,12 +42,11 @@ SOLR=$IDIR/solr
 mv $IDIR/$PACKAGE $SOLR
 mkdir -p $SOLR/installation
 cp -R $DIR/solr_installation/* $SOLR/installation/ 2>/dev/null
-export SOLRURL=http://$ip:8983
 
 
 echo -e $PREF "Installing aai backend into $IDIR"
 cd $IDIR
-git clone https://github.com/ufal/lindat-aai-attribute-aggregator-backend.git $PROJ
+git clone https://github.com/ufal/lindat-aai-attribute-aggregator.git $PROJ
 
 
 echo -e $PREF "Running all applications through pm2 - from $DIR/pm2.apps.json"
@@ -80,5 +80,5 @@ chmod +x $DEPLOYDIR/hooks/*
 
 
 # happy work
-echo -e $PREF "You should find these services available\nSOLR: $SOLRURL\naaggreg: http://$ip:3001/\www: http://$ip/"
+echo -e $PREF "You should find these services available\nSOLR: $SOLRURL or http://localhost:8983/\naaggreg: http://$ip:3001/\www: http://$ip/"
 echo -e $PREF "Automated deployment like this\ngit remote add deploy user@$ip:$DEPLOYDIR\ngit push deploy master"

@@ -39,6 +39,15 @@
 
   <schemaFactory class="ClassicIndexSchemaFactory"/>
 
+  <updateRequestProcessorChain>
+    <processor class="solr.UUIDUpdateProcessorFactory">
+      <str name="fieldName">id</str>
+    </processor>
+    <processor class="solr.LogUpdateProcessorFactory" />
+    <processor class="solr.RunUpdateProcessorFactory" />
+  </updateRequestProcessorChain>
+
+
   <!-- <lib/> directives can be used to instruct Solr to load any Jars
        identified and use them to resolve any "plugins" specified in
        your solrconfig.xml or schema.xml (ie: Analyzers, Request

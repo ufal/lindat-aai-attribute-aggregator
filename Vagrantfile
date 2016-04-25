@@ -73,8 +73,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
             vmbox.vm.network :private_network, ip: ip
             vmbox.vm.network :forwarded_port, guest: 22, host: 2322, auto_correct: true
-            # node.js backend (make it listen on 3022 on host and 3001 on guest)
-            #vmbox.vm.network :forwarded_port, guest: 3001, host: port_fwd
+            vmbox.vm.network :forwarded_port, guest: 8983, host: 8983
 
             vmbox.vm.hostname = "%s.dev" % opts[:name].to_s
             vmbox.vm.provider :virtualbox do |v|
