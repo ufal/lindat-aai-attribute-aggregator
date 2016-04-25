@@ -9,7 +9,8 @@ settings = {
 
     backend: {
         api: {
-            list: '/aaggreg/v1/list/'
+            list: '/aaggreg/v1/list/',
+            version: '/aaggreg/version/',
         },
 
         solr_port: 8983,

@@ -44,6 +44,21 @@ define(['utils', 'jquery'], function (utils, jQuery) {
             '</div>').format(idp, sp, result_label, result, attributes_html);
     };
 
+    Html.prototype.loading_html = function(obj) {
+        return '<i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i>';
+    };
 
-    return new Html();
+    Html.prototype.loading = function(obj) {
+        obj.append(this.loading_html());
+    };
+
+    var html = new Html();
+    jQuery(document).ready(function () {
+
+        jQuery(".loading").each(function() {
+            html.loading(jQuery(this));
+        });
+    });
+
+    return html;
 });
