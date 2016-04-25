@@ -47,7 +47,8 @@ function handle(req, res) {
         var idp = d.idp;
         var sp = d.sp;
         var attributes = d.attributes;
-        var timestamp = d.time;
+        var timestamp = d.timestamp;
+        var warn = d.warn;
         var our_timestamp = new Date();//.now();
 
             if (!idp || !sp) {
@@ -63,6 +64,7 @@ function handle(req, res) {
             sp: sp,
             attributes: attributes,
             request_ip: remote_ip,
+            warn: warn,
             timestamp: timestamp,
             our_timestamp: our_timestamp
         },function(err,obj){
@@ -73,7 +75,7 @@ function handle(req, res) {
             }
         });
         
-        client.commit({},function(err,obj){
+        client.commit(function(err,obj){
             if(err){
                 log.error(err);
             }

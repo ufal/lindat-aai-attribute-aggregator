@@ -34,6 +34,7 @@
     <field name="timestamp" type="date" indexed="true" stored="true" />
     <field name="our_timestamp" type="date" indexed="true" stored="true" />
     <field name="attributes" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="warn" type="string" indexed="true" stored="true"/>
 
     <!-- Field to use to determine and enforce document uniqueness.
       Unless this field is marked with required="false", it will be a required field

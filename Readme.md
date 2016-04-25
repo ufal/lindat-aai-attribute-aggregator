@@ -1,5 +1,7 @@
 # Attribute aggregator
 
+See https://github.com/ufal/clarin-sp-aaggregator for the software that must be installed on the SP.
+
 ## Requirements
 
 - node.js
