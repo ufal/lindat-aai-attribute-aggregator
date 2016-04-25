@@ -71,4 +71,6 @@ a {
 
 .entry {
     border-bottom: dashed #efefef thin;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
