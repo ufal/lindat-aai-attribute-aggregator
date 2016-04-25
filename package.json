@@ -4,8 +4,7 @@
   "version": "1.0.0",
   "private": false,
   "scripts": {
-    "start-back": "node backend/app.js",
-    "start-front": "node frontend/app.js",
+    "start": "node backend/app.js",
     "test": "node_modules/.bin/mocha",
     "release": "npm version patch"
   },

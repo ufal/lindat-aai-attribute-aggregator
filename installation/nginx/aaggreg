@@ -12,6 +12,11 @@ server {
 	location / {
 		try_files $uri $uri/ =404;
 	}
+
+    location /aagreg/ {
+        proxy_pass http://127.0.0.1:3001/;
+        proxy_set_header Host $host;
+    }
 }
 
 

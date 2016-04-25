@@ -73,6 +73,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
             vmbox.vm.network :private_network, ip: ip
             vmbox.vm.network :forwarded_port, guest: 22, host: 2322, auto_correct: true
+            vmbox.vm.network :forwarded_port, guest: 3001, host: 3001
             vmbox.vm.network :forwarded_port, guest: 8983, host: 8983
 
             vmbox.vm.hostname = "%s.dev" % opts[:name].to_s

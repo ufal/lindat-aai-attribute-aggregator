@@ -85,8 +85,9 @@ app.use(function(err, req, res, next) {
 
 
 app.set('port', process.env.PORT || 4001);
+app.set('hostname', process.env.HOSTNAME || "127.0.0.1");
 
-var server = app.listen(app.get('port'), function() {
+var server = app.listen(app.get('port'), app.get('hostname'), function() {
   debug('Express server listening on port ' + server.address().port);
 });
 
