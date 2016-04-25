@@ -31,7 +31,7 @@
       "exec_mode": "fork_mode",
       "cwd": "",
       "script": "/opt/aaggregator/aaggreg/backend/app.js",
-      "watch" : true,
+      "watch" : ["/opt/aaggregator/aaggreg/backend"],
       "ignore_watch" : ["node_modules", "www"],
       "autorestart": true,
       "env": {
