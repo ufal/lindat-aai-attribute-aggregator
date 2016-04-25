@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+PREF="automated deploy:"
+
+IDIR=/opt/aaggregator
+PROJ=aaggreg
+PROJDIR=$IDIR/$PROJ
+DEPLOYDIR=$IDIR/deploy/$PROJ.git
+
+while read oldrev newrev ref
+do
+    if [[ $ref =~ .*/master$ ]];
+    then
+        echo -e $PREF "Deploying master branch to production"
+        git --work-tree=$PROJDIR --git-dir=$DEPLOYDIR checkout -f
+    else
+        echo -e $PREF "Not deployed to master - doing NOTHING!"
+    fi
+done

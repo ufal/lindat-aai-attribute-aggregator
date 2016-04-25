@@ -1,6 +1,9 @@
-settings.js
+__*
 .idea
+.vagrant
 *.log
-node_modules
 *.bak
+node_modules
 vendor
+solr
+*.bat

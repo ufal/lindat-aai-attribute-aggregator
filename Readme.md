@@ -2,37 +2,38 @@
 
 ## Requirements
 
-- node.js + process manager e.g., pm2
-- redis
-
-## Startup
-
-- start redis
-- start
-
+- node.js
+- web server
+- solr
 
 ## Installation
 
-1. Install Node/npm
-
-2. Clone this repository
-    
-```
-npm install --no-bin-links
-```
-
-4. Start
-    
-```
-npm start
-```
+See installation/setup.sh or manually install node, clone this repository, install npm modules, install web server (+ssl),
+ link to ./www, start the backend.
 
 
+# New dev related
+
+## Vagrant
+
+Do a `vagrant up` to see all in action.
+
+##
+
+Deploy to your production machine using (see `installation/setup.sh`)
+```
+git remote add deploy user@deployed machine:deploy dir
+git push deploy master
+```
 
 ## Install new modules and save them to package.json
 
 ```
 npm install --save XXX
+```
+or
+```
+npm install --save-dev XXX
 ```
 
 ## Update modules

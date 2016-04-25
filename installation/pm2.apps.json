@@ -1,27 +1,38 @@
 {
   "apps": [
     {
-    "name": "java-jetty-solr",
-    "cwd": "/opt/aagregator/solr/installation",
-    "args": [
-      "-Xmx256m",
-      "-jar",
-      "start.jar"
-    ],
-    "env": {
-    },
-    "script": "java",
-    "node_args": [],
-    "log_date_format": "YYYY-MM-DD HH:mm Z",
-    "exec_interpreter": "none",
-    "exec_mode": "fork"
+      "name": "java-solr-for-aaggregator",
+      "cwd": "/opt/aaggregator/solr/",
+      "args": [
+        "start",
+        "-h",
+        "0.0.0.0",
+        "-d",
+        "server",
+        "-s",
+        "installation",
+        "-p",
+        "8983",
+        "-m",
+        "386m",
+        "-V",
+        "-f"
+      ],
+      "env": {
+      },
+      "script": "bin/solr",
+      "node_args": [],
+      "log_date_format": "YYYY-MM-DD HH:mm Z",
+      "exec_interpreter": "bash",
+      "exec_mode": "fork"
     },
     {
-      "name": "node-aagreg-backend",
+      "name": "node-aaggregator",
       "exec_mode": "fork_mode",
       "cwd": "",
-      "script": "/opt/aagregator/aagreg-backend/backend.app.js",
+      "script": "/opt/aaggregator/aaggreg/backend/app.js",
       "watch" : true,
+      "ignore_watch" : ["node_modules", "www"],
       "autorestart": true,
       "env": {
         "NODE_ENV": "production",

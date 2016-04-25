@@ -1,42 +1,84 @@
 #!/usr/bin/env bash
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-IDIR=/opt/aagregator
+ip=`LANG=c ifconfig eth1 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}'`
+PREF="\n\n==========================\n"
+DIR=/opt/aaggregator/installation
+IDIR=/opt/aaggregator
 mkdir -p $IDIR
+PROJ=aaggreg
+PROJDIR=$IDIR/$PROJ
+DEPLOYDIR=$IDIR/deploy/$PROJ.git
 
-echo "Installing basic goodies"
+echo -e $PREF "Installing basic goodies"
 cd $IDIR
-apt-get -qq install -y curl
+apt-get -qq install -y curl git htop nginx > /dev/null
 
-echo "Installing node5.XX"
+echo -e $PREF "Installing node5.XX"
 cd $IDIR
 curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash - > /dev/null
 sudo apt-get -qq install -y nodejs
 
-echo "Installing pm2"
-cd $IDIR
-sudo npm install pm2 -g
 
-echo "Installing SOLR into $IDIR"
+echo -e $PREF "Installing pm2"
+cd $IDIR
+sudo npm install pm2 -g > /dev/null
+
+
+echo -e $PREF "Installing openjdk-java8"
+sudo add-apt-repository -y ppa:openjdk-r/ppa
+sudo apt-get update > /dev/null
+sudo apt-get -qq install -y openjdk-8-jdk > /dev/null
+sudo update-alternatives --config java > /dev/null
+sudo update-alternatives --config javac > /dev/null
+
+
+echo -e $PREF "Installing SOLR into $IDIR"
 cd $IDIR
 PACKAGE=solr-6.0.0
-curl -o solr.tgz http://tux.rainside.sk/apache/lucene/solr/6.0.0/$PACKAGE.tgz > /dev/null
-tar -xvf solr.tgz
-cp -R $PACKAGE/example $IDIR/installation
-cd $IDIR/installation
-rm -rf collection* data
-cp $DIR/solr_schema.xml conf/schema.xml
+curl -s -o solr.tgz http://tux.rainside.sk/apache/lucene/solr/6.0.0/$PACKAGE.tgz
+tar -xf solr.tgz
+SOLR=$IDIR/solr
+mv $IDIR/$PACKAGE $SOLR
+mkdir -p $SOLR/installation
+cp -R $DIR/solr_installation/* $SOLR/installation/ 2>/dev/null
+export SOLRURL=http://$ip:8983
 
-echo "Installing aai backend into $IDIR"
+
+echo -e $PREF "Installing aai backend into $IDIR"
 cd $IDIR
-PROJ=aagreg-backend
-git clone git@github.com:ufal/lindat-aai-attribute-aggregator-backend.git $PROJ
+git clone https://github.com/ufal/lindat-aai-attribute-aggregator-backend.git $PROJ
 
 
-echo "Running all applications through pm2"
+echo -e $PREF "Running all applications through pm2 - from $DIR/pm2.apps.json"
 cd $DIR
-sudo pm2 startup pm2.apps.json
+sudo pm2 start pm2.apps.json
 
 # http://pm2.keymetrics.io/docs/usage/quick-start/
-echo "Make pm2 persistent during restarts"
-sudo pm2 startup
+echo -e $PREF "Make pm2 persistent during restarts"
+sudo pm2 startup > /dev/null
+
+# basic tests
+sleep 15
+curl -s "$SOLRURL/solr/admin/info/system?wt=json&indent=true" | python -c 'import sys, json; js=json.load(sys.stdin); del js["jvm"]["jmx"]; print json.dumps(js, indent=4)'
+
+# nginx
+echo -e $PREF "Setting up nginx"
+mkdir -p /var/www/
+ln -s $PROJDIR/www /var/www/html
+rm -f /etc/nginx/sites-enabled/*
+cp $DIR/nginx/* /etc/nginx/sites-enabled/
+service nginx reload
+sudo update-rc.d nginx defaults
+
+# now we can fiddle with deployment
+echo -e $PREF "Setting up automated deployment"
+cd $IDIR
+mkdir -p deploy && cd deploy
+git clone --bare /opt/aaggregator/aaggreg/ aaggreg.git
+cp $DIR/deploy/* $DEPLOYDIR/hooks/
+chmod +x $DEPLOYDIR/hooks/*
+
+
+# happy work
+echo -e $PREF "You should find these services available\nSOLR: $SOLRURL\naaggreg: http://$ip:3001/\www: http://$ip/"
+echo -e $PREF "Automated deployment like this\ngit remote add deploy user@$ip:$DEPLOYDIR\ngit push deploy master"
