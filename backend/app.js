@@ -37,7 +37,7 @@ app.use('/v1/got', got_v1);
 //app.use('/v1/attributes', attributes_v1);
 
 app.use(function(req, res, next) {
-    var special_urls = ["/public", "/settings"];
+    var special_urls = ["/www", "/settings"];
     for (var i = 0; i < special_urls.length; ++i) {
         var special_url = special_urls[i];
         if (req.url.startsWith(special_url)) {
@@ -48,7 +48,7 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.use(express.static(path.join(__dirname, '..', 'public')));
+app.use(express.static(path.join(__dirname, '..', 'www')));
 app.use(express.static(path.join(__dirname, '..', 'settings')));
 
 // catch 404 and forward to error handler
@@ -84,7 +84,7 @@ app.use(function(err, req, res, next) {
 });
 
 
-app.set('port', process.env.PORT || 4001);
+app.set('port', process.env.PORT || 3001);
 app.set('hostname', process.env.HOSTNAME || "127.0.0.1");
 
 var server = app.listen(app.get('port'), app.get('hostname'), function() {

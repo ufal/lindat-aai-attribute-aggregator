@@ -82,5 +82,5 @@ chmod +x $DEPLOYDIR/hooks/*
 
 
 # happy work
-echo -e $PREF "You should find these services available\nSOLR: $SOLRURL or http://localhost:8983/\naaggreg: http://$ip/aggreg/ or http://127.0.0.1:3001/\nwww: http://$ip/"
+echo -e $PREF "You should find these services available\nSOLR: $SOLRURL or http://localhost:8983/\naaggreg: http://$ip/aaggreg/ or http://127.0.0.1:3001/\nwww: http://$ip/"
 echo -e $PREF "Automated deployment like this\ngit remote add deploy user@$ip:$DEPLOYDIR\ngit push deploy master"

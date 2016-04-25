@@ -1,5 +1,5 @@
 /*
- * Mazoea simple json from demo version.
+ * 
  */
 
 /*jslint nomen: true, unparam: true, regexp: true */

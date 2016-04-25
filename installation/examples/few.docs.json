@@ -1,0 +1,25 @@
+[
+  {
+    "idp" : "Idp#1",
+    "sp" : "SP#1",
+    "request_ip": "127.0.0.1",
+    "attributes" : ["a1", "a2"]
+  },
+  {
+    "idp" : "Idp#2",
+    "sp" : "SP#2",
+    "request_ip": "127.0.0.1"
+  },
+  {
+    "idp" : "Idp#3",
+    "sp" : "SP#3",
+    "request_ip": "127.0.0.1",
+    "attributes" : ["a1"]
+  },
+  {
+    "idp" : "Idp#4",
+    "sp" : "SP#4",
+    "request_ip": "127.0.0.1",
+    "attributes" : ["a1", "a2", "a3"]
+  }
+]
