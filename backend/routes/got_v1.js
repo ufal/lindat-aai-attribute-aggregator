@@ -78,6 +78,7 @@ function handle(req, res) {
                 log.error(err);
             }
         });
+        ret["ok"] = true;
 
     }catch(err) {
         ret["exception"] = err;

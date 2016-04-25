@@ -1,5 +1,5 @@
 /*
- * 
+ *
  */
 
 /*jslint nomen: true, unparam: true, regexp: true */
@@ -8,6 +8,10 @@
 settings = {
 
     backend: {
+        api: {
+            list: '/aaggreg/v1/list/'
+        },
+
         solr_port: 8983,
         solr_host: "localhost",
         solr_core: "loginx",

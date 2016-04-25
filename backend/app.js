@@ -13,6 +13,7 @@ var utils = require('./libs/utils');
 var index_v1 = require('./routes/index_v1');
 var version = require('./routes/version');
 var got_v1 = require('./routes/got_v1');
+var list_v1 = require('./routes/list_v1');
 //var attributes_v1 = require('./routes/attributes_v1');
 
 var app = express();
@@ -21,6 +22,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.engine('html', require('ejs').renderFile);
+app.set('json spaces', 2);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -34,6 +36,7 @@ app.use(cors());
 app.use('/', index_v1);
 app.use('/version', version);
 app.use('/v1/got', got_v1);
+app.use('/v1/list', list_v1);
 //app.use('/v1/attributes', attributes_v1);
 
 app.use(function(req, res, next) {
