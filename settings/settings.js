@@ -17,7 +17,7 @@ settings = {
                 ];
                 for (var i=0; i < at_least_one.length; ++i) {
                     if (-1 != d.indexOf(at_least_one[i])) {
-                        return '<i class="fa fa-4x fa-smile-o" aria-hidden="true"></i> ID (kind-of) friendly';
+                        return '<div><i class="fa fa-4x fa-smile-o" aria-hidden="true"></i></div>ID (kind-of) friendly';
                     }
                 }
                 return false;
