@@ -32,14 +32,16 @@ define(['utils', 'jquery'], function (utils, jQuery) {
             attributes_html = "MISSING!";
         }
         return ('<div class="row entry">' +
-                '<div class="col-sm-10">' +
-                    '<span class="text-muted pull-right"><i class="fa fa-clock-o" aria-hidden="true"></i> {5}</span>' +
-                    '<h3>{0} <i class="fa fa-sign-in text-muted" aria-hidden="true"></i> {1}</h3>' +
-                    '<h4><span class="{2}">{3}</span></h4>' +
-                    '{4}' +
+                '<div class="col-sm-1">' +
+                    '<span class="text-muted "><i class="fa fa-clock-o" aria-hidden="true"></i> {5}</span>' +
+                    '<a href="#" class=""><img src="./images/idp.png" class="img-thumbnail"></a>' +
                 '</div>' +
-                '<div class="col-sm-2">' +
-                    '<a href="#" class="pull-right"><img src="./images/idp.png" class="img-circle"></a>' +
+                '<div class="col-sm-1 {2}">' +
+                    '{3}' +
+                '</div>' +
+                '<div class="col-sm-10">' +
+                    '<h4>{0} <i class="fa fa-sign-in text-muted" aria-hidden="true"></i> {1}</h4>' +
+                    '{4}' +
                 '</div>' +
             '</div>').format(idp, sp, result_label, result, attributes_html, ts);
     };

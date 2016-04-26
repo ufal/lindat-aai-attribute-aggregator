@@ -44,7 +44,7 @@ define(['utils', 'theme', 'jquery'], function (utils, theme, jQuery) {
                     var sp = theme.link(doc.sp, self.met_refeds.format(doc.sp));
                     var attributes_names = (doc.attributes || []).map(self.toname).sort();
                     var result_label = "label label-danger";
-                    var result = "unknown";
+                    var result = '<i class="fa fa-3x fa-meh-o" aria-hidden="true"></i>';
                     var keys = Object.keys(settings.frontend.profile).sort();
                     for (var j=0; j < keys.length; ++j) {
                         var key = keys[j];

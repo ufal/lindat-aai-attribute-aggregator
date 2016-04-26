@@ -8,7 +8,7 @@
 settings = {
 
     frontend: {
-        auth: '/Shibboleth.SSO/Session',
+        auth: '/Shibboleth.sso/Session',
         
         profile: {
             "label label-success": function(d) {
@@ -16,8 +16,8 @@ settings = {
                     "eduPersonPrincipalName"
                 ];
                 for (var i=0; i < at_least_one.length; ++i) {
-                    if (d.hasOwnProperty(at_least_one[i])) {
-                        return "ID (kind-of) friendly";
+                    if (-1 != d.indexOf(at_least_one[i])) {
+                        return '<i class="fa fa-smile-o" aria-hidden="true"></i> ID (kind-of) friendly';
                     }
                 }
                 return false;
