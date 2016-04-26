@@ -7,6 +7,25 @@
 
 settings = {
 
+    frontend: {
+        auth: '/Shibboleth.SSO/Session',
+        
+        profile: {
+            "label label-success": function(d) {
+                var at_least_one = [
+                    "eduPersonPrincipalName"
+                ];
+                for (var i=0; i < at_least_one.length; ++i) {
+                    if (d.hasOwnProperty(at_least_one[i])) {
+                        return "ID (kind-of) friendly";
+                    }
+                }
+                return false;
+            }
+        }
+
+    },
+
     backend: {
         api: {
             list: './aaggreg/v1/list/',

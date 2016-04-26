@@ -33,6 +33,29 @@ define(['theme', 'utils', 'loginx', 'logger', 'jquery', 'bootstrap'],
             );
         });
 
+        jQuery(".set-data-url").each(function() {
+            var s = jQuery(this).attr("data-url-target");
+            var url = settings.frontend[s];
+            jQuery(this).attr("href", url);
+        });
+
+        // this is a bit crazy! but rather than php dependency
+        jQuery(".user-info").each(function() {
+            var self = this;
+            utils.simple_ajax(
+                settings.frontend.auth,
+                function(html) {
+                    var re = /<strong>eppn<\/strong>:\s*(?:\w+)$/g;
+                    var match = re.exec(html);
+                    if (match) {
+                        jQuery(".user-info").html(theme.user(match[1]));
+                    }
+                },
+                function(xhr, status, error){
+                }
+            );
+        });
+
     });
 
     return site;

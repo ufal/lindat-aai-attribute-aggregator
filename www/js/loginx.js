@@ -38,13 +38,27 @@ define(['utils', 'theme', 'jquery'], function (utils, theme, jQuery) {
                 for (var i=0; i<docs.length; ++i) {
                     var doc = docs[i];
                     var ts = doc.timestamp || doc.our_timestamp || "unknown";
-                    ts = ts.toString().replace("T", "").replace("Z", "");
+                    ts = ts.toString().replace("T", " ").replace("Z", "");
 
                     var idp = theme.link(doc.idp, self.met_refeds.format(doc.idp));
                     var sp = theme.link(doc.sp, self.met_refeds.format(doc.sp));
+                    var attributes_names = (doc.attributes || []).map(self.toname).sort();
+                    var result_label = "label label-danger";
+                    var result = "unknown";
+                    var keys = Object.keys(settings.frontend.profile).sort();
+                    for (var j=0; j < keys.length; ++j) {
+                        var key = keys[j];
+                        var fnc = settings.frontend.profile[key];
+                        var res = fnc(attributes_names);
+                        if (false !== res) {
+                            result_label = key;
+                            result = res;
+                            break;
+                        }
+                    }
 
                     obj_to_append.append(
-                        theme.list_login_item(idp, sp, (doc.attributes || []).map(self.toname).sort(), ts, "...")
+                        theme.list_login_item(idp, sp, attributes_names, ts, result_label, result)
                     );
                 }
             },

@@ -22,7 +22,7 @@ define(['utils', 'jquery'], function (utils, jQuery) {
         ];
     }
 
-    Html.prototype.list_login_item = function (idp, sp, attributes, ts, result) {
+    Html.prototype.list_login_item = function (idp, sp, attributes, ts, result_label, result) {
         var attributes_html = "";
         if (attributes) {
             for (var i = 0; i < attributes.length; ++i) {
@@ -31,7 +31,6 @@ define(['utils', 'jquery'], function (utils, jQuery) {
         }else {
             attributes_html = "MISSING!";
         }
-        var result_label = "label label-danger";
         return ('<div class="row entry">' +
                 '<div class="col-sm-10">' +
                     '<span class="text-muted pull-right"><i class="fa fa-clock-o" aria-hidden="true"></i> {5}</span>' +
@@ -55,6 +54,10 @@ define(['utils', 'jquery'], function (utils, jQuery) {
 
     Html.prototype.loading = function(obj) {
         obj.append(this.loading_html());
+    };
+    
+    Html.prototype.user = function(name) {
+        return '<i class="fa fa-2x fa-user-md" aria-hidden="true"></i> ' + name;
     };
 
     var html = new Html();
