@@ -24,15 +24,20 @@ function handle(req, res) {
         var query = client.createQuery();
         q = !d.q ? '*:*' : d.q;
         query.q(q);
-        query.rows(30).sort({our_timestamp: "desc"});
+        query.rows(0).facet({
+            on: true,
+            query: "*:*",
+            field: ["idp", "sp"]
+        });
         client.search(query, function(err, obj) {
             if (err) {
                 log.error(err);
-                res.json(ret);
             } else {
                 //log.info(obj);
                 ret["ok"] = true;
-                ret["result"] = obj.response.docs;
+                ret["result"] = {
+                    facets: obj.facet_counts.facet_fields
+                }
             }
             res.json(ret);
         });

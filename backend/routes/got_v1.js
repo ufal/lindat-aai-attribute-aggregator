@@ -8,15 +8,7 @@ var settings = require('../../settings/settings')["backend"];
 var utils = require('../libs/utils');
 var router = express.Router();
 var log = require('../libs/logger')("/v1/got/");
-var solr = require('solr-client');
-
-log.info("Creating SOLR client at %s:%s ", settings.solr_host, settings.solr_port);
-var client = solr.createClient({
-    host: settings.solr_host,
-    port: settings.solr_port,
-    core: settings.solr_core,
-    solrVersion: '6.0'
-});
+var client = require('../libs/solr');
 
 // not storing dialogue
 router.post('/', function(req, res) {

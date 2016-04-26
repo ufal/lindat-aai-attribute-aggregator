@@ -14,6 +14,7 @@ var index_v1 = require('./routes/index_v1');
 var version = require('./routes/version');
 var got_v1 = require('./routes/got_v1');
 var list_v1 = require('./routes/list_v1');
+var details_v1 = require('./routes/details_v1');
 //var attributes_v1 = require('./routes/attributes_v1');
 
 var app = express();
@@ -37,6 +38,7 @@ app.use('/', index_v1);
 app.use('/version', version);
 app.use('/v1/got', got_v1);
 app.use('/v1/list', list_v1);
+app.use('/v1/details', details_v1);
 //app.use('/v1/attributes', attributes_v1);
 
 app.use(function(req, res, next) {

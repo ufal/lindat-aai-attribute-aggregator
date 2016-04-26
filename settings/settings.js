@@ -29,6 +29,7 @@ settings = {
     backend: {
         api: {
             list: './aaggreg/v1/list/',
+            details: './aaggreg/v1/details/',
             version: './aaggreg/version/',
         },
 

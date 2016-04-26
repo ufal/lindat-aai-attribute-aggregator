@@ -45,6 +45,29 @@ define(['utils', 'theme', 'jquery'], function (utils, theme, jQuery) {
         }
     };
 
+    Loginx.prototype.counts = function() {
+        utils.simple_ajax(
+            settings.backend.api.details,
+            function(data) {
+                var facets = data.result.facets;
+                jQuery(".idp-count").html(theme.huge_text(facets.idp.length / 2));
+                jQuery(".sp-count").html(theme.huge_text(facets.sp.length / 2));
+                var idps = "";
+                for (var i=0; i < facets.idp.length; i+=2) {
+                    idps += theme.dict_entry(facets.idp[i], facets.idp[i+1]);
+                }
+                jQuery("#list-idps").html(idps);
+                var sps = "";
+                for (var i=0; i < facets.sp.length; i+=2) {
+                    sps += theme.dict_entry(facets.sp[i], facets.sp[i+1]);
+                }
+                jQuery("#list-sps").html(sps);
+            },
+            function(xhr, status, error){
+            }
+        );
+    };
+
     Loginx.prototype.list_loginx = function (params) {
         if (!params) {
             params = "";

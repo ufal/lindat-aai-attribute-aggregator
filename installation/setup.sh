@@ -3,6 +3,10 @@
 # use iptables or similar (or check the listening spec cause seems new solr has some issues)
 # - https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-iptables-on-ubuntu-14-04
 #
+# backup solr e.g.,
+# mkdir -p /BACKUP
+# curl "http://localhost:8983/solr/loginx/replication?command=backup&location=/BACKUP&numberToKeep=10"
+#
 
 ip=`LANG=c ifconfig eth1 | grep "inet addr" | awk -F: '{print $2}' | awk '{print $1}'`
 PREF="\n\n==========================\n"

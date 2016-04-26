@@ -29,6 +29,22 @@ define(['theme', 'utils', 'loginx', 'logger', 'jquery', 'bootstrap'],
             );
         });
 
+        jQuery(".idp-count").each(function() {
+            theme.loading(jQuery(this));
+        });
+        jQuery(".sp-count").each(function() {
+            theme.loading(jQuery(this));
+        });
+        loginx.counts();
+
+        jQuery(".toggle-data-target").each(function() {
+            var idstr = jQuery(this).attr("data-target");
+            jQuery(this).click(function() {
+                jQuery("#"+idstr).toggle();
+            });
+        });
+
+
         jQuery(".set-data-url").each(function() {
             var s = jQuery(this).attr("data-url-target");
             var url = settings.frontend[s];

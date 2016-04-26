@@ -67,6 +67,14 @@ define(['utils', 'jquery'], function (utils, jQuery) {
         jQuery("#result-title").html(name);
     };
 
+    Html.prototype.huge_text = function(text) {
+        return '<div class="text-huge">{0}</div>'.format(text);
+    };
+
+    Html.prototype.dict_entry = function(key, value) {
+        return '<div>{0}: <span class="badge">{1}</span></div>'.format(key, value);
+    };
+
     var html = new Html();
     jQuery(document).ready(function () {
 
