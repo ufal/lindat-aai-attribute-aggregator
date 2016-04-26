@@ -45,8 +45,7 @@ define(['theme', 'utils', 'loginx', 'logger', 'jquery', 'bootstrap'],
             utils.simple_ajax(
                 settings.frontend.auth,
                 function(html) {
-                    var re = /<strong>eppn<\/strong>:\s*(?:\w+)$/g;
-                    var match = re.exec(html);
+                    var match = /.*eppn.*:\s*(.+)/.exec(html);
                     if (match) {
                         jQuery(".user-info").html(theme.user(match[1]));
                     }
