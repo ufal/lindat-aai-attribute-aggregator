@@ -22,7 +22,7 @@ define(['utils', 'jquery'], function (utils, jQuery) {
         ];
     }
 
-    Html.prototype.list_login_item = function (idp, sp, attributes, ts, result_label, result) {
+    Html.prototype.list_login_item = function (pos, idp, sp, attributes, ts, result_label, result) {
         var attributes_html = "";
         if (attributes) {
             for (var i = 0; i < attributes.length; ++i) {
@@ -33,24 +33,25 @@ define(['utils', 'jquery'], function (utils, jQuery) {
         }
         return ('<div class="row entry">' +
                 '<div class="col-sm-2">' +
+                    '<span class="label label-primary" style="margin-left:-30px; margin-right:10px">{6}</span>' +
                     '<span class="text-muted "><i class="fa fa-clock-o" aria-hidden="true"></i> {5}</span>' +
                     '<a href="#" class=""><img src="./images/idp.png" class="img-thumbnail"></a>' +
                 '</div>' +
-                '<div class="col-sm-1 {2}">' +
+                '<div class="col-sm-1 {2}" style="margin-top: 40px;">' +
                     '{3}' +
                 '</div>' +
                 '<div class="col-sm-9">' +
                     '<h4>{0} <i class="fa fa-sign-in text-muted" aria-hidden="true"></i> {1}</h4>' +
                     '{4}' +
                 '</div>' +
-            '</div>').format(idp, sp, result_label, result, attributes_html, ts);
+            '</div>').format(idp, sp, result_label, result, attributes_html, ts, pos);
     };
 
     Html.prototype.link = function(text, href) {
       return '<a href="{0}">{1}</a>'.format(href, text);
     };
 
-    Html.prototype.loading_html = function(obj) {
+    Html.prototype.loading_html = function() {
         return '<i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i>';
     };
 
@@ -60,6 +61,10 @@ define(['utils', 'jquery'], function (utils, jQuery) {
     
     Html.prototype.user = function(name) {
         return '<i class="fa fa-2x fa-user-md" aria-hidden="true"></i> ' + name;
+    };
+
+    Html.prototype.result_title = function(name) {
+        jQuery("#result-title").html(name);
     };
 
     var html = new Html();

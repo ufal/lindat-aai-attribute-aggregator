@@ -29,11 +29,31 @@ define(['utils', 'theme', 'jquery'], function (utils, theme, jQuery) {
         this.met_refeds = "https://met.refeds.org/met/entity/{0}/?federation=edugain";
     }
 
-    Loginx.prototype.list_loginx = function (obj_to_append) {
+    Loginx.prototype.obj = function() {
+        return jQuery("#list-logins");
+    };
+
+    Loginx.prototype.clear = function () {
+        this.obj().html('');
+    };
+
+    Loginx.prototype.loading = function (start_loading) {
+        if (false == start_loading) {
+            this.obj().html('');
+        }else {
+            theme.loading(this.obj());
+        }
+    };
+
+    Loginx.prototype.list_loginx = function (params) {
+        if (!params) {
+            params = "";
+        }
         var self = this;
         utils.simple_ajax(
-            settings.backend.api.list,
+            settings.backend.api.list + "?" + params,
             function(data) {
+                self.loading(false);
                 var docs = data.result;
                 for (var i=0; i<docs.length; ++i) {
                     var doc = docs[i];
@@ -57,8 +77,8 @@ define(['utils', 'theme', 'jquery'], function (utils, theme, jQuery) {
                         }
                     }
 
-                    obj_to_append.append(
-                        theme.list_login_item(idp, sp, attributes_names, ts, result_label, result)
+                    self.obj().append(
+                        theme.list_login_item(i + 1, idp, sp, attributes_names, ts, result_label, result)
                     );
                 }
             },

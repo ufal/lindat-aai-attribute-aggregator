@@ -18,11 +18,6 @@ var client = solr.createClient({
     solrVersion: '6.0'
 });
 
-// not storing dialogue
-router.post('/', function(req, res) {
-    return handle(req, res);
-});
-
 router.get('/', function(req, res) {
     return handle(req, res);
 });
@@ -33,8 +28,11 @@ function handle(req, res) {
     };
     try {
 
+        var d = req.query;
         var query = client.createQuery();
-        query.q({ '*' : '*' }).rows(30).sort({our_timestamp: "desc"});
+        q = !d.q ? '*:*' : d.q;
+        query.q(q);
+        query.rows(30).sort({our_timestamp: "desc"});
         client.search(query, function(err, obj) {
             if (err) {
                 log.error(err);

@@ -16,10 +16,6 @@ define(['theme', 'utils', 'loginx', 'logger', 'jquery', 'bootstrap'],
 
     jQuery(document).ready(function () {
 
-        jQuery("#list-logins").each(function() {
-            loginx.list_loginx(jQuery("#list-logins"));
-        });
-
         jQuery(".version-back").each(function() {
             var self = this;
             utils.simple_ajax(
@@ -54,6 +50,26 @@ define(['theme', 'utils', 'loginx', 'logger', 'jquery', 'bootstrap'],
                 }
             );
         });
+
+        //
+        jQuery(".list-bad-idps").click(function() {
+            loginx.clear();
+            loginx.loading();
+            theme.result_title("Bad IdPs");
+            loginx.list_loginx('q=-attributes:["" TO *]');
+            return false;
+        });
+
+        //
+        jQuery(".list-idps").click(function() {
+            theme.result_title("Last Logins");
+            loginx.loading();
+            loginx.list_loginx();
+            return false;
+        });
+
+        // load the list
+        jQuery(".list-idps").click();
 
     });
 

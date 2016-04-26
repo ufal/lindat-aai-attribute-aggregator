@@ -30,6 +30,7 @@
 
     <field name="idp" type="string" indexed="true" stored="true" />
     <field name="sp" type="string" indexed="true" stored="true" />
+    <field name="idpsp" type="string" indexed="true" stored="true" />
     <field name="request_ip" type="string" indexed="true" stored="true" />
     <field name="timestamp" type="date" indexed="true" stored="true" />
     <field name="our_timestamp" type="date" indexed="true" stored="true" />

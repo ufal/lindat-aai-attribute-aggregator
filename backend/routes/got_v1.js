@@ -62,6 +62,7 @@ function handle(req, res) {
         client.add({
             idp: idp,
             sp: sp,
+            idpsp: "{0}|{1}".format(idp, sp),
             attributes: attributes,
             request_ip: remote_ip,
             warn: warn,
