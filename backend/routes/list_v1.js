@@ -34,7 +34,7 @@ function handle(req, res) {
     try {
 
         var query = client.createQuery();
-        query.q({ '*' : '*' }).rows(30).sort("our_timestamp desc");
+        query.q({ '*' : '*' }).rows(30).sort("our_timestamp asc");
         client.search(query, function(err, obj) {
             if (err) {
                 log.error(err);
