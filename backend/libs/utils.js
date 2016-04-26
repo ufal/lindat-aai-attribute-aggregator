@@ -13,6 +13,17 @@ String.prototype.startsWith = function(prefix) {
     return this.indexOf(prefix) === 0;
 };
 
+if (!String.prototype.format) {
+    String.prototype.format = function() {
+        var args = arguments;
+        return this.replace(/{(\d+)}/g, function(match, number) {
+            return typeof args[number] != 'undefined'
+                ? args[number]
+                : match
+                ;
+        });
+    };
+}
 
 function list_files( dir, ftor ) {
     var all_files = fs.readdirSync( dir );
