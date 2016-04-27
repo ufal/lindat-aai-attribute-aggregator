@@ -44,6 +44,8 @@ function parse_entities_and_commit(result, name_file_friendly, log_errors)
 {
     var entities = result["md:EntitiesDescriptor"]["md:EntityDescriptor"];
     log.info("Parsing {0} entities [{1}]".format(entities.length, name_file_friendly));
+
+    var docs = [];
     for (var i = 0; i < entities.length; ++i) {
         var entity = entities[i];
         var entityID = entity["$"]["entityID"];
@@ -150,9 +152,6 @@ function parse_entities_and_commit(result, name_file_friendly, log_errors)
                 }
             }
 
-            // add & commit
-            //
-
             var doc = {
                 entityID: entityID,
                 registrationAuthority: registrationAuthority,
@@ -167,23 +166,39 @@ function parse_entities_and_commit(result, name_file_friendly, log_errors)
                 email_technical: emails["technical"],
                 entityAttributes: eattrs
             };
-            client.add(doc, function (err, obj) {
-                if (err) {
-                    log.error(err);
+            // delete empty so update works as expected
+            for (var key in doc) {
+                if (doc.hasOwnProperty(key)) {
+                    if (null == doc[key]) {
+                        delete doc[key];
+                    }
                 }
-            });
+            }
+
+            docs.push(doc);
+
+
         }catch(exc) {
-            log.warn("[{0}] parsing error - {1}".format(entityID, exc))
+            log.warn("[{0}] parsing error - {1}".format(entityID, exc));
             throw exc;
         }
 
     } // for
 
-    client.commit(function(err,obj){
-        if(err){
+
+    // add & commit
+    client.add(docs, function (err, obj) {
+        if (err) {
             log.error(err);
+            return;
         }
-        log.info("Entities committed [{0}]".format(name_file_friendly))
+
+        client.commit(function(err,obj){
+            if(err){
+                log.error(err);
+            }
+            log.info("Entities committed [{0}]".format(name_file_friendly))
+        });
     });
 
     //log.info(JSON.stringify(result, null, 4));
@@ -232,6 +247,7 @@ try {
             download_and_parse(settings.feeds.spf_idp_feed, "spf_idp_feed");
             download_and_parse(settings.feeds.spf_sp_feed, "spf_sp_feed");
             download_and_parse(settings.feeds.edugain_feed, "edugain_feed");
+            download_and_parse(settings.feeds.spf_homeless_feed, "spf_homeless_feed");
 
         }, function () {
             log.warn("Finished parsing SPF feeds.");
@@ -239,7 +255,7 @@ try {
         true,
         "Europe/Prague",
         null,
-        false
+        true
     );
 
 } catch(ex) {
