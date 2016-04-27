@@ -72,7 +72,18 @@ define(['utils', 'theme', 'jquery'], function (utils, theme, jQuery) {
                 }
                 break;
 
-            default :
+            case 'entityAttributes':
+                if (entity_obj.hasOwnProperty(attr)) {
+                    var values = entity_obj[attr];
+                    for (var i=0; i < values.length; ++i) {
+                        var value = values[i];
+                        html = '<div style="min-height: 25px"><span class="label label-success">{0}</span></div>'.format(value);
+                        o.append(html);
+                    }
+                }
+                break;
+
+            default:
                 if (entity_obj.hasOwnProperty(attr)) {
                     if (o.children() && 1 == o.children().length && o.children().first().prop("tagName") !== "I") {
                         o.children().first().append(entity_obj[attr].join("<br>"));

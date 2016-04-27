@@ -70,7 +70,7 @@ a {
 }
 
 .entry {
-    border-bottom: dashed #efefef thin;
+    border-bottom: solid #efefef thick;
     padding-top: 10px;
     padding-bottom: 10px;
 }
@@ -96,7 +96,6 @@ a {
 }
 
 .entity-info {
-    margin-top: 50px;
 }
 
 .entity-info-name img {
@@ -121,4 +120,13 @@ a {
 
 .entity-attributes {
     font-size: 90%;
+}
+
+.auth-result {
+    margin-top: 40px;
+    margin-bottom: 50px;
+}
+
+.aa-vs {
+    margin-top: 80px;
 }

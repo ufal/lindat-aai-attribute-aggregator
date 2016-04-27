@@ -38,8 +38,8 @@ define(['utils', 'jquery'], function (utils, jQuery) {
             '<hr><div class="entity-contacts" data-entity-attribute="contacts"></div>' +
             '<hr><div class="entity-info-value entity-info-height-two" data-entity-attribute="displayDesc_en"><i class="fa fa-home" aria-hidden="true"></i> </div>' +
             '<hr><div class="entity-info-value" data-entity-attribute="registrationAuthority"><i class="fa fa-registered" aria-hidden="true"></i> Registrator: </div>' +
-            '<hr><div class="entity-info-value" data-entity-attribute="requested_required"></div>' + 
-            '<hr><div class="entity-info-value" data-entity-attribute="entityAttributes"></div>'
+            '<hr><div class="entity-info-value" data-entity-attribute="entityAttributes"></div>' +
+            '<hr><div class="entity-info-value" data-entity-attribute="requested_required"></div>'
         ;
 
         return ('<div class="row entry">' +
@@ -51,15 +51,14 @@ define(['utils', 'jquery'], function (utils, jQuery) {
                 '</div>' +
                 '<div class="row">' +
                     '<div class="col-sm-4" data-entity="{0}">' +
-                        '<div class="text-right">' +
-                            '<h4><i class="fa fa-university fa-2x"></i></h4>' +
-                            '<h4>{0}</h4>' +
+                        '<div class="text-right text-muted">' +
+                            '<h5>{0} <i class="fa fa-university fa-2x"></i></h5>' +
                         '</div>' +
                         '<div class="text-center entity-info">{7}</div>' +
                     '</div>' +
-                    '<div class="col-sm-3">' +
+                    '<div class="col-sm-3 aa-vs">' +
                         '<h4 class="text-center text-huge">vs.</h4>' +
-                        '<div class="col-sm-12 {2}">' +
+                        '<div class="col-sm-12 {2} auth-result">' +
                             '{3}' +
                         '</div>' +
                         '<div class="col-sm-12">' +
@@ -67,9 +66,8 @@ define(['utils', 'jquery'], function (utils, jQuery) {
                         '</div>' +
                     '</div>' +
                     '<div class="col-sm-4 text-left" data-entity="{1}">' +
-                        '<div class="text-right">' +
-                            '<h4><i class="fa fa-cogs fa-2x"></i></h4>' +
-                            '<h4>{1}</h4>' +
+                        '<div class="text-left text-muted">' +
+                            '<h5><i class="fa fa-cogs fa-2x"></i> {1}</h5>' +
                         '</div>' +
                         '<div class="text-center entity-info">' +
                             '<div class="text-center entity-info">{7}</div>' +
