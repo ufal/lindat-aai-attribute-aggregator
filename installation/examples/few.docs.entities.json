@@ -1,0 +1,7 @@
+[
+  {
+    "entityID" : "https://cas.cuni.cz/idp/shibboleth",
+    "registrationAuthority": {"set": 124},
+    "aaa": {"set": 124}
+  }
+]

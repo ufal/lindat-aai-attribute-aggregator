@@ -38,7 +38,8 @@ define(['utils', 'jquery'], function (utils, jQuery) {
             '<hr><div class="entity-contacts" data-entity-attribute="contacts"></div>' +
             '<hr><div class="entity-info-value entity-info-height-two" data-entity-attribute="displayDesc_en"><i class="fa fa-home" aria-hidden="true"></i> </div>' +
             '<hr><div class="entity-info-value" data-entity-attribute="registrationAuthority"><i class="fa fa-registered" aria-hidden="true"></i> Registrator: </div>' +
-            '<hr><div class="entity-info-value" data-entity-attribute="requested_required"></div>'
+            '<hr><div class="entity-info-value" data-entity-attribute="requested_required"></div>' + 
+            '<hr><div class="entity-info-value" data-entity-attribute="entityAttributes"></div>'
         ;
 
         return ('<div class="row entry">' +

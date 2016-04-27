@@ -50,6 +50,7 @@
   <field name="displayDesc_en" type="strings"/>
   <field name="displayName_en" type="strings"/>
   <field name="email_administrative" type="strings"/>
+  <field name="email_contact" type="tlongs"/>
   <field name="email_support" type="strings"/>
   <field name="email_technical" type="strings"/>
   <field name="entityAttributes" type="strings"/>

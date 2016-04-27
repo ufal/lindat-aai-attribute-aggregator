@@ -10,6 +10,37 @@ var app = require('../app');
 
 log.info("Setting up cron jobs");
 
+/**
+ * SOLR updating of fields is not what we can use so we have to do it manually.
+ */
+function merge_documents(doc, doc_to_merge) {
+    for (var key in doc_to_merge) {
+        // would conflict - do not merge it
+        if ("_version_" == key) {
+            continue;
+        }
+        if (doc_to_merge.hasOwnProperty(key)) {
+            var value = doc_to_merge[key];
+            // not there - add it
+            if (!doc.hasOwnProperty(key)) {
+                doc[key] = value;
+            }else {
+                // both arrays and new value has more elements - take it
+                if( Object.prototype.toString.call( doc[key] ) === '[object Array]'
+                    && Object.prototype.toString.call( value ) === '[object Array]'  )
+                {
+                    if (doc[key].length < value.length) {
+                        doc[key] = value;
+                    }
+                // doc value is null
+                }else if (doc[key] === null) {
+                    doc[key] = value;
+                }
+            }
+        }
+    }
+}
+
 function get_english(arr) {
     for (var i =0; i < arr.length; ++i) {
         if ("en" == arr[i]["$"]["xml:lang"]) {
@@ -17,6 +48,10 @@ function get_english(arr) {
         }
     }
     return 0 < arr.length ? arr[0]["_"] : "N/A";
+}
+
+function dbg(o) {
+    log.info(JSON.stringify(o, null, 4));
 }
 
 
@@ -40,22 +75,35 @@ var example_doc = {
 /**
  * Parse xml to json and add each entity to solr, then commit.
  */
-function parse_entities_and_commit(result, name_file_friendly, log_errors)
+function parse_entities_and_commit(g_entities, result, name_file_friendly, log_errors)
 {
     var entities = result["md:EntitiesDescriptor"]["md:EntityDescriptor"];
     log.info("Parsing {0} entities [{1}]".format(entities.length, name_file_friendly));
 
-    var docs = [];
     for (var i = 0; i < entities.length; ++i) {
         var entity = entities[i];
         var entityID = entity["$"]["entityID"];
+
+        var entities_entry = g_entities[entityID];
+        if (!entities_entry) {
+            entities_entry = {};
+            g_entities[entityID] = entities_entry;
+        }
+
         try {
             var registrationAuthority = null;
             var registrationAuthorityDate = null;
             try {
-                var reg_info = entity["md:Extensions"][0]["mdrpi:RegistrationInfo"][0];
-                var registrationAuthority = reg_info["$"]["registrationAuthority"];
-                var registrationAuthorityDate = reg_info["$"]["registrationInstant"];
+                var extensions = entity["md:Extensions"];
+                for (var j=0; j < extensions.length; ++j) {
+                    var extension = extensions[j];
+                    if (extension.hasOwnProperty("mdrpi:RegistrationInfo")) {
+                        var reg_info = extension["mdrpi:RegistrationInfo"][0];
+                        registrationAuthority = reg_info["$"]["registrationAuthority"];
+                        registrationAuthorityDate = reg_info["$"]["registrationInstant"];
+                        break;
+                    }
+                }
             } catch (err) {
             }
 
@@ -66,7 +114,9 @@ function parse_entities_and_commit(result, name_file_friendly, log_errors)
                 var entityattrs = entity["md:Extensions"][0]["mdattr:EntityAttributes"];
                 for (var j = 0; j < entityattrs.length; ++j) {
                     var ea = entityattrs[j];
-                    eattrs.push(ea["Name"]);
+                    for (var k = 0; k < ea["saml:Attribute"].length; ++k) {
+                        eattrs.push(ea["saml:Attribute"][k]["saml:AttributeValue"][0].trim());
+                    }
                 }
             }catch(err){
             }
@@ -119,9 +169,9 @@ function parse_entities_and_commit(result, name_file_friendly, log_errors)
             //
 
             try {
-                var requested_arr = desc["md:AttributeConsumingService"][0]["md:RequestedAttribute"];
-                var requested = [];
                 var requested_required = [];
+                var requested = [];
+                var requested_arr = desc["md:AttributeConsumingService"][0]["md:RequestedAttribute"];
                 for (var j = 0; j < requested_arr.length; ++j) {
                     requested.push(requested_arr[j]["$"]["Name"]);
                     requested_required.push("{0}_{1}".format(
@@ -138,8 +188,8 @@ function parse_entities_and_commit(result, name_file_friendly, log_errors)
             // contacts
             //
 
-            var people = entity["md:ContactPerson"];
             var emails = {};
+            var people = entity["md:ContactPerson"];
             for (var j = 0; j < people.length; ++j) {
                 var person = people[j];
                 try {
@@ -152,6 +202,10 @@ function parse_entities_and_commit(result, name_file_friendly, log_errors)
                 }
             }
 
+            // now this approach has some issues (e.g., race conditions, performance)
+            // but the changed data are not that important and performance is not an issue...
+
+            // this is our doc
             var doc = {
                 entityID: entityID,
                 registrationAuthority: registrationAuthority,
@@ -166,17 +220,8 @@ function parse_entities_and_commit(result, name_file_friendly, log_errors)
                 email_technical: emails["technical"],
                 entityAttributes: eattrs
             };
-            // delete empty so update works as expected
-            for (var key in doc) {
-                if (doc.hasOwnProperty(key)) {
-                    if (null == doc[key]) {
-                        delete doc[key];
-                    }
-                }
-            }
 
-            docs.push(doc);
-
+            merge_documents(entities_entry, doc);
 
         }catch(exc) {
             log.warn("[{0}] parsing error - {1}".format(entityID, exc));
@@ -185,27 +230,11 @@ function parse_entities_and_commit(result, name_file_friendly, log_errors)
 
     } // for
 
-
-    // add & commit
-    client.add(docs, function (err, obj) {
-        if (err) {
-            log.error(err);
-            return;
-        }
-
-        client.commit(function(err,obj){
-            if(err){
-                log.error(err);
-            }
-            log.info("Entities committed [{0}]".format(name_file_friendly))
-        });
-    });
-
-    //log.info(JSON.stringify(result, null, 4));
+    log.info("Finished parsing [{0}]".format(name_file_friendly))
 }
 
 
-function download_and_parse(url_feed, name_file_friendly, log_errors) {
+function download_and_parse(entities, url_feed, name_file_friendly, log_errors) {
     log.warn("Downloading {0}".format(name_file_friendly));
     var output_file = path.join(utils.temp_dir(settings.temp_dir), name_file_friendly);
 
@@ -222,7 +251,8 @@ function download_and_parse(url_feed, name_file_friendly, log_errors) {
                 return
             }
             parseString(data, function (err, result) {
-                parse_entities_and_commit(result, name_file_friendly, log_errors);
+                parse_entities_and_commit(entities, result, name_file_friendly, log_errors);
+                entities["done"] += 1;
             });
         });
     });
@@ -244,13 +274,44 @@ try {
 
             // parse
             //
-            download_and_parse(settings.feeds.spf_idp_feed, "spf_idp_feed");
-            download_and_parse(settings.feeds.spf_sp_feed, "spf_sp_feed");
-            download_and_parse(settings.feeds.edugain_feed, "edugain_feed");
-            download_and_parse(settings.feeds.spf_homeless_feed, "spf_homeless_feed");
+            var entities = {};
+
+            entities["done"] = 0;
+            download_and_parse(entities, settings.feeds.spf_idp_feed, "spf_idp_feed");
+            download_and_parse(entities, settings.feeds.spf_sp_feed, "spf_sp_feed");
+            download_and_parse(entities, settings.feeds.edugain_feed, "edugain_feed");
+            download_and_parse(entities, settings.feeds.spf_homeless_feed, "spf_homeless_feed");
+
+            Object.values = obj => Object.keys(obj).map(key => obj[key]);
+
+            function check_and_commit() {
+                log.info("Done {0} items...".format(entities["done"]));
+                if (4 == entities["done"]){
+                    delete entities["done"];
+                    // ouch
+                    var values = Object.values(entities);
+                    // add & commit
+                    client.add(values, function (err, obj) {
+                        if (err) {
+                            log.error(err);
+                            return;
+                        }
+                        client.commit(function (err, obj) {
+                            if (err) {
+                                log.error(err);
+                                return;
+                            }
+                            log.info("Entities committed [{0}]".format(values.length))
+                        });
+                    });
+                }else {
+                    setTimeout(check_and_commit, 1000);
+                }
+            }
+            setTimeout(check_and_commit, 1000);
 
         }, function () {
-            log.warn("Finished parsing SPF feeds.");
+            log.warn("Finished parsing feeds.");
         },
         true,
         "Europe/Prague",
