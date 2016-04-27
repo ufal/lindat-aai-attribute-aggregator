@@ -4,10 +4,11 @@
 
 /*jslint nomen: true, unparam: true, regexp: true */
 /*global jQuery, window, document */
-define(['utils', 'theme', 'jquery'], function (utils, theme, jQuery) {
+define(['entities', 'utils', 'theme', 'jquery'], function (entities, utils, theme, jQuery) {
 
     var name_map = {
         "urn:oid:0.9.2342.19200300.100.1.3":"mail",
+        "urn:oid:1.2.840.113549.1.9.1":     "mail",
         "urn:oid:1.2.840.113549.1.9.2":     "unstructuredName",
         "urn:oid:1.3.6.1.4.1.5923.1.1.1.1": "eduPersonAffiliation",
         "urn:oid:1.3.6.1.4.1.5923.1.1.1.3": "eduPersonOrgDN",
@@ -17,12 +18,12 @@ define(['utils', 'theme', 'jquery'], function (utils, theme, jQuery) {
         "urn:oid:1.3.6.1.4.1.5923.1.1.1.7": "eduPersonEntitlement",
         "urn:oid:1.3.6.1.4.1.5923.1.1.1.8": "eduPersonPrimaryOrgUnitDN",
         "urn:oid:1.3.6.1.4.1.5923.1.1.1.9": "eduPersonScopedAffiliation",
-        "urn:oid:1.3.6.1.4.1.5923.1.1.1.10":"eduPersonTargetedID (aka persistentID)	",
+        "urn:oid:1.3.6.1.4.1.5923.1.1.1.10":"eduPersonTargetedID-persistentID",
         "urn:oid:1.3.6.1.4.1.25178.1.2.9":  "schacHomeOrganization",
-        "urn:oid:2.5.4.3": "cn",
-        "urn:oid:2.5.4.4": "surName",
-        "urn:oid:2.5.4.10": "organizationName",
-        "urn:oid:2.5.4.42": "givenName",
+        "urn:oid:2.5.4.3":                  "cn",
+        "urn:oid:2.5.4.4":                  "surName",
+        "urn:oid:2.5.4.10":                 "organizationName",
+        "urn:oid:2.5.4.42":                 "givenName",
     };
 
     function Loginx() {
@@ -83,8 +84,8 @@ define(['utils', 'theme', 'jquery'], function (utils, theme, jQuery) {
                     var ts = doc.timestamp || doc.our_timestamp || "unknown";
                     ts = ts.toString().replace("T", " ").replace("Z", "");
 
-                    var idp = theme.link(doc.idp, self.met_refeds.format(doc.idp));
-                    var sp = theme.link(doc.sp, self.met_refeds.format(doc.sp));
+                    var idp = doc.idp;
+                    var sp = doc.sp;
                     var attributes_names = (doc.attributes || []).map(self.toname).sort();
                     var result_label = "label label-danger";
                     var result = '<i class="fa fa-3x fa-meh-o" aria-hidden="true"></i>';
@@ -101,9 +102,13 @@ define(['utils', 'theme', 'jquery'], function (utils, theme, jQuery) {
                     }
 
                     self.obj().append(
-                        theme.list_login_item(i + 1, idp, sp, attributes_names, ts, result_label, result)
+                        theme.list_login_item(
+                            i + 1, idp, sp, attributes_names, ts, result_label, result
+                        )
                     );
-                }
+                } // for
+
+                entities.update();
             },
             function(xhr, status, error){
 

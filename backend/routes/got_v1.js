@@ -8,7 +8,7 @@ var settings = require('../../settings/settings')["backend"];
 var utils = require('../libs/utils');
 var router = express.Router();
 var log = require('../libs/logger')("/v1/got/");
-var client = require('../libs/solr');
+var client = require('../libs/solr')(settings.solr_loginx_core);
 
 // not storing dialogue
 router.post('/', function(req, res) {

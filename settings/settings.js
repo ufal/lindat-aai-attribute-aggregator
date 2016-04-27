@@ -30,19 +30,24 @@ settings = {
         api: {
             list: './aaggreg/v1/list/',
             details: './aaggreg/v1/details/',
-            version: './aaggreg/version/',
+            entity: './aaggreg/v1/entity/',
+            version: './aaggreg/version/'
         },
 
         authenticate_saml: {
 
         },
 
+        temp_dir: "./temp",
+
         solr_port: 8983,
         solr_host: "localhost",
-        solr_core: "loginx",
-        spf: {
-            idp_feed: "https://infra.clarin.eu/aai/prod_md_about_spf_sps.xml",
-            sp_feed: "https://infra.clarin.eu/aai/prod_md_about_spf_idps.xml"
+        solr_loginx_core: "loginx",
+        solr_entities_core: "entities",
+        feeds: {
+            edugain_feed: "http://mds.edugain.org/",
+            spf_idp_feed: "https://infra.clarin.eu/aai/prod_md_about_spf_sps.xml",
+            spf_sp_feed: "https://infra.clarin.eu/aai/prod_md_about_spf_idps.xml"
         }
     }
 

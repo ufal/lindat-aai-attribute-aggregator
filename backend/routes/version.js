@@ -8,6 +8,7 @@ var router = express.Router();
 /* GET version. */
 router.get('/', function(req, res) {
     res.json( {
+        "entities_updated": req.app.locals.entities_updated,
         "author": package_info.author,
         "version": package_info.version
     } );

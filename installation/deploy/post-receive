@@ -12,6 +12,8 @@ do
     then
         echo -e $PREF "Deploying master branch to production"
         git --work-tree=$PROJDIR --git-dir=$DEPLOYDIR checkout -f
+        echo -e $PREF "Installing npm modules"
+        cd $PROJDIR && npm install
     else
         echo -e $PREF "Not deployed to master - doing NOTHING!"
     fi

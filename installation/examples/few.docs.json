@@ -1,11 +1,31 @@
 [
   {
-    "idp" : "Idp#1",
-    "sp" : "SP#1",
+    "idp" : "https://cas.cuni.cz/idp/shibboleth",
+    "sp" : "https://ufal-point.mff.cuni.cz/shibboleth/eduid/sp",
     "request_ip": "127.0.0.1",
     "timestamp": "2016-04-25T15:17:41.720Z",
     "our_timestamp": "2016-04-25T15:17:41.720Z",
-    "attributes" : ["a1", "a2"]
+    "attributes" : [
+        "cn",
+        "eduPersonAffiliation",
+        "eduPersonEntitlement",
+        "eduPersonOrgDN",
+        "eduPersonOrgUnitDN",
+        "eduPersonPrimaryAffiliation",
+        "eduPersonPrimaryOrgUnitDN",
+        "eduPersonPrincipalName",
+        "eduPersonScopedAffiliation",
+        "eduPersonTargetedID (aka persistentID)",
+        "givenName",
+        "http://eduid.cz/attributes/commonName#ASCII",
+        "http://www.mefanet.cz/mefaperson/",
+        "mail",
+        "organizationName",
+        "schacHomeOrganization",
+        "surName",
+        "unstructuredName",
+        "urn:oid:1.2.840.113549.1.9.1"
+    ]
   },
   {
     "idp" : "Idp#2",

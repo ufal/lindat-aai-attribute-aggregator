@@ -57,7 +57,7 @@ a {
 }
 
 .page-header {
-    margin-top: 55px;
+    margin-top: 10px;
     padding-top: 9px;
     border-top:1px solid #eeeeee;
     font-weight:700;
@@ -76,9 +76,49 @@ a {
 }
 
 .img-thumbnail {
-    width: 90%;
+    width: 100px;
 }
 
 .text-huge {
     font-size: 45px;
+}
+
+.eduPersonPrincipalName {
+    border-bottom: dashed #d9534f thin;
+}
+
+.mail {
+    border-bottom: dashed #00A000 thin;
+}
+
+.eduPersonTargetedID-persistentID {
+    border-bottom: dashed #f0ad4e thin;
+}
+
+.entity-info {
+    margin-top: 50px;
+}
+
+.entity-info-name img {
+    height: 50px;
+}
+
+.entity-contacts {
+    text-align: left;
+}
+
+.entity-info-value {
+    text-align: left;
+}
+
+.entity-contacts {
+    min-height: 60px;
+}
+
+.entity-info-height-two {
+    min-height: 40px;
+}
+
+.entity-attributes {
+    font-size: 90%;
 }

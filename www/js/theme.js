@@ -26,25 +26,56 @@ define(['utils', 'jquery'], function (utils, jQuery) {
         var attributes_html = "";
         if (attributes) {
             for (var i = 0; i < attributes.length; ++i) {
-                attributes_html += '<h5 class="text-muted">{0}</h5>'.format(attributes[i]);
+                attributes_html += '<li class="text-muted {0}">{0}</li>'.format(attributes[i]);
             }
         }else {
-            attributes_html = "MISSING!";
+            attributes_html = "<li>MISSING!</li>";
         }
+        attributes_html = '<ul class="entity-attributes">{0}</ul>'.format(attributes_html);
+
+        var entity_info =
+            '<hr><div class="entity-info-name" data-entity-attribute="displayName_en"></div>' +
+            '<hr><div class="entity-contacts" data-entity-attribute="contacts"></div>' +
+            '<hr><div class="entity-info-value entity-info-height-two" data-entity-attribute="displayDesc_en"><i class="fa fa-home" aria-hidden="true"></i> </div>' +
+            '<hr><div class="entity-info-value" data-entity-attribute="registrationAuthority"><i class="fa fa-registered" aria-hidden="true"></i> Registrator: </div>' +
+            '<hr><div class="entity-info-value" data-entity-attribute="requested_required"></div>'
+        ;
+
         return ('<div class="row entry">' +
-                '<div class="col-sm-2">' +
-                    '<span class="label label-primary" style="margin-left:-30px; margin-right:10px">{6}</span>' +
-                    '<span class="text-muted "><i class="fa fa-clock-o" aria-hidden="true"></i> {5}</span>' +
-                    '<a href="#" class=""><img src="./images/idp.png" class="img-thumbnail"></a>' +
+                '<div class="row">' +
+                    '<div class="col-sm-2">' +
+                        '<span class="label label-primary" style="margin-left:-30px; margin-right:10px">{6}</span>' +
+                        '<span class="text-muted "><i class="fa fa-clock-o" aria-hidden="true"></i> {5}</span>' +
+                    '</div>' +
                 '</div>' +
-                '<div class="col-sm-1 {2}" style="margin-top: 40px;">' +
-                    '{3}' +
+                '<div class="row">' +
+                    '<div class="col-sm-4" data-entity="{0}">' +
+                        '<div class="text-right">' +
+                            '<h4><i class="fa fa-university fa-2x"></i></h4>' +
+                            '<h4>{0}</h4>' +
+                        '</div>' +
+                        '<div class="text-center entity-info">{7}</div>' +
+                    '</div>' +
+                    '<div class="col-sm-3">' +
+                        '<h4 class="text-center text-huge">vs.</h4>' +
+                        '<div class="col-sm-12 {2}">' +
+                            '{3}' +
+                        '</div>' +
+                        '<div class="col-sm-12">' +
+                            '{4}' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="col-sm-4 text-left" data-entity="{1}">' +
+                        '<div class="text-right">' +
+                            '<h4><i class="fa fa-cogs fa-2x"></i></h4>' +
+                            '<h4>{1}</h4>' +
+                        '</div>' +
+                        '<div class="text-center entity-info">' +
+                            '<div class="text-center entity-info">{7}</div>' +
+                        '</div>' +
+                    '</div>' +
                 '</div>' +
-                '<div class="col-sm-9">' +
-                    '<h4>{0} <i class="fa fa-sign-in text-muted" aria-hidden="true"></i> {1}</h4>' +
-                    '{4}' +
-                '</div>' +
-            '</div>').format(idp, sp, result_label, result, attributes_html, ts, pos);
+            '</div>').format(idp, sp, result_label, result, attributes_html, ts, pos, entity_info);
     };
 
     Html.prototype.link = function(text, href) {
@@ -61,6 +92,10 @@ define(['utils', 'jquery'], function (utils, jQuery) {
     
     Html.prototype.user = function(name) {
         return '<i class="fa fa-2x fa-user-md" aria-hidden="true"></i> ' + name;
+    };
+
+    Html.prototype.contact = function(email) {
+        return '<div><a href="mailto:{0}"><i class="fa fa-envelope-o" aria-hidden="true"></i> {0}</a></div>'.format(email);
     };
 
     Html.prototype.result_title = function(name) {

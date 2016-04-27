@@ -21,6 +21,7 @@
       "env": {
       },
       "script": "bin/solr",
+      "watch" : ["/opt/aaggregator/solr/installation/entities/conf", "/opt/aaggregator/solr/installation/loginx/conf"],
       "node_args": [],
       "log_date_format": "YYYY-MM-DD HH:mm Z",
       "exec_interpreter": "bash",

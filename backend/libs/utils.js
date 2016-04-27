@@ -15,12 +15,10 @@ String.prototype.startsWith = function(prefix) {
 
 if (!String.prototype.format) {
     String.prototype.format = function() {
-        var args = arguments;
+       var args = arguments;
         return this.replace(/{(\d+)}/g, function(match, number) {
             return typeof args[number] != 'undefined'
-                ? args[number]
-                : match
-                ;
+                ? args[number] : match ;
         });
     };
 }
@@ -39,6 +37,10 @@ function list_files( dir, ftor ) {
         }
     }
     return files;
+}
+
+function temp_dir_relative_to_project(dir) {
+    return path.join(__dirname, "..", "..", dir);
 }
 
 function list_dirs( dir ) {
@@ -216,3 +218,4 @@ exports.walk_files = walk_files;
 exports.array_eq = array_eq;
 exports.dict_eq = dict_eq;
 exports.is_number = is_number;
+exports.temp_dir = temp_dir_relative_to_project;

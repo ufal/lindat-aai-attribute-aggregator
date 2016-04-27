@@ -4,9 +4,9 @@
 
 /*jslint nomen: true, unparam: true, regexp: true */
 /*global jQuery, window, document */
-define(['theme', 'utils', 'loginx', 'logger', 'jquery', 'bootstrap'],
+define(['entities', 'theme', 'utils', 'loginx', 'logger', 'jquery', 'bootstrap'],
     function(
-        theme, utils, loginx, logger, jQuery
+        entities, theme, utils, loginx, logger, jQuery
     ) {
 
     function Site() {
@@ -16,18 +16,22 @@ define(['theme', 'utils', 'loginx', 'logger', 'jquery', 'bootstrap'],
 
     jQuery(document).ready(function () {
 
-        jQuery(".version-back").each(function() {
-            var self = this;
-            utils.simple_ajax(
-                settings.backend.api.version,
-                function(data) {
-                    jQuery(self).html("Backend: {0}".format(data.version));
-                },
-                function(xhr, status, error){
-
-                }
-            );
-        });
+        // versions
+        utils.simple_ajax(
+            settings.backend.api.version,
+            function(data) {
+                jQuery(".version-back").each(function() {
+                    jQuery(this).html("Backend: {0}".format(data.version));
+                });
+                jQuery(".version-entities-updated").each(function() {
+                    jQuery(this).html("Entities updated: {0}".format(
+                        data.entities_updated.replace("T", "").replace("Z", "")
+                    ));
+                });
+            },
+            function(xhr, status, error){
+            }
+        );
 
         jQuery(".idp-count").each(function() {
             theme.loading(jQuery(this));
