@@ -88,7 +88,7 @@ define(['utils', 'jquery'], function (utils, jQuery) {
     };
     
     Html.prototype.user = function(name) {
-        return '<i class="fa fa-2x fa-user-md icon-navbar-height" aria-hidden="true"></i> ' + name;
+        return '<i class="fa fa-2x fa-user-md" aria-hidden="true"></i> ' + name;
     };
 
     Html.prototype.contact = function(email) {
