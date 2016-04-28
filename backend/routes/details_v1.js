@@ -27,7 +27,7 @@ function handle(req, res) {
         query.rows(0).facet({
             on: true,
             query: "*:*",
-            field: ["idp", "sp"]
+            field: ["idp", "sp", "idpsp"]
         });
         client.search(query, function(err, obj) {
             if (err) {

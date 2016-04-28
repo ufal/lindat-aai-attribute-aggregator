@@ -7,31 +7,6 @@ a {
     margin-right:0;
 }
 
-.wrapper:after,
-.column:after {
-    clear: both;
-}
-
-.column {
-    height: 100%;
-    overflow: auto;
-    *zoom:1;
-}
-
-.column .padding {
-    padding: 20px;
-}
-
-.box {
-    bottom: 0; /* increase for footer use */
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 60px;
-    background-size:cover;
-    background-attachment:fixed;
-}
-
 .divider {
     margin-top:32px;
 }
@@ -70,7 +45,6 @@ a {
 }
 
 .entry {
-    border-bottom: solid #efefef thick;
     padding-top: 10px;
     padding-bottom: 10px;
 }
@@ -129,4 +103,15 @@ a {
 
 .aa-vs {
     margin-top: 80px;
+}
+
+.icon-navbar-height {
+    margin-bottom: -20px;
+    padding: 0;
+    height: 20px;
+}
+
+.page-header {
+    background-color: #f8f8f8;
+    padding-left: 10px;
 }

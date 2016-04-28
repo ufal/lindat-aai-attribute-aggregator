@@ -28,10 +28,14 @@
                 </button>
                 <a class="navbar-brand" href="#">AAggregator</a>
             </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#" class="list-idps">Logins</a></li>
+                <li><a href="#" class="list-bad-idps"><i class="fa fa-frown-o" aria-hidden="true"></i> Bad IdPs</a></li>
+            </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
                     <a href="" target="_blank" class="set-data-url user-info" data-url-target="auth">
-                        <span class="fa-stack user-icon">
+                        <span class="fa-stack user-icon icon-navbar-height">
                             <i class="fa fa-ban fa-stack-2x text-danger"></i>
                             <i class="fa fa-2x fa-user-secret" aria-hidden="true"></i>
                         </span>
@@ -39,7 +43,7 @@
                 </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-2x fa-info-circle" aria-hidden="true"></i><i class="fa fa-caret-down" aria-hidden="true"></i>
+                        <i class="fa fa-2x fa-info-circle icon-navbar-height" aria-hidden="true"></i><i class="fa fa-caret-down icon-navbar-height" aria-hidden="true"></i>
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="#" class="version-back loading"></a></li>
@@ -52,80 +56,71 @@
     </nav>
 </div>
 
-    <div class="wrapper">
-
-    <div class="box">
         <div class="row">
-            <!-- sidebar -->
-            <div class="column col-sm-2" id="sidebar">
-                <ul class="nav">
-                    <li class="active list-idps"><a href="#featured">Logins</a>
-                    </li>
-                    <li><a href="" class="list-bad-idps"><i class="fa fa-frown-o" aria-hidden="true"></i> Bad IdPs</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /sidebar -->
-
             <!-- main -->
-            <div class="column col-sm-10" id="main">
-                <div class="padding">
-                    <div class="col-sm-11">
-
-                        <div class="page-header text-muted">
-                            Participating SPs / IdPs
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-3 toggle-data-target btn" data-target="list-idps">
-                                <div class="panel panel-primary">
-                                    <div class="panel-heading">
-                                        <div class="row">
-                                            <div class="col-xs-3">
-                                                <i class="fa fa-university fa-4x"></i>
-                                            </div>
-                                            <div class="col-xs-9 text-right idp-count">
-                                            </div>
+            <div class="col-sm-12">
+                <div>
+                    <div class="page-header text-muted">
+                        Participating SPs / IdPs
+                    </div>
+                </div>
+                    <div class="row">
+                        <div class="col-lg-2 toggle-data-target btn" data-target="list-idps">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <i class="fa fa-university fa-4x"></i>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 toggle-data-target btn" data-target="list-sps">
-                                <div class="panel panel-success">
-                                    <div class="panel-heading">
-                                        <div class="row">
-                                            <div class="col-xs-3">
-                                                <i class="fa fa-cogs fa-4x"></i>
-                                            </div>
-                                            <div class="col-xs-9 text-right sp-count">
-                                            </div>
+                                        <div class="col-xs-9 text-right idp-count">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div id="list-idps" class="collapse">
-                            </div>
-                            <div id="list-sps" class="collapse">
+                        <div class="col-lg-2 toggle-data-target btn" data-target="list-sps">
+                            <div class="panel panel-success">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <i class="fa fa-cogs fa-4x"></i>
+                                        </div>
+                                        <div class="col-xs-9 text-right sp-count">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-
-                        <div class="col-sm-12" id="featured">
-                            <div id="result-title" class="page-header text-muted">
+                        <div class="col-lg-2 btn">
+                            <div class="panel panel-success">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <i class="fa fa-university fa-3x"></i> <i class="fa fa-arrows-h fa-4x"></i> <i class="fa fa-cogs fa-3x"></i>
+                                        </div>
+                                        <div class="col-xs-9 text-right idpsp-count">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-
-                        <div id="list-logins">
-
+                    </div>
+                    <div class="row">
+                        <div id="list-idps" class="collapse">
                         </div>
+                        <div id="list-sps" class="collapse">
+                        </div>
+                    </div>
 
-                    </div><!-- /col-9 -->
-                </div><!-- /padding -->
+                    <div id="result-title" class="page-header text-muted">
+                    </div>
+
+                    <div id="list-logins">
+
+                    </div>
             </div>
             <!-- /main -->
-        </div>
     </div>
-</div>
 </body>
 
 </html>

@@ -43,11 +43,9 @@ define(['utils', 'jquery'], function (utils, jQuery) {
         ;
 
         return ('<div class="row entry">' +
-                '<div class="row">' +
-                    '<div class="col-sm-2">' +
-                        '<span class="label label-primary" style="margin-left:-30px; margin-right:10px">{6}</span>' +
-                        '<span class="text-muted "><i class="fa fa-clock-o" aria-hidden="true"></i> {5}</span>' +
-                    '</div>' +
+                '<div class="row page-header">' +
+                    '<span class="label label-primary"> {6}</span>' +
+                    ' <span class="text-muted "> <i class="fa fa-clock-o" aria-hidden="true"></i> {5}</span>' +
                 '</div>' +
                 '<div class="row">' +
                     '<div class="col-sm-4" data-entity="{0}">' +

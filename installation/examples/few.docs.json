@@ -2,6 +2,7 @@
   {
     "idp" : "https://cas.cuni.cz/idp/shibboleth",
     "sp" : "https://ufal-point.mff.cuni.cz/shibboleth/eduid/sp",
+    "idpsp" : "https://cas.cuni.cz/idp/shibboleth|https://ufal-point.mff.cuni.cz/shibboleth/eduid/sp",
     "request_ip": "127.0.0.1",
     "timestamp": "2016-04-25T15:17:41.720Z",
     "our_timestamp": "2016-04-25T15:17:41.720Z",

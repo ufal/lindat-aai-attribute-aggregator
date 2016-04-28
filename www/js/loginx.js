@@ -53,6 +53,7 @@ define(['entities', 'utils', 'theme', 'jquery'], function (entities, utils, them
                 var facets = data.result.facets;
                 jQuery(".idp-count").html(theme.huge_text(facets.idp.length / 2));
                 jQuery(".sp-count").html(theme.huge_text(facets.sp.length / 2));
+                jQuery(".idpsp-count").html(theme.huge_text(facets.idpsp.length / 2));
                 var idps = "";
                 for (var i=0; i < facets.idp.length; i+=2) {
                     idps += theme.dict_entry(facets.idp[i], facets.idp[i+1]);
