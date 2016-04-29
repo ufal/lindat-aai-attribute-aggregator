@@ -49,29 +49,56 @@ define(['attributes', 'utils', 'theme', 'jquery'], function (attributes, utils, 
                 break;
 
             case 'contacts':
+                var whom_to_send = null;
+                var any_email = null;
                 for (var key in entity_obj) {
                     if (entity_obj.hasOwnProperty(key)) {
                         if (key.startsWith("email_")) {
-                            o.append(theme.contact(entity_obj[key][0]));
+                            var ekey = key.substr(6);
+                            var email = entity_obj[key][0];
+                            if (ekey == "technical") {
+                                whom_to_send = email;
+                            }
+                            if (!any_email) {
+                                any_email = email;
+                            }
+                            o.append(theme.contact(
+                                email,
+                                '<span class="label label-default">{0}</span> {1}'.format(ekey, email)
+                            ));
                         }
                     }
                 }
+                //
+                email = whom_to_send || any_email;
+                var msg = settings.frontend.howler.body;
+                var email_cc = "";
+                var subject = settings.frontend.howler.subject.format(entityID);
+                var send_howler = theme.howler(
+                    subject,
+                    email,
+                    'Send a howler to {0}'.format(email),
+                    msg,
+                    email_cc
+                );
+                o.append(send_howler);
+
                 break;
 
             case 'requested_required':
                 if (entity_obj.hasOwnProperty(attr)) {
                     var values = entity_obj[attr];
+                    var html = "";
                     for (var i=0; i < values.length; ++i) {
                         var value = values[i];
                         var j = value.lastIndexOf("_");
                         var mandatory = value.substring(j + 1) == "true";
                         value = attributes.name(value.substring(0, j));
-                        o.append(
-                            "<div>{0} : <strong>{1}</strong></div>".format(
-                                value, mandatory ? theme.mandatory("mandatory") : "optional"
-                            )
+                        html += '<li>{1} {0}</li>'.format(
+                                value, mandatory ? theme.mandatory("mandatory") : theme.optional("optional")
                         );
                     }
+                    o.html('<ul class="attributes">{0}</ul>'.format(html));
                 }
                 break;
 

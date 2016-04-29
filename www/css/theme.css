@@ -92,10 +92,6 @@ a {
     min-height: 40px;
 }
 
-.entity-attributes {
-    font-size: 90%;
-}
-
 .auth-result {
     margin-top: 40px;
     margin-bottom: 50px;
@@ -114,4 +110,20 @@ a {
 .page-header {
     background-color: #f8f8f8;
     padding-left: 10px;
+}
+
+ul.entity-attributes {
+    font-size: 90%;
+}
+
+
+
+ul.attributes, ul.entity-attributes {
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+ul.attributes > li > span {
+    display: inline-block;
+    width:70px;
 }

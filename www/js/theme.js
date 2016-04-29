@@ -91,8 +91,22 @@ define(['utils', 'jquery'], function (utils, jQuery) {
         return '<i class="fa fa-2x fa-user-md" aria-hidden="true"></i> ' + name;
     };
 
-    Html.prototype.contact = function(email) {
-        return '<div><a href="mailto:{0}"><i class="fa fa-envelope-o" aria-hidden="true"></i> {0}</a></div>'.format(email);
+    Html.prototype.contact = function(email, msg) {
+        return '<div><a href="mailto:{0}"><i class="fa fa-envelope-o" aria-hidden="true"></i> {1}</a></div>'.format(
+            email, msg || email
+        );
+    };
+
+    Html.prototype.howler = function(subject, email, msg_link, msg_body, email_cc) {
+        var mailto_msg = 'subject={0}&cc={1}&body={2}';
+        mailto_msg = mailto_msg.format(
+            encodeURI(subject),
+            encodeURI(email_cc || ""),
+            encodeURI(msg_body.format())
+        );
+        return '<div class="alert"><a href="mailto:{0}?{1}" class="alert-danger"><i class="fa fa-envelope fa-3x"></i> {2}</a></div>'.format(
+            email, mailto_msg, msg_link
+        );
     };
 
     Html.prototype.result_title = function(name) {
@@ -109,6 +123,10 @@ define(['utils', 'jquery'], function (utils, jQuery) {
 
     Html.prototype.mandatory = function(msg) {
         return '<span class="label label-danger">{0}</span>'.format(msg);
+    };
+
+    Html.prototype.optional = function(msg) {
+        return '<span class="label label-info">{0}</span>'.format(msg);
     };
 
     var html = new Html();

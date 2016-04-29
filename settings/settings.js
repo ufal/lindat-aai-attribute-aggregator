@@ -9,6 +9,11 @@ settings = {
 
     frontend: {
         auth: '/Shibboleth.sso/Session',
+
+        howler: {
+            subject: 'Attributes missing from [{0}]',
+            body: 'TODO',
+        },
         
         profile: {
             "label label-success": function(d) {
