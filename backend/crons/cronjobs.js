@@ -69,6 +69,7 @@ var example_doc = {
     email_support: "string",
     email_administrative: "string",
     email_technical: "string",
+    type: "string",
     entityAttributes: ["string"]
 };
 
@@ -125,11 +126,14 @@ function parse_entities_and_commit(g_entities, result, name_file_friendly, log_e
             // idp/sp
             //
 
+            var type = null;
             var desc = null;
             if (entity.hasOwnProperty("md:IDPSSODescriptor")) {
                 desc = entity["md:IDPSSODescriptor"][0];
+                type = "idp";
             }else if (entity.hasOwnProperty("md:SPSSODescriptor")){
                 desc = entity["md:SPSSODescriptor"][0];
+                type = "sp";
             }else if (entity.hasOwnProperty("md:AttributeAuthorityDescriptor")) {
                 continue;
             }else {
@@ -208,6 +212,7 @@ function parse_entities_and_commit(g_entities, result, name_file_friendly, log_e
             // this is our doc
             var doc = {
                 entityID: entityID,
+                type: type,
                 registrationAuthority: registrationAuthority,
                 registrationAuthorityDate: registrationAuthorityDate,
                 displayName_en: displayName_en,
@@ -316,7 +321,7 @@ try {
         true,
         "Europe/Prague",
         null,
-        false
+        true
     );
 
 } catch(ex) {

@@ -70,18 +70,20 @@ define(['attributes', 'utils', 'theme', 'jquery'], function (attributes, utils, 
                     }
                 }
                 //
-                email = whom_to_send || any_email;
-                var msg = settings.frontend.howler.body;
-                var email_cc = "";
-                var subject = settings.frontend.howler.subject.format(entityID);
-                var send_howler = theme.howler(
-                    subject,
-                    email,
-                    'Send a howler to {0}'.format(email),
-                    msg,
-                    email_cc
-                );
-                o.append(send_howler);
+                if ("idp" == entity_obj.type[0]) {
+                    email = whom_to_send || any_email;
+                    var msg = settings.frontend.howler.body;
+                    var email_cc = "";
+                    var subject = settings.frontend.howler.subject.format(entityID);
+                    var send_howler = theme.howler(
+                        subject,
+                        email,
+                        'Send a howler to {0}'.format(email),
+                        msg,
+                        email_cc
+                    );
+                    o.append(send_howler);
+                }
 
                 break;
 
@@ -149,7 +151,7 @@ define(['attributes', 'utils', 'theme', 'jquery'], function (attributes, utils, 
             while (o) {
                 var entityID = o.attr("data-entity");
                 if (entityID) {
-                    entities[entityID] = true;
+                    entities[entityID] = o.attr("data-type");
                     break;
                 }
                 o = o.parent();
@@ -164,7 +166,8 @@ define(['attributes', 'utils', 'theme', 'jquery'], function (attributes, utils, 
                 while (o) {
                     var entityID = o.attr("data-entity");
                     if (entityID) {
-                        self.update_element(entityID, self.d[entityID], this_o);
+                        var ent = self.d[entityID];
+                        self.update_element(entityID, ent, this_o);
                         break;
                     }
                     o = o.parent();

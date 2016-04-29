@@ -48,11 +48,11 @@ define(['utils', 'jquery'], function (utils, jQuery) {
                     ' <span class="text-muted "> <i class="fa fa-clock-o" aria-hidden="true"></i> {5}</span>' +
                 '</div>' +
                 '<div class="row">' +
-                    '<div class="col-sm-4" data-entity="{0}">' +
+                    '<div class="col-sm-4" data-entity="{0}" data-type="idp">' +
                         '<div class="text-right text-muted">' +
                             '<h5>{0} <i class="fa fa-university fa-2x"></i></h5>' +
                         '</div>' +
-                        '<div class="text-center entity-info">{7}</div>' +
+                        '<div class="text-center entity-info entity-idp">{7}</div>' +
                     '</div>' +
                     '<div class="col-sm-3 aa-vs">' +
                         '<h4 class="text-center text-huge">vs.</h4>' +
@@ -63,7 +63,7 @@ define(['utils', 'jquery'], function (utils, jQuery) {
                             '{4}' +
                         '</div>' +
                     '</div>' +
-                    '<div class="col-sm-4 text-left" data-entity="{1}">' +
+                    '<div class="col-sm-4 text-left" data-entity="{1}" data-type="sp">' +
                         '<div class="text-left text-muted">' +
                             '<h5><i class="fa fa-cogs fa-2x"></i> {1}</h5>' +
                         '</div>' +
