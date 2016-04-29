@@ -28,7 +28,9 @@ define([], function () {
 
         "urn:oid:1.3.6.1.4.1.5923.1.1.1.10":"eduPersonTargetedID-persistentID",
         "urn:oid:1.3.6.1.4.1.25178.1.2.9":  "schacHomeOrganization",
+        
         "urn:oid:2.5.4.3":                  "cn",
+        "urn:mace:dir:attribute-def:cn":    "cn urn-mace",
 
         "urn:oid:2.5.4.4":                  "surName",
         "urn:mace:dir:attribute-def:sn":    "surName urn-mace",
