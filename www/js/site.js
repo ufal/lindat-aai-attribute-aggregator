@@ -72,11 +72,20 @@ define(['entities', 'theme', 'utils', 'loginx', 'logger', 'jquery', 'bootstrap']
         });
 
         //
+        jQuery(".list-nasty-idps").click(function() {
+            loginx.clear();
+            loginx.loading();
+            theme.result_title("Nasty IdPs");
+            loginx.list_loginx('q=-attributes:["" TO *]');
+            return false;
+        });
+
+        //
         jQuery(".list-bad-idps").click(function() {
             loginx.clear();
             loginx.loading();
             theme.result_title("Bad IdPs");
-            loginx.list_loginx('q=-attributes:["" TO *]');
+            loginx.list_loginx('q=attributes_count:[1 TO 2]');
             return false;
         });
 
