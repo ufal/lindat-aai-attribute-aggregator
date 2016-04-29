@@ -66,7 +66,9 @@ define(['utils', 'theme', 'jquery'], function (utils, theme, jQuery) {
                         var mandatory = value.substring(j + 1) == "true";
                         value = value.substring(0, j);
                         o.append(
-                            "<div>{0} : <strong>{1}</strong></div>".format(value, mandatory ? "mandatory" : "optional")
+                            "<div>{0} : <strong>{1}</strong></div>".format(
+                                value, mandatory ? theme.mandatory("mandatory") : "optional"
+                            )
                         );
                     }
                 }

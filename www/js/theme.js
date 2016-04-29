@@ -107,6 +107,10 @@ define(['utils', 'jquery'], function (utils, jQuery) {
         return '<div>{0}: <span class="badge">{1}</span></div>'.format(key, value);
     };
 
+    Html.prototype.mandatory = function(msg) {
+        return '<span class="label label-warning">{1}</span>'.format(msg);
+    };
+
     var html = new Html();
     jQuery(document).ready(function () {
 
