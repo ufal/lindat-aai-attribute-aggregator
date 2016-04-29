@@ -41,7 +41,7 @@ settings = {
         temp_dir: "./temp",
 
         solr_port: 8983,
-        solr_host: "clarin-aa.ms.mff.cuni.cz",
+        solr_host: "localhost",
         solr_loginx_core: "loginx",
         solr_entities_core: "entities",
         feeds: {
