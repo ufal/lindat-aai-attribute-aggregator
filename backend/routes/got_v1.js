@@ -56,6 +56,7 @@ function handle(req, res) {
             sp: sp,
             idpsp: "{0}|{1}".format(idp, sp),
             attributes: attributes,
+            attributes_count: attributes ? attributes.length : 0,
             request_ip: remote_ip,
             warn: warn,
             timestamp: timestamp,
