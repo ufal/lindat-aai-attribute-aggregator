@@ -97,6 +97,24 @@ define(['entities', 'theme', 'utils', 'loginx', 'logger', 'jquery', 'bootstrap']
         // load the list
         jQuery(".list-idps").click();
 
+        // hidden settings
+        utils.simple_ajax(
+            './settings/__settings.json',
+            function(data) {
+                if (data.doc_se) {
+                    jQuery(".main-nav-links").append(
+                        theme.nav_link(
+                            '<i class="fa fa-file-excel-o" aria-hidden="true"></i> SENT EMAILS',
+                            data.doc_se
+                        )
+                    )
+                }
+            },
+            function(xhr, status, error){
+            }
+        );
+
+
     });
 
     return site;

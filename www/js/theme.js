@@ -109,6 +109,10 @@ define(['utils', 'jquery'], function (utils, jQuery) {
         );
     };
 
+    Html.prototype.nav_link = function(text, link) {
+        return '<li class="alert-success"><a href="{1}" target="_blank">{0}</a></li>'.format(text, link);
+    };
+
     Html.prototype.result_title = function(name) {
         jQuery("#result-title").html(name);
     };
