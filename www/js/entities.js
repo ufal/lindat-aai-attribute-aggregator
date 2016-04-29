@@ -4,7 +4,7 @@
 
 /*jslint nomen: true, unparam: true, regexp: true */
 /*global jQuery, window, document */
-define(['utils', 'theme', 'jquery'], function (utils, theme, jQuery) {
+define(['attributes', 'utils', 'theme', 'jquery'], function (attributes, utils, theme, jQuery) {
 
     function Entities() {
         this.d = {};
@@ -64,7 +64,7 @@ define(['utils', 'theme', 'jquery'], function (utils, theme, jQuery) {
                         var value = values[i];
                         var j = value.lastIndexOf("_");
                         var mandatory = value.substring(j + 1) == "true";
-                        value = value.substring(0, j);
+                        value = attributes.name(value.substring(0, j));
                         o.append(
                             "<div>{0} : <strong>{1}</strong></div>".format(
                                 value, mandatory ? theme.mandatory("mandatory") : "optional"
