@@ -29,6 +29,7 @@ function handle(req, res) {
             if (err) {
                 log.error(err);
                 res.json(ret);
+                return;
             } else {
                 //log.info(obj);
                 ret["ok"] = true;

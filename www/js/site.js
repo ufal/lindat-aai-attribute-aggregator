@@ -77,7 +77,6 @@ define(['entities', 'theme', 'utils', 'loginx', 'logger', 'jquery', 'bootstrap']
             loginx.loading();
             theme.result_title("Nasty IdPs");
             loginx.list_loginx('q=-attributes:["" TO *]');
-            return false;
         });
 
         //
@@ -86,7 +85,6 @@ define(['entities', 'theme', 'utils', 'loginx', 'logger', 'jquery', 'bootstrap']
             loginx.loading();
             theme.result_title("Bad IdPs");
             loginx.list_loginx('q=attributes_count:[1 TO 2]');
-            return false;
         });
 
         //
@@ -94,7 +92,6 @@ define(['entities', 'theme', 'utils', 'loginx', 'logger', 'jquery', 'bootstrap']
             theme.result_title("Last Logins");
             loginx.loading();
             loginx.list_loginx();
-            return false;
         });
 
         // load the list

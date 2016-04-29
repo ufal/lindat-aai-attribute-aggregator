@@ -117,18 +117,21 @@ function exists_file(f) {
 }
 
 function exists_dir(f) {
-    if ( f.constructor === Array ) {
-        for (var i = 0; i < f.length; ++i ) {
-            var stats = fs.lstatSync(f[i]);
-            if ( stats.isDirectory() ) {
-                return f[i];
+    try {
+        if (f.constructor === Array) {
+            for (var i = 0; i < f.length; ++i) {
+                var stats = fs.lstatSync(f[i]);
+                if (stats.isDirectory()) {
+                    return f[i];
+                }
+            }
+        } else {
+            var stats = fs.lstatSync(f);
+            if (stats.isDirectory()) {
+                return f;
             }
         }
-    }else {
-        var stats = fs.lstatSync(f);
-        if ( stats.isDirectory() ) {
-            return f;
-        }
+    }catch(err) {
     }
     return false;
 }

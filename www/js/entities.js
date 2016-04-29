@@ -13,15 +13,16 @@ define(['attributes', 'utils', 'theme', 'jquery'], function (attributes, utils, 
     Entities.prototype.entity = function(entityID, clb) {
         var self = this;
         if (this.d.hasOwnProperty(entityID)) {
-            return clb(this.d[entityID]);
+            return clb(entityID, this.d[entityID]);
         }
         // fetch it
-        var url = settings.backend.api.entity + '?entityID=' + entityID;
+        var url = settings.backend.api.entity + '?entityID=' + encodeURI(entityID).replace(/#/g, '%23');;
+        console.log(url);
         utils.simple_ajax(
             url,
             function(data) {
                 self.d[entityID] = data["result"][0];
-                return clb(self.d[entityID]);
+                return clb(entityID, self.d[entityID]);
             },
             function(xhr, status, error){
             }
@@ -96,24 +97,52 @@ define(['attributes', 'utils', 'theme', 'jquery'], function (attributes, utils, 
         }
     };
 
+    Entities.prototype.assign = function(entities, clb) {
+        var d = { done: 0 };
+
+        for (var i = 0; i < entities.length; ++i) {
+            this.entity(entities[i], function() {
+                d["done"] += 1;
+                if (d["done"] == entities.length) {
+                    clb();
+                }
+            });
+        }
+    };
+
     Entities.prototype.update = function() {
         // var idp = theme.link(doc.idp, self.met_refeds.format(doc.idp));
         // var sp = theme.link(doc.sp, self.met_refeds.format(doc.sp));
 
         var self = this;
+        var entities = {};
         jQuery("[data-entity-attribute]").each(function() {
             var this_o = jQuery(this);
             var o = jQuery(this);
             while (o) {
                 var entityID = o.attr("data-entity");
                 if (entityID) {
-                    self.entity(entityID, function(entity_obj) {
-                        self.update_element(entityID, entity_obj, this_o)
-                    });
+                    entities[entityID] = true;
                     break;
                 }
                 o = o.parent();
             }
+        });
+
+        // fetch them and update them
+        this.assign(Object.keys(entities), function() {
+            jQuery("[data-entity-attribute]").each(function () {
+                var this_o = jQuery(this);
+                var o = jQuery(this);
+                while (o) {
+                    var entityID = o.attr("data-entity");
+                    if (entityID) {
+                        self.update_element(entityID, self.d[entityID], this_o);
+                        break;
+                    }
+                    o = o.parent();
+                }
+            });
         });
     };
 

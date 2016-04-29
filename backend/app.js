@@ -86,7 +86,7 @@ app.use(function(req, res, next) {
 var temp_dir = settings.temp_dir;
 if (!utils.exists_dir(temp_dir)) {
     mkdirp(temp_dir, 0755, function (err) {
-        log.error(err);
+        logger('app').error(err);
     });
 }
 

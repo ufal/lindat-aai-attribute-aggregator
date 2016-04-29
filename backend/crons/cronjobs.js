@@ -316,7 +316,7 @@ try {
         true,
         "Europe/Prague",
         null,
-        true
+        false
     );
 
 } catch(ex) {
