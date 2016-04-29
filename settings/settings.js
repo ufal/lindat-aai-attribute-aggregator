@@ -12,7 +12,7 @@ settings = {
 
         howler: {
             subject: 'Attributes missing from [{0}]',
-            body: 'TODO',
+            body: 'Dear all,\n\nservice with the\nentityID={0}\ncannot work properly if you do not release mandatory attributes.\n\nPlease do so.\nTODO.\n\nBest,\ngranny',
         },
         
         profile: {

@@ -30,7 +30,7 @@ define(['attributes', 'utils', 'theme', 'jquery'], function (attributes, utils, 
         
     };
 
-    Entities.prototype.update_element = function(entityID, entity_obj, o) {
+    Entities.prototype.update_element = function(entityID, entity_obj, o, entityID_other) {
         if (!entity_obj) {
             return;
         }
@@ -72,8 +72,13 @@ define(['attributes', 'utils', 'theme', 'jquery'], function (attributes, utils, 
                 //
                 if ("idp" == entity_obj.type[0]) {
                     email = whom_to_send || any_email;
-                    var msg = settings.frontend.howler.body;
+                    var entity_obj_other = this.d[entityID_other];
+                    var msg = settings.frontend.howler.body.format(entityID_other);
                     var email_cc = "";
+                    try {
+                        email_cc = entity_obj_other.email_technical;
+                    }catch(err){
+                    }
                     var subject = settings.frontend.howler.subject.format(entityID);
                     var send_howler = theme.howler(
                         subject,
@@ -166,8 +171,9 @@ define(['attributes', 'utils', 'theme', 'jquery'], function (attributes, utils, 
                 while (o) {
                     var entityID = o.attr("data-entity");
                     if (entityID) {
+                        var entityID_other = o.attr("data-entity-brother");
                         var ent = self.d[entityID];
-                        self.update_element(entityID, ent, this_o);
+                        self.update_element(entityID, ent, this_o, entityID_other);
                         break;
                     }
                     o = o.parent();
