@@ -108,7 +108,7 @@ define(['utils', 'jquery'], function (utils, jQuery) {
     };
 
     Html.prototype.mandatory = function(msg) {
-        return '<span class="label label-warning">{1}</span>'.format(msg);
+        return '<span class="label label-danger">{0}</span>'.format(msg);
     };
 
     var html = new Html();
