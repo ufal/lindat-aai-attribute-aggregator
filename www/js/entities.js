@@ -76,7 +76,7 @@ define(['attributes', 'utils', 'theme', 'jquery'], function (attributes, utils, 
                     var msg = settings.frontend.howler.body.format(entityID_other);
                     var email_cc = "";
                     try {
-                        email_cc = entity_obj_other.email_technical;
+                        email_cc = entity_obj_other.email_administrative || entity_obj_other.email_technical;
                     }catch(err){
                     }
                     var subject = settings.frontend.howler.subject.format(entityID);
