@@ -12,7 +12,18 @@ settings = {
 
         howler: {
             subject: 'Attributes missing from [{0}]',
-            body: 'Dear all,\n\nthere have been multiple attempts to access our service provider (SP) with the \nentityID={0}\nfrom users via your Identity Provider.\nThe service cannot work properly without mandatory attributes released.\n\nThe SP implements data protection code of conduct and is a member of CLARIN infrastructure (http://clarin.eu and https://www.clarin.eu/content/service-provider-federation).\n\nKind Regards,\n',
+            body: 'Dear all,\n\n' +
+            'there have been multiple attempts to access our service provider (SP) with the \n'+
+            'entityID={0}\n'+
+            'from users via your Identity Provider.\n'+
+            'The service cannot work properly without mandatory attributes released.\n\n'+
+            'The SP implements data protection code of conduct [1] and is a member of the CLARIN infrastructure.\n\n'+
+            'Attributes released:\n{1}\n\n' +
+            'Kind Regards,\n\n' +
+            'XXX\n\n' +
+            '[1] http://geant3plus.archive.geant.net/uri/dataprotection-code-of-conduct/V1/Pages/default.aspx\n' +
+            '[2] http://clarin.eu and https://www.clarin.eu/content/service-provider-federation' +
+            ''
         },
         
         profile: {

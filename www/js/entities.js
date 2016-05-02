@@ -30,7 +30,7 @@ define(['attributes', 'utils', 'theme', 'jquery'], function (attributes, utils, 
         
     };
 
-    Entities.prototype.update_element = function(entityID, entity_obj, o, entityID_other) {
+    Entities.prototype.update_element = function(entityID, entity_obj, o, entityID_other, released_attrs) {
         if (!entity_obj) {
             return;
         }
@@ -73,7 +73,7 @@ define(['attributes', 'utils', 'theme', 'jquery'], function (attributes, utils, 
                 if ("idp" == entity_obj.type[0]) {
                     email = whom_to_send || any_email;
                     var entity_obj_other = this.d[entityID_other];
-                    var msg = settings.frontend.howler.body.format(entityID_other);
+                    var msg = settings.frontend.howler.body.format(entityID_other, released_attrs);
                     var email_cc = "";
                     try {
                         email_cc = entity_obj_other.email_administrative || entity_obj_other.email_technical;
@@ -173,7 +173,11 @@ define(['attributes', 'utils', 'theme', 'jquery'], function (attributes, utils, 
                     if (entityID) {
                         var entityID_other = o.attr("data-entity-brother");
                         var ent = self.d[entityID];
-                        self.update_element(entityID, ent, this_o, entityID_other);
+                        var released_attrs = [];
+                        jQuery("li", o.next().find(".entity-attributes")).each(function() {
+                            released_attrs.push(jQuery(this).text());
+                        });
+                        self.update_element(entityID, ent, this_o, entityID_other, released_attrs.join("\n"));
                         break;
                     }
                     o = o.parent();
