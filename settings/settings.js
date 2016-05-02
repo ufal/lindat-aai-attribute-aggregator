@@ -12,13 +12,15 @@ settings = {
 
         howler: {
             subject: 'Attributes missing from [{0}]',
-            body: 'Dear all,\n\nservice with the\nentityID={0}\ncannot work properly if you do not release mandatory attributes.\n\nPlease do so.\nTODO.\n\nBest,\ngranny',
+            body: 'Dear all,\n\nthere have been multiple attempts to access our service provider (SP) with the \nentityID={0}\nfrom users via your Identity Provider.\nThe service cannot work properly without mandatory attributes released.\n\nThe SP implements data protection code of conduct and is a member of CLARIN infrastructure (http://clarin.eu and https://www.clarin.eu/content/service-provider-federation).\n\nKind Regards,\n',
         },
         
         profile: {
             "label label-success": function(d) {
                 var at_least_one = [
-                    "eduPersonPrincipalName"
+                    "eduPersonPrincipalName",
+                    "persistent-id",
+                    "eduPersonTargetedID-persistentID"
                 ];
                 for (var i=0; i < at_least_one.length; ++i) {
                     if (-1 != d.indexOf(at_least_one[i])) {
