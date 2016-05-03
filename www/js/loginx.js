@@ -59,6 +59,7 @@ define(['attributes', 'entities', 'utils', 'theme', 'jquery'], function (attribu
                 loader.remove();
                 try {
                     if (timestamp != data.result[0].timestamp) {
+                        obj.children().first().append(' ... removed because newer entry available... ');
                         obj.children().last().fadeOut();
                         return;
                     }
