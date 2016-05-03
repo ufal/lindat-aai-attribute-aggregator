@@ -56,15 +56,15 @@ define(['attributes', 'entities', 'utils', 'theme', 'jquery'], function (attribu
         utils.simple_ajax(
             settings.backend.api.list + "?" + utils.encodeUriSpecial(params),
             function(data) {
+                loader.remove();
                 try {
                     if (timestamp != data.result[0].timestamp) {
-                        obj.remove();
+                        obj.fadeOut();
                         return;
                     }
                 }catch(err){
                 }
                 obj.removeClass('grayed-out');
-                loader.remove();
             },function(xhr, status, error){
             }
         );
