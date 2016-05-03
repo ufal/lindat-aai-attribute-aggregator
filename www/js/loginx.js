@@ -59,7 +59,7 @@ define(['attributes', 'entities', 'utils', 'theme', 'jquery'], function (attribu
                 loader.remove();
                 try {
                     if (timestamp != data.result[0].timestamp) {
-                        obj.fadeOut();
+                        obj.children().last().fadeOut();
                         return;
                     }
                 }catch(err){
