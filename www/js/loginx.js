@@ -50,7 +50,27 @@ define(['attributes', 'entities', 'utils', 'theme', 'jquery'], function (attribu
         );
     };
 
-    Loginx.prototype.list_loginx = function (params) {
+    Loginx.prototype.check_freshness = function (idp, sp, timestamp, obj) {
+        var loader = obj.parent().children().last();
+        var params = 'q=idpsp:"{0}|{1}"'.format(idp, sp);
+        utils.simple_ajax(
+            settings.backend.api.list + "?" + utils.encodeUriSpecial(params),
+            function(data) {
+                try {
+                    if (timestamp != data.result[0].timestamp) {
+                        obj.remove();
+                        return;
+                    }
+                }catch(err){
+                }
+                obj.removeClass('grayed-out');
+                loader.remove();
+            },function(xhr, status, error){
+            }
+        );
+    };
+
+    Loginx.prototype.list_loginx = function (params, clb) {
         if (!params) {
             params = "";
         }
@@ -87,12 +107,15 @@ define(['attributes', 'entities', 'utils', 'theme', 'jquery'], function (attribu
                             i + 1, idp, sp, attributes_names, ts, result_label, result
                         )
                     );
+                    if (clb) {
+                        clb(idp, sp, doc, self.obj().children().last());
+                    }
+
                 } // for
 
                 entities.update();
             },
             function(xhr, status, error){
-
             }
         );
     };

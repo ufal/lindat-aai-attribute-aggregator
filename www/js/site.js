@@ -84,7 +84,11 @@ define(['entities', 'theme', 'utils', 'loginx', 'logger', 'jquery', 'bootstrap']
             loginx.clear();
             loginx.loading();
             theme.result_title("Bad IdPs");
-            loginx.list_loginx('q=attributes_count:[1 TO 2]');
+            loginx.list_loginx('q=attributes_count:[1 TO 2]', function(idp, sp, doc, entry) {
+                entry.parent().append('<div class="loading-freshness">{0} Checking freshness..</div>'.format(theme.loading_html(2)));
+                entry.addClass('grayed-out');
+                loginx.check_freshness(idp, sp, doc.timestamp, entry);
+            });
         });
 
         //

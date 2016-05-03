@@ -16,7 +16,7 @@ define(['attributes', 'utils', 'theme', 'jquery'], function (attributes, utils, 
             return clb(entityID, this.d[entityID]);
         }
         // fetch it
-        var url = settings.backend.api.entity + '?entityID=' + encodeURI(entityID).replace(/#/g, '%23');;
+        var url = settings.backend.api.entity + '?entityID=' + utils.encodeUriSpecial(entityID);
         console.log(url);
         utils.simple_ajax(
             url,

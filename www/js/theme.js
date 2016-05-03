@@ -79,8 +79,8 @@ define(['utils', 'jquery'], function (utils, jQuery) {
       return '<a href="{0}">{1}</a>'.format(href, text);
     };
 
-    Html.prototype.loading_html = function() {
-        return '<i class="fa fa-cog fa-spin fa-3x fa-fw margin-bottom"></i>';
+    Html.prototype.loading_html = function(mul) {
+        return '<i class="fa fa-cog fa-spin fa-{0}x fa-fw margin-bottom"></i>'.format(mul || '3');
     };
 
     Html.prototype.loading = function(obj) {

@@ -127,3 +127,16 @@ ul.attributes > li > span {
     display: inline-block;
     width:70px;
 }
+
+.grayed-out {
+    background-color: #efefef;
+    opacity: 0.3;
+    overflow: hidden;
+}
+
+.loading-freshness {
+    font-size: 48px;
+    margin-left: 20px;
+    margin-top: -300px;
+    margin-bottom:300px
+}

@@ -60,6 +60,7 @@
   <field name="registrationAuthorityDate" type="strings"/>
   <field name="requested" type="strings"/>
   <field name="requested_required" type="strings"/>
+  <field name="type" type="strings"/>
   <dynamicField name="*_coordinate" type="tdouble" indexed="true" stored="false" useDocValuesAsStored="false"/>
   <dynamicField name="*_point" type="point" indexed="true" stored="true"/>
   <dynamicField name="*_srpt" type="location_rpt" indexed="true" stored="true"/>

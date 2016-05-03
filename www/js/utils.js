@@ -50,6 +50,10 @@ define([], function () {
         });
     };
 
+    Utils.prototype.encodeUriSpecial = function(u) {
+      return encodeURI(u).replace(/#/g, '%23');
+    };
+
     return new Utils();
 
 });
