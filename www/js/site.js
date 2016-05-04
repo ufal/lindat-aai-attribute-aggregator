@@ -76,7 +76,11 @@ define(['entities', 'theme', 'utils', 'loginx', 'logger', 'jquery', 'bootstrap']
             loginx.clear();
             loginx.loading();
             theme.result_title("Nasty IdPs");
-            loginx.list_loginx('q=-attributes:["" TO *]');
+            loginx.list_loginx('q=-attributes:["" TO *]', function(idp, sp, doc, entry) {
+                entry.parent().append('<div class="loading-freshness">{0} Checking freshness..</div>'.format(theme.loading_html(2)));
+                entry.addClass('grayed-out');
+                loginx.check_freshness(idp, sp, doc.timestamp, entry);
+            });
         });
 
         //
