@@ -27,6 +27,7 @@ function handle(req, res) {
         query.rows(0).facet({
             on: true,
             query: "*:*",
+            limit: 1000,
             field: ["idp", "sp", "idpsp"]
         });
         client.search(query, function(err, obj) {
