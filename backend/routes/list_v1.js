@@ -24,7 +24,7 @@ function handle(req, res) {
         var query = client.createQuery();
         q = !d.q ? '*:*' : d.q;
         query.q(q);
-        query.rows(30).sort({our_timestamp: "desc"});
+        query.rows(d.rows || 30).sort({our_timestamp: "desc"});
         client.search(query, function(err, obj) {
             if (err) {
                 log.error(err);
