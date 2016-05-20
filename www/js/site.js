@@ -25,7 +25,7 @@ define(['entities', 'theme', 'utils', 'loginx', 'logger', 'jquery', 'bootstrap']
                 });
                 jQuery(".version-entities-updated").each(function() {
                     jQuery(this).html("Entities updated: {0}".format(
-                        data.entities_updated.replace("T", "").replace("Z", "")
+                        data.entities_updated.replace("T", " ")
                     ));
                 });
             },
