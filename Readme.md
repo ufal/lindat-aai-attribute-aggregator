@@ -5,7 +5,7 @@ In the world of *academic* identity (inter-)federations, the `release attribute 
 ## TL;DR
 
 Have you ever experienced that a user could `not` authenticate (authorise) to your SP? If not then you are probably doing something wrong ;). 
-`If you participate, than AAI people from CLARIN will contact IdPs on behalf of the SPs making the SP admin life easier *and* making the CLARIN SPs more usable.`
+`If you participate, then AAI people from CLARIN will contact IdPs on behalf of the SPs making the SP admin life easier *and* making the CLARIN SPs more usable.`
 
 We do it by collecting  the `names` of attributes (no values!) that have been released to a SP.
 
