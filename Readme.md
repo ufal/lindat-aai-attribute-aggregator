@@ -31,8 +31,8 @@ R&S defines an attribute bundle that the IdPs should release. (*The question is,
 
 There is (much) more to it:
 * SPs cannot specify requested attributes well enough (no boolean operators) making CoCo a bit problematic;
-* specifying attributes that should be releases was made a mayhem in context of optional vs mandatory vs CoCo vs R&S;
-  * federation community (REFEDs, eduGAIN) is so diverse that everything is a problem;
+* specifying attributes that should be released was made a mayhem in the context of optional vs mandatory vs CoCo vs R&S;
+  * federation communities (REFEDs, eduGAIN) is so diverse that everything is a problem;
 * eppn can be reassigned in general (R&S has this covered);
 * we are even not talking about the values that are released.
 
