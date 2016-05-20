@@ -120,6 +120,19 @@ define(['attributes', 'utils', 'theme', 'jquery'], function (attributes, utils, 
                 }
                 break;
 
+            case 'feeds':
+                if (entity_obj.hasOwnProperty(attr)) {
+                    var values = entity_obj[attr];
+                    html = '<div style="min-height: 25px">Feeds: ';
+                    for (var i=0; i < values.length; ++i) {
+                        var value = values[i];
+                        html += '<span class="label label-primary">{0}</span>'.format(value);
+                    }
+                    html += '</div>';
+                    o.append(html);
+                }
+                break;
+
             default:
                 if (entity_obj.hasOwnProperty(attr)) {
                     if (o.children() && 1 == o.children().length && o.children().first().prop("tagName") !== "I") {

@@ -70,7 +70,8 @@ var example_doc = {
     email_administrative: "string",
     email_technical: "string",
     type: "string",
-    entityAttributes: ["string"]
+    entityAttributes: ["string"],
+    feeds: ["array"]
 };
 
 /**
@@ -206,6 +207,16 @@ function parse_entities_and_commit(g_entities, result, name_file_friendly, log_e
                 }
             }
 
+            //feeds
+            var feed = name_file_friendly.split("_")[0];
+            var feeds = [];
+            if(entities_entry["feeds"]){
+                feeds = entities_entry["feeds"].slice();
+                feeds.push(feed);
+            }else{
+                feeds = [feed];
+            }
+
             // now this approach has some issues (e.g., race conditions, performance)
             // but the changed data are not that important and performance is not an issue...
 
@@ -223,7 +234,8 @@ function parse_entities_and_commit(g_entities, result, name_file_friendly, log_e
                 email_support: emails["support"],
                 email_administrative: emails["administrative"],
                 email_technical: emails["technical"],
-                entityAttributes: eattrs
+                entityAttributes: eattrs,
+                feeds: feeds
             };
 
             merge_documents(entities_entry, doc);

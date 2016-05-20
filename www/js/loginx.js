@@ -102,10 +102,11 @@ define(['attributes', 'entities', 'utils', 'theme', 'jquery'], function (attribu
                             break;
                         }
                     }
+                    var feeds = doc.feeds;
 
                     self.obj().append(
                         theme.list_login_item(
-                            i + 1, idp, sp, attributes_names, ts, result_label, result
+                            i + 1, idp, sp, attributes_names, ts, result_label, result, feeds
                         )
                     );
                     if (clb) {
