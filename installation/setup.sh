@@ -69,7 +69,8 @@ echo -e $PREF "Make pm2 persistent during restarts"
 sudo pm2 startup > /dev/null
 
 # basic tests
-sleep 15
+sleep 25
+echo -e $PREF "Trying SOLR"
 curl -s "$SOLRURL/solr/admin/info/system?wt=json&indent=true" | python -c 'import sys, json; js=json.load(sys.stdin); del js["jvm"]["jmx"]; print json.dumps(js, indent=4)'
 
 # nginx
