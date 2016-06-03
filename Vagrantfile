@@ -83,7 +83,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                 v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
                 v.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
                 v.cpus = 2
-                v.memory = 512
+                v.memory = 1024
             end    
 
             # set up our environment
