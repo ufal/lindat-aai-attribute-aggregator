@@ -76,7 +76,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             vmbox.vm.network :forwarded_port, guest: 3001, host: 3001
             vmbox.vm.network :forwarded_port, guest: 8983, host: 8983
 
-            vmbox.vm.hostname = "%s.dev" % opts[:name].to_s
+            vmbox.vm.hostname = "%s.clarin.aaggreg.dev" % opts[:name].to_s
             vmbox.vm.provider :virtualbox do |v|
                 v.customize ["modifyvm", :id, "--name", vmbox.vm.hostname]
                 v.customize ["modifyvm", :id, "--ioapic", "on"]

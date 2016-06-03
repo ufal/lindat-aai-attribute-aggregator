@@ -44,7 +44,7 @@ sudo update-alternatives --config javac > /dev/null
 echo -e $PREF "Installing SOLR into $IDIR"
 cd $IDIR
 PACKAGE=solr-6.0.0
-curl -s -o solr.tgz http://tux.rainside.sk/apache/lucene/solr/6.0.0/$PACKAGE.tgz
+curl -s -o solr.tgz http://archive.apache.org/dist/lucene/solr/6.0.0/$PACKAGE.tgz
 tar -xf solr.tgz
 SOLR=$IDIR/solr
 mv $IDIR/$PACKAGE $SOLR

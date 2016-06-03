@@ -195,16 +195,20 @@ function parse_entities_and_commit(g_entities, result, name_file_friendly, log_e
 
             var emails = {};
             var people = entity["md:ContactPerson"];
-            for (var j = 0; j < people.length; ++j) {
-                var person = people[j];
-                try {
-                    emails[person["$"]["contactType"]] = person["md:EmailAddress"][0].replace("mailto:", "");
-                }catch(err){
-                    // could be a telephone
-                    if (log_errors) {
-                        log.info("[{0}]: missing EmailAddress".format(entityID));
+            if (people != null) {
+                for (var j = 0; j < people.length; ++j) {
+                    var person = people[j];
+                    try {
+                        emails[person["$"]["contactType"]] = person["md:EmailAddress"][0].replace("mailto:", "");
+                    } catch (err) {
+                        // could be a telephone
+                        if (log_errors) {
+                            log.info("[{0}]: missing EmailAddress".format(entityID));
+                        }
                     }
                 }
+            }else {
+                log.info("[{0}]: missing ContactPerson".format(entityID));
             }
 
             //feeds
