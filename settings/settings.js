@@ -49,7 +49,8 @@ settings = {
             list: './aaggreg/v1/list/',
             details: './aaggreg/v1/details/',
             entity: './aaggreg/v1/entity/',
-            version: './aaggreg/version/'
+            version: './aaggreg/version/',
+            statistics: './aaggreg/v1/statistics/'
         },
 
         authenticate_saml: {

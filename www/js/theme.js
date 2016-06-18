@@ -133,6 +133,107 @@ define(['utils', 'jquery'], function (utils, jQuery) {
     Html.prototype.optional = function(msg) {
         return '<span class="label label-info">{0}</span>'.format(msg);
     };
+    
+
+    Html.prototype.show_idp_statistics = function(ra_count, ra_total) {
+		var heading = "<h3>IdP Statistics</h3>";
+		var summary = "<div class='well'><strong>"
+				+ "<div>In total <kbd>{0}</kbd> Registration Authorities</div>"
+				+ "<div><kbd>{1}</kbd> IdPs are registered</div>"
+				+ "<div>out of which <kbd>{2}</kbd> are in eduGAIN and <kbd>{3}</kbd> in SPF</div>"
+				+ "</strong></div>";
+		summary = summary.format(Object.keys(ra_count).length,
+				ra_total.count, ra_total.edugain, ra_total.spf);
+		var thead = "<thead><tr>" + "<th>Registration Authority</th>"
+				+ "<th class='text-right'>IdP Count</th>"
+				+ "<th class='text-right'>In eduGain</th>"
+				+ "<th class='text-right'>In SPF</th></tr></thead>";
+		var trows = "";
+		for (ra in ra_count) {
+			var edu_cls = "";
+			var sp_cls = "";
+			if (ra_count[ra].edugain > ra_count[ra].spf)
+				edu_cls = "success";
+			if (ra_count[ra].edugain < ra_count[ra].spf)
+				sp_cls = "success";
+			trows += "<tr><td><a href='{0}' target='_blank'>{1}</a></td><td class='text-right'><strong>{2}</strong></td><td class='text-right {5}'>{3}</td><td class='text-right {6}'>{4}</td></tr>"
+					.format(ra, ra, ra_count[ra].count,
+							ra_count[ra].edugain, ra_count[ra].spf,
+							edu_cls, sp_cls);
+		}
+		var tbody = "<tbody>{0}</tbody>".format(trows);
+		var table = "<table class='table table-striped'>{0}{1}</table>"
+				.format(thead, tbody);
+		return "<div class='col-md-5' style='border-right: 2px solid #C0C0C0'>{0}{1}{2}</div>"
+				.format(heading, summary, table);
+	};
+
+	Html.prototype.show_sp_statistics = function(sp_counts, sp_ra,
+			sp_undefined) {
+		var heading = "<h3>SP Statistics</h3>";
+		var help = "<div class='well'><strong>"
+				+ "<div>Clarin friendly = releases eduPersonPrincipalName or eduPersonTargetedID</div>"
+				+ "<div>ID friendly = Clarin friendly + releases eduPersonTargetedID-persistentID or mail</div>"
+				+ "<div>Nasty = releases 0 attributes</div>" + "</div>";
+		var thead = "<caption class='small text-info'> * Click on SP name to show/hide the breakdown of registration authorities.</caption>"
+				+ "<thead class='small'>"
+				+ "<tr><th>Service Provider</th>"
+				+ "<th class='text-right'>IdP Count</th>"
+				+ "<th class='text-right'>In eduGain</th>"
+				+ "<th class='text-right'>In SPF</th>"
+				+ "<th class='text-right'>Clarin friendly</th>"
+				+ "<th class='text-right'>ID friendly</th>"
+				+ "<th class='text-right'>Nasty</th></tr></thead>";
+		var trows = "";
+		var i = 0;
+		for (sp in sp_counts) {
+			i++;
+			var nasty_cls = "";
+			if (sp_counts[sp].nasty > 0)
+				nasty_cls = "danger";
+			trows += "<tr class='info' role='button' data-toggle='collapse' id='{1}' data-target='{2}'><td colspan='7'><b>{0}</b></td></tr>"
+					.format(sp, i, "." + i + "collapsed");
+			trows += "<tr><td>&nbsp;</td><td class='text-right'><b>{0}</b></td><td class='text-right'><b>{1}</b></td><td class='text-right'><b>{2}</b></td><td class='text-success text-right'><b>{3}</b></td><td class='text-success text-right'><b>{4}</b></td><td class='text-right {6}'><b>{5}</b></td></tr>"
+					.format(sp_counts[sp].idp, sp_counts[sp].edugain,
+							sp_counts[sp].spf,
+							sp_counts[sp].clarin_friendly,
+							sp_counts[sp].id_friendly,
+							sp_counts[sp].nasty, nasty_cls);
+			for (ra in sp_ra[sp]) {
+				ra_counts = sp_ra[sp][ra];
+				var cls = i + "collapsed";
+				var ra_name = "<a href='{0}' target='_blank'>{0}</a>"
+						.format(ra);
+				if (ra == 'undefined') {
+					cls += " danger";
+					ra_name = "Unregistered IdPs";
+				}
+				var nasty_cls = "";
+				if (ra_counts.nasty > 0)
+					nasty_cls = "danger";
+				trows += "<tr class='small collapse out {7}'><td>{0}</td><td class='text-right'>{1}</td><td class='text-right'>{2}</td><td class='text-right'>{3}</td><td class='text-right'>{4}</td><td class='text-right'>{5}</td><td class='text-right {8}'>{6}</td></tr>"
+						.format(ra_name, ra_counts.idp,
+								ra_counts.edugain, ra_counts.spf,
+								ra_counts.clarin_friendly,
+								ra_counts.id_friendly, ra_counts.nasty,
+								cls, nasty_cls);
+				if (ra == 'undefined') {
+					trows += "<tr class='small collapse out {0}'><td colspan='7'>"
+							.format(cls);
+					for (ud = 0; ud < sp_undefined[sp].length; ud++) {
+						trows += "<div>{0}</div>"
+								.format(sp_undefined[sp][ud]);
+					}
+					trows += "</td></tr>";
+				}
+			}
+		}
+		var tbody = "<tbody>{0}</tbody>".format(trows);
+		var table = "<table class='table table-condensed table-hover'>{0}{1}</table>"
+				.format(thead, tbody);
+		return "<div class='col-md-7'>{0}{1}{2}</div>".format(heading,
+				help, table);
+	};    
 
     var html = new Html();
     jQuery(document).ready(function () {
