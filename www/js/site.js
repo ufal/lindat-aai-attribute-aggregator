@@ -121,6 +121,14 @@ define(['entities', 'theme', 'utils', 'loginx', 'logger', 'jquery', 'bootstrap']
             function(xhr, status, error){
             }
         );
+        
+        //
+        jQuery(".statistics").click(function() {
+            loginx.clear();
+            loginx.loading();
+            theme.result_title("Statistics");
+            loginx.statistics();
+        });        
 
 
     });
