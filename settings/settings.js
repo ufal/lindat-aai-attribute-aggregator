@@ -50,7 +50,8 @@ settings = {
             details: './aaggreg/v1/details/',
             entity: './aaggreg/v1/entity/',
             version: './aaggreg/version/',
-            statistics: './aaggreg/v1/statistics/'
+            statistics: './aaggreg/v1/statistics/',
+            idps: './aaggreg/v1/statistics/idps'
         },
 
         authenticate_saml: {

@@ -88,3 +88,5 @@ function handle(req, res) {
 		res.json(ret);
 	}
 }
+
+module.exports = router;
