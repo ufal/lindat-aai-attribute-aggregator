@@ -149,6 +149,7 @@ define(['utils', 'jquery'], function (utils, jQuery) {
 				+ "<th class='text-right'>In eduGain</th>"
 				+ "<th class='text-right'>In SPF</th></tr></thead>";
 		var trows = "";
+		var nullRARow = "";
 		for (ra in ra_count) {
 			var edu_cls = "";
 			var sp_cls = "";
@@ -160,7 +161,7 @@ define(['utils', 'jquery'], function (utils, jQuery) {
 			var ra_cls = "";
 			var collapsed = "";
 			if (ra=="null") {
-				ra_name = "RA Unknown";
+				ra_name = "Registration Authority Unknown";
 				ra_cls = "danger";
 				collapsed = "role='button' data-toggle='collapse' data-target='#null_ra_row'";
 			}
@@ -169,14 +170,14 @@ define(['utils', 'jquery'], function (utils, jQuery) {
 							ra_count[ra].edugain, ra_count[ra].spf,
 							edu_cls, sp_cls, collapsed);
             if (ra=="null") {
-                trows += "<tr class='small danger collapse out' id='null_ra_row'><td colspan='7'>";
+            	nullRARow += "<tr class='small danger collapse out' id='null_ra_row'><td colspan='7'>";
                 for(i=0;i<nullRA.length;i++) {
-                        trows += "<div>{0}</div>".format(nullRA[i]);
+                	nullRARow += "<div>{0}</div>".format(nullRA[i]);
                 }
-                trows += "</td></tr>";
+                nullRARow += "</td></tr>";
             }			
 		}
-		var tbody = "<tbody>{0}</tbody>".format(trows);
+		var tbody = "<tbody>{0}{1}</tbody>".format(nullRARow, trows);
 		var table = "<table class='table table-striped'>{0}{1}</table>"
 				.format(thead, tbody);
 		return "<div class='col-md-5' style='border-right: 2px solid #C0C0C0'>{0}{1}{2}</div>"
@@ -221,7 +222,7 @@ define(['utils', 'jquery'], function (utils, jQuery) {
 						.format(ra);
 				if (ra == 'undefined') {
 					cls += " danger";
-					ra_name = "RA Unknown";
+					ra_name = "Registration Authority Unknown";
 				}
 				var nasty_cls = "";
 				if (ra_counts.nasty > 0)
