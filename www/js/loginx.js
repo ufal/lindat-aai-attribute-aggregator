@@ -133,15 +133,16 @@ define(['attributes', 'entities', 'utils', 'theme', 'jquery'], function (attribu
                 var ra_total = { count: 0, edugain: 0, spf: 0};
                 var idp2ra = {};
                 var idp2feed = {}
+                var nullRA = [];
 
                 for(r in data.results) {
                         ra = data.results[r];
-                        if(!ra.value) continue;
+                        if(ra.value===undefined) continue;
                         var edugain = 0;
                         var spf = 0;
                         for(i in ra.pivot){
-                                var idp = ra.pivot[i].value;
-                                if(!idp) continue;
+                                var idp = ra.pivot[i].value;                                
+                                if(idp===undefined) continue;
                                 if(idp in idp2ra) {
                                         idp2ra[idp].push(ra.value);
                                 } else {
@@ -161,6 +162,9 @@ define(['attributes', 'entities', 'utils', 'theme', 'jquery'], function (attribu
                                                 if(feed=="spf") spf++;
                                         }
                                 }
+                                if(!ra.value) {
+                                	nullRA.push(idp);
+                                }                                
                         }
                         ra_count[ra.value] =
                                         {
@@ -173,7 +177,7 @@ define(['attributes', 'entities', 'utils', 'theme', 'jquery'], function (attribu
                         ra_total.spf += spf;
                 }
 
-                self.obj().append(theme.show_idp_statistics(ra_count, ra_total));
+                self.obj().append(theme.show_idp_statistics(ra_count, ra_total, nullRA));
 
                 utils.simple_ajax(
                     settings.backend.api.statistics + "?func=getSP_counts",
@@ -183,14 +187,15 @@ define(['attributes', 'entities', 'utils', 'theme', 'jquery'], function (attribu
                         var sp_undefined = {};
                         for(s in data.results) {
                                 var sp = data.results[s];
-                                if(!sp.value) continue;
+                                if(sp.value===undefined) continue;
                                 var c = {idp: sp.count, edugain: 0, spf: 0, clarin_friendly: 0, id_friendly: 0, nasty: 0};
                                 var ra_breakdown = {};
                                 var undef = [];
                                 for(i in sp.pivot) {
                                         var idp = sp.pivot[i];
-                                        if(!idp.value) continue;
+                                        if(idp.value===undefined) continue;
                                         var ra = idp2ra[idp.value];
+                                        if(ra==null || ra=="") ra=undefined;
                                         if(!(ra in ra_breakdown)){
                                                 ra_breakdown[ra] = {idp: 1, edugain: 0, spf: 0, clarin_friendly: 0, id_friendly: 0, nasty: 0};
                                         } else {

@@ -135,10 +135,10 @@ define(['utils', 'jquery'], function (utils, jQuery) {
     };
     
 
-    Html.prototype.show_idp_statistics = function(ra_count, ra_total) {
+    Html.prototype.show_idp_statistics = function(ra_count, ra_total, nullRA) {
 		var heading = "<h3>IdP Statistics</h3>";
 		var summary = "<div class='well'><strong>"
-				+ "<div>In total <kbd>{0}</kbd> Registration Authorities</div>"
+				+ "<div>In total <kbd>{0}</kbd> Registration Authorities (RA)</div>"
 				+ "<div><kbd>{1}</kbd> IdPs are registered</div>"
 				+ "<div>out of which <kbd>{2}</kbd> are in eduGAIN and <kbd>{3}</kbd> in SPF</div>"
 				+ "</strong></div>";
@@ -156,10 +156,25 @@ define(['utils', 'jquery'], function (utils, jQuery) {
 				edu_cls = "success";
 			if (ra_count[ra].edugain < ra_count[ra].spf)
 				sp_cls = "success";
-			trows += "<tr><td><a href='{0}' target='_blank'>{1}</a></td><td class='text-right'><strong>{2}</strong></td><td class='text-right {5}'>{3}</td><td class='text-right {6}'>{4}</td></tr>"
-					.format(ra, ra, ra_count[ra].count,
+			var ra_name = "<a href='{0}'>{0}</a>".format(ra);
+			var ra_cls = "";
+			var collapsed = "";
+			if (ra=="null") {
+				ra_name = "RA Unknown";
+				ra_cls = "danger";
+				collapsed = "role='button' data-toggle='collapse' data-target='#null_ra_row'";
+			}
+			trows += "<tr class='{1}' {7}><td>{0}</td><td class='text-right'><strong>{2}</strong></td><td class='text-right {5}'>{3}</td><td class='text-right {6}'>{4}</td></tr>"
+					.format(ra_name, ra_cls, ra_count[ra].count,
 							ra_count[ra].edugain, ra_count[ra].spf,
-							edu_cls, sp_cls);
+							edu_cls, sp_cls, collapsed);
+            if (ra=="null") {
+                trows += "<tr class='small danger collapse out' id='null_ra_row'><td colspan='7'>";
+                for(i=0;i<nullRA.length;i++) {
+                        trows += "<div>{0}</div>".format(nullRA[i]);
+                }
+                trows += "</td></tr>";
+            }			
 		}
 		var tbody = "<tbody>{0}</tbody>".format(trows);
 		var table = "<table class='table table-striped'>{0}{1}</table>"
@@ -206,7 +221,7 @@ define(['utils', 'jquery'], function (utils, jQuery) {
 						.format(ra);
 				if (ra == 'undefined') {
 					cls += " danger";
-					ra_name = "Unregistered IdPs";
+					ra_name = "RA Unknown";
 				}
 				var nasty_cls = "";
 				if (ra_counts.nasty > 0)

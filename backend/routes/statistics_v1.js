@@ -26,7 +26,8 @@ function handle(req, res) {
 					.facet({
 						on : true,
 						mincount : 1,
-						limit : 9999
+						limit : 9999,
+						missing : true
 					})
 					.set(
 							"facet.pivot=registrationAuthority,entityID,feeds&facet.pivot.mincount=1");
