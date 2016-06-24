@@ -12,17 +12,31 @@ settings = {
 
         howler: {
             subject: 'Attributes missing from [{0}]',
-            body: 'Dear all,\n\n' +
-            'there have been multiple attempts to access our service provider (SP) with the \n'+
-            'entityID={0}\n'+
-            'from users via your Identity Provider.\n'+
-            'The service cannot work properly without mandatory attributes released.\n\n'+
-            'The SP implements data protection code of conduct [1] and is a member of the CLARIN infrastructure.\n\n'+
+            body: 'To whom it may concern:\n\n' +
+            'On behalf of one of the Service Providers from CLARIN Service Provider Federation (SPF) [1] \n'+
+            'we would like to inform you that users from your home organisation tried to access a protected\n'+
+            'service or resource but were unable to do so because your Identity Provider has not released\n'+
+            'all the mandatory attributes.\n\n'+
+            'All the Service Providers in the CLARIN SPF are:\n'+
+            '1) implementing the GÉANT Data Protection Code of Conduct [2];\n'+
+            '2) are members of the REFEDS Research and Scholarship Entity Category [3];\n'+
+            '3) are CLARIN members and have the http://clarin.eu/category/clarin-member Entity\n'+
+            'Category which you can use for filtering.\n\n'+
+            'Therefore, we kindly ask you to implement a filter releasing the required attributes to all\n'+
+            'CLARIN SPF members.'+
+            'The latest authentication attempt was to:\n'+
+            'SP entityID={0}\n'+
             'Attributes released:\n{1}\n\n' +
-            'Kind Regards,\n\n' +
+            'Please, see the recommendation from the DFN federation which attributes to\n'+
+            'release to CLARIN SPF SPs and how to do it:\n'+
+            'https://wiki.aai.dfn.de/de:shibidp3attrfilter#freigabe_der_wichtigsten_attribute_fuer_clarin-sps\n'+
+            'or see the CLARIN\'s attribute profile described at\n'+
+            'https://www.clarin.eu/content/attributes-service-provider-federation .\n\n'+
+            'Kind Regards,\n' +
             'XXX\n\n' +
-            '[1] http://geant3plus.archive.geant.net/uri/dataprotection-code-of-conduct/V1/Pages/default.aspx\n' +
-            '[2] http://clarin.eu and https://www.clarin.eu/content/service-provider-federation' +
+            '[1] https://www.clarin.eu/ and https://www.clarin.eu/content/service-provider-federation\n' +
+            '[2] http://geant3plus.archive.geant.net/uri/dataprotection-code-of-conduct/V1/Pages/default.aspx\n' +
+            '[3] https://refeds.org/category/research-and-scholarship' +
             ''
         },
         
