@@ -96,6 +96,7 @@ function handle(req, res) {
 						for(i=0;i<facet_counts.length;i++) {
 							var fedName = ra2name[facet_counts[i].value];
 							results[fedName] = {};
+							results[fedName]["registration_authority"] = facet_counts[i].value; 
 							results[fedName]["met.refeds_count"] = 0;							
 							results[fedName]["idp_count"] = facet_counts[i].count;
 							results[fedName]["edugain"] = 0;
@@ -118,6 +119,7 @@ function handle(req, res) {
 						    		results[name]["met.refeds_count"] = response.body[name].IDPSSO;
 						    	} else {
 						    		results[name] = {};
+						    		results[name]["registration_authority"] = name2ra[name];
 						    		results[name]["met.refeds_count"] = response.body[name].IDPSSO;
 						    		results[name]["idp_count"] = 0;
 						    		results[name]["edugain"] = 0;
