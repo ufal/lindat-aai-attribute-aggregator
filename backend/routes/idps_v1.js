@@ -9,50 +9,49 @@ var log = require('../libs/logger')("/v1/got/");
 var entities = require('../libs/solr')(settings.solr_entities_core);
 
 var name2ra = {
-	"UK Access Management Federation": "http://ukfederation.org.uk",
-	"InCommon Federation": "https://incommon.org",
-	"Fédération Éducation-Recherche": "https://federation.renater.fr/",
-	"DFN-AAI": "https://www.aai.dfn.de",
-	"CAFe Federation": "http://cafe.rnp.br",
-	"SURFconext Federation": "http://www.surfconext.nl/",
-	"IDEM federation": "http://www.idem.garr.it/",
-	"eduID.cz": "http://www.eduid.cz/",
-	"WAYF Federation": "https://www.wayf.dk",
-	"SWAMID Federation": "http://www.swamid.se/",
-	"ACOnet Identity Federation (eduID.at)": "http://eduid.at",
-	"GRNET Federation": "http://aai.grnet.gr/",
-	"SWITCHaai Federation": "http://rr.aai.switch.ch/",
-	"Edugate Federation": "http://www.heanet.ie",
-	"Belnet Federation": "http://federation.belnet.be/",
-	"CAF Federation": "http://www.canarie.ca",
-	"SIR Federation": "http://www.rediris.es/",
-	"ArnesAAI Federation": "http://aai.arnes.si",			
-	"LAIFE Federation": "http://laife.lanet.lv/",
-	"eduID.hu Federation": "http://eduid.hu",
-	"Haka": "http://www.csc.fi/haka",
-	"PIONIER Federation": "https://aai.pionier.net.pl",
-	"eduID.lu": "http://eduid.lu",
-	"TAAT Federation": "http://taat.edu.ee",
-	"LITNET FEDI Federation": "https://fedi.litnet.lt",
-	"RENATA Federation": "http://colfire.co",
-	"COFRe Federation": "http://cofre.reuna.cl",
-	"LEAF": "http://federations.renam.md/",
-	"GRENA Identity Federation": "https://mtd.gif.grena.ge",
-	"PEANO Federation": "https://peano.uran.ua",
-	"RCTSaai Federation": "https://www.fccn.pt",
-	"GakuNin Federation": "https://www.gakunin.jp",
-	"FEIDE Federation": "http://feide.no/",
-	"IUCC Identity Federation": "http://iif.iucc.ac.il",
-	"AAI@eduHr Federation": "http://www.srce.hr",
-	"Australian Access Federation": "https://aaf.edu.au",
-	"ASNET Armenia": "https://aai.asnet.am",
-	"Minga Ecuadorian federation": "https://minga.cedia.org.ec",
-	"FEDUrus Identity Federation": "http://www.fedurus.ru/",
-	"CARSI Federation": "http://www.carsi.edu.cn/",
-	"Grid IDentity Pool Federation": "https://gridp.garr.it/",
-	"INFLIBNET Access Management Federation": "http://parichay.inflibnet.ac.in/",
-	"MARWAN Federation": "http://www.marwan.ma/",
-	"Tuakiri Federation": "https://tuakiri.ac.nz/"
+		"aaf": "https://aaf.edu.au",
+		"aai-eduhr": "http://www.srce.hr",
+		"aconet": "http://eduid.at",
+		"afire": "https://aai.asnet.am",
+		"arnes-aai": "http://aai.arnes.si",
+		"belnet": "http://federation.belnet.be/",
+		"cafe": "http://cafe.rnp.br",
+		"caf": "http://www.canarie.ca",
+		"carsi": "http://www.carsi.edu.cn/",
+		"cofre": "http://cofre.reuna.cl",
+		"colfire": "http://colfire.co",
+		"dfn-aai": "https://www.aai.dfn.de",
+		"edugate": "http://www.heanet.ie",
+		"eduid-cz": "http://www.eduid.cz/",
+		"eduid-hu": "http://eduid.hu",
+		"eduud-lu": "http://eduid.lu",
+		"fedurus": "http://www.fedurus.ru/",
+		"feide": "http://feide.no/",
+		"fer": "https://federation.renater.fr/",
+		"gakunin": "https://www.gakunin.jp",
+		"grena": "https://mtd.gif.grena.ge",
+		"grididp": "https://gridp.garr.it/",
+		"grnet": "http://aai.grnet.gr/",
+		"haka": "http://www.csc.fi/haka",
+		"idem": "http://www.idem.garr.it/",
+		"incommon": "https://incommon.org",
+		"inflibnet": "http://parichay.inflibnet.ac.in/",
+		"iucc": "http://iif.iucc.ac.il",
+		"laife": "http://laife.lanet.lv/",
+		"leaf": "http://federations.renam.md/",
+		"litnet": "https://fedi.litnet.lt",
+		"minga": "https://minga.cedia.org.ec",
+		"peano": "https://peano.uran.ua",
+		"pionier": "https://aai.pionier.net.pl",
+		"rctsaai": "https://www.fccn.pt",
+		"sir": "http://www.rediris.es/",
+		"surfconext": "http://www.surfconext.nl/",
+		"swamid": "http://www.swamid.se/",
+		"switchaai": "http://rr.aai.switch.ch/",
+		"taat": "http://taat.edu.ee",
+		"tuakiri": "https://tuakiri.ac.nz/",
+		"ukamf": "http://ukfederation.org.uk",
+		"wayf": "https://www.wayf.dk"
 };
 
 var ra2name = {};
@@ -97,7 +96,7 @@ function handle(req, res) {
 							var fedName = ra2name[facet_counts[i].value];
 							results[fedName] = {};
 							results[fedName]["registration_authority"] = facet_counts[i].value; 
-							results[fedName]["met.refeds_count"] = 0;							
+							results[fedName]["wiki.edugain_count"] = 0;							
 							results[fedName]["idp_count"] = facet_counts[i].count;
 							results[fedName]["edugain"] = 0;
 							results[fedName]["spf"] = 0;
@@ -107,20 +106,21 @@ function handle(req, res) {
 						}						
 						
 						request({
-						    url: "https://met.refeds.org/?export=federations&format=json",
+						    url: "https://wiki.edugain.org/isFederatedCheck/Federations/?format=json",
 						    json: true
 						}, function (error, response, body) {						
 						    if (error && response.statusCode != 200) {
 						    	log.error(error);
 						    }
 						    
-						    for(name in response.body) {
+						    for(name in response.body.Federations) {
+						    	if(name=="edugain") continue;
 						    	if(name in results) {
-						    		results[name]["met.refeds_count"] = response.body[name].IDPSSO;
+						    		results[name]["wiki.edugain_count"] = response.body.Federations[name].IdentityProviders;
 						    	} else {
 						    		results[name] = {};
 						    		results[name]["registration_authority"] = name2ra[name];
-						    		results[name]["met.refeds_count"] = response.body[name].IDPSSO;
+						    		results[name]["wiki.edugain_count"] = response.body.Federations[name].IdentityProviders;
 						    		results[name]["idp_count"] = 0;
 						    		results[name]["edugain"] = 0;
 						    		results[name]["spf"] = 0;
