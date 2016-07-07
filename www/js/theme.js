@@ -138,26 +138,30 @@ define(['utils', 'jquery'], function (utils, jQuery) {
     Html.prototype.show_idp_statistics = function(ra_count, ra_total, nullRA) {
 		var heading = "<h3>IdP Statistics</h3>";
 		var summary = "<div class='well'><strong>"
-				+ "<div>In total <kbd>{0}</kbd> Registration Authorities (RA)</div>"
+				+ "<div>In total <kbd>{0}</kbd> Federations</div>"
 				+ "<div><kbd>{1}</kbd> IdPs are registered</div>"
 				+ "<div>out of which <kbd>{2}</kbd> are in eduGAIN and <kbd>{3}</kbd> in SPF</div>"
 				+ "</strong></div>";
 		summary = summary.format(Object.keys(ra_count).length,
 				ra_total.count, ra_total.edugain, ra_total.spf);
-		var thead = "<thead><tr>" + "<th>Registration Authority</th>"
-				+ "<th class='text-right'>IdP Count</th>"
+		var thead = "<thead><tr>" + "<th>Federation</th>"
+				+ "<th class='text-right'>Total IdPs</th>"
+				+ "<th class='text-right'>Total IdPs from our feeds</th>"
 				+ "<th class='text-right'>In eduGain</th>"
 				+ "<th class='text-right'>In SPF</th></tr></thead>";
 		var trows = "";
 		var nullRARow = "";
-		for (ra in ra_count) {
+		var keys = Object.keys(ra_count);
+		keys.sort();
+		for (r=0;r<keys.length;r++) {
+			ra = keys[r];
 			var edu_cls = "";
 			var sp_cls = "";
 			if (ra_count[ra].edugain > ra_count[ra].spf)
 				edu_cls = "success";
 			if (ra_count[ra].edugain < ra_count[ra].spf)
 				sp_cls = "success";
-			var ra_name = "<a href='{0}'>{0}</a>".format(ra);
+			var ra_name = "<a href='{0}'>{1}</a>".format(ra_count[ra].registration_authority, ra_count[ra].name);
 			var ra_cls = "";
 			var collapsed = "";
 			if (ra=="null") {
@@ -166,8 +170,8 @@ define(['utils', 'jquery'], function (utils, jQuery) {
 				collapsed = "role='button' data-toggle='collapse' data-target='#null_ra_row'";
 			}
             if (ra=="null") {
-            	nullRARow += "<tr class='{1}' {7}><td>{0}</td><td class='text-right'><strong>{2}</strong></td><td class='text-right {5}'>{3}</td><td class='text-right {6}'>{4}</td></tr>"
-					.format(ra_name, ra_cls, ra_count[ra].count,
+            	nullRARow += "<tr class='{1}' {7}><td>{0}</td><td class='text-right'><strong>-</strong></td><td class='text-right'><strong>{2}</strong></td><td class='text-right {5}'>{3}</td><td class='text-right {6}'>{4}</td></tr>"
+					.format(ra_name, ra_cls, ra_count[ra].our_idp_count,
 							ra_count[ra].edugain, ra_count[ra].spf,
 							edu_cls, sp_cls, collapsed);
             	nullRARow += "<tr class='small danger collapse out' id='null_ra_row'><td colspan='7'>";
@@ -176,16 +180,16 @@ define(['utils', 'jquery'], function (utils, jQuery) {
                 }	
                 nullRARow += "</td></tr>";
             } else {
-    			trows += "<tr class='{1}' {7}><td>{0}</td><td class='text-right'><strong>{2}</strong></td><td class='text-right {5}'>{3}</td><td class='text-right {6}'>{4}</td></tr>"
-					.format(ra_name, ra_cls, ra_count[ra].count,
+    			trows += "<tr class='{1}' {7}><td>{0}</td><td class='text-right'><strong>{8}</strong></td><td class='text-right'><strong>{2}</strong></td><td class='text-right {5}'>{3}</td><td class='text-right {6}'>{4}</td></tr>"
+					.format(ra_name, ra_cls, ra_count[ra].our_idp_count,
 							ra_count[ra].edugain, ra_count[ra].spf,
-							edu_cls, sp_cls, collapsed);            	
+							edu_cls, sp_cls, collapsed, ra_count[ra]["wiki.edugain_idp_count"]);            	
             }			
 		}
 		var tbody = "<tbody>{0}{1}</tbody>".format(nullRARow, trows);
 		var table = "<table class='table table-striped'>{0}{1}</table>"
 				.format(thead, tbody);
-		return "<div class='col-md-5' style='border-right: 2px solid #C0C0C0'>{0}{1}{2}</div>"
+		return "<div class='col-md-6' style='border-right: 2px solid #C0C0C0'>{0}{1}{2}</div>"
 				.format(heading, summary, table);
 	};
 
@@ -252,7 +256,7 @@ define(['utils', 'jquery'], function (utils, jQuery) {
 		var tbody = "<tbody>{0}</tbody>".format(trows);
 		var table = "<table class='table table-condensed table-hover'>{0}{1}</table>"
 				.format(thead, tbody);
-		return "<div class='col-md-7'>{0}{1}{2}</div>".format(heading,
+		return "<div class='col-md-6'>{0}{1}{2}</div>".format(heading,
 				help, table);
 	};    
 

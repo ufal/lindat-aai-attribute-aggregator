@@ -94,12 +94,16 @@ function handle(req, res) {
 						
 						for(i=0;i<facet_counts.length;i++) {
 							var fedName = ra2name[facet_counts[i].value];
+							if(fedName==null) {
+								fedName = facet_counts[i].value;
+							}
 							results[fedName] = {};
+							results[fedName]["name"] = facet_counts[i].value;
 							results[fedName]["registration_authority"] = facet_counts[i].value; 
-							results[fedName]["wiki.edugain_count"] = 0;							
-							results[fedName]["idp_count"] = facet_counts[i].count;
+							results[fedName]["wiki.edugain_idp_count"] = 0;							
+							results[fedName]["our_idp_count"] = facet_counts[i].count;
 							results[fedName]["edugain"] = 0;
-							results[fedName]["spf"] = 0;
+							results[fedName]["spf"] = 0;							
 							for(j=0;j<facet_counts[i].pivot.length;j++) {
 								results[fedName][facet_counts[i].pivot[j].value] = facet_counts[i].pivot[j].count;								
 							}
@@ -116,14 +120,21 @@ function handle(req, res) {
 						    for(name in response.body.Federations) {
 						    	if(name=="edugain") continue;
 						    	if(name in results) {
-						    		results[name]["wiki.edugain_count"] = response.body.Federations[name].IdentityProviders;
+						    		results[name]["name"] = response.body.Federations[name].Name;
+						    		results[name]["wiki.edugain_idp_count"] = response.body.Federations[name].IdentityProviders;
+						    		results[name]["country"] = response.body.Federations[name].Country;
 						    	} else {
 						    		results[name] = {};
-						    		results[name]["registration_authority"] = name2ra[name];
-						    		results[name]["wiki.edugain_count"] = response.body.Federations[name].IdentityProviders;
-						    		results[name]["idp_count"] = 0;
+						    		if(name in name2ra)
+						    			results[name]["registration_authority"] = name2ra[name];
+						    		else 
+						    			results[name]["registration_authority"] = response.body.Federations[name].Website;
+						    		results[name]["name"] = response.body.Federations[name].Name;
+						    		results[name]["wiki.edugain_idp_count"] = response.body.Federations[name].IdentityProviders;
+						    		results[name]["our_idp_count"] = 0;
 						    		results[name]["edugain"] = 0;
 						    		results[name]["spf"] = 0;
+						    		results[name]["country"] = response.body.Federations[name].Country;
 						    	}
 						    }
 						    
