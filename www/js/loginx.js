@@ -176,88 +176,96 @@ define(['attributes', 'entities', 'utils', 'theme', 'jquery'], function (attribu
                         ra_total.edugain += edugain;
                         ra_total.spf += spf;
                 }
-
-                self.obj().append(theme.show_idp_statistics(ra_count, ra_total, nullRA));
-
+                
                 utils.simple_ajax(
-                    settings.backend.api.statistics + "?func=getSP_counts",
-                    function(data) {
-                        var sp_counts = {};
-                        var sp_ra = {};
-                        var sp_undefined = {};
-                        for(s in data.results) {
-                                var sp = data.results[s];
-                                if(sp.value===undefined) continue;
-                                var c = {idp: sp.count, edugain: 0, spf: 0, clarin_friendly: 0, id_friendly: 0, nasty: 0};
-                                var ra_breakdown = {};
-                                var undef = [];
-                                for(i in sp.pivot) {
-                                        var idp = sp.pivot[i];
-                                        if(idp.value===undefined) continue;
-                                        var ra = idp2ra[idp.value];
-                                        if(ra==null || ra=="") ra=undefined;
-                                        if(!(ra in ra_breakdown)){
-                                                ra_breakdown[ra] = {idp: 1, edugain: 0, spf: 0, clarin_friendly: 0, id_friendly: 0, nasty: 0};
-                                        } else {
-                                                ra_breakdown[ra].idp ++;
-                                        }
-                                        if(!ra) {
-                                                undef.push(idp.value);
-                                        }
-                                        var feeds = idp2feed[idp.value];
-                                        for(f in feeds) {
-                                                if(feeds[f]=="edugain"){
-                                                        c.edugain ++;
-                                                        ra_breakdown[ra].edugain ++;
-                                                }
-                                                else
-                                                if(feeds[f]=="spf"){
-                                                        c.spf ++;
-                                                        ra_breakdown[ra].spf ++;
-                                                }
-                                        }
-                                        var nasty = false;
-                                        var eppn = false;
-                                        var eptid = false;
-                                        var perid = false;
-                                        var mail = false; 
-                                        for(a in idp.pivot) {
-                                                var attribute = idp.pivot[a];
-                                                if(!attribute.field) continue;
-                                                if(attribute.value == null) nasty = true;
-                                                else {
-                                                        name = attributes.name(attribute.value);
-                                                        if(name == "eduPersonPrincipalName") eppn = true;
-                                                        else
-                                                        if(name == "eduPersonTargetedID") eptid = true;
-                                                        else
-                                                        if(name == "eduPersonTargetedID-persistentID") perid = true;
-                                                        else
-                                                        if(name == "mail") mail = true;
-                                                }
-                                        }
-                                        if(nasty) {
-                                                c.nasty++;
-                                                ra_breakdown[ra].nasty++;
-                                        }
-                                        if(eppn || eptid) {
-                                                c.clarin_friendly ++;
-                                                ra_breakdown[ra].clarin_friendly ++;
-                                        }
-                                        if((eppn || eptid) && (perid || mail)) {
-                                                c.id_friendly ++;
-                                                ra_breakdown[ra].id_friendly ++;
-                                        }
-                                }
-                                sp_counts[sp.value] = c;
-                                sp_ra[sp.value] = ra_breakdown;
-                                sp_undefined[sp.value] = undef;
-                        }
-                        self.obj().append(theme.show_sp_statistics(sp_counts, sp_ra, sp_undefined));
-                    },
-                    function(xhr, status, error){
-                    }
-                );
+                        settings.backend.api.idps,
+                        function(data) {
+                        	
+			                self.obj().append(theme.show_idp_statistics(data.results, ra_total, nullRA));
+			
+			                utils.simple_ajax(
+			                    settings.backend.api.statistics + "?func=getSP_counts",
+			                    function(data) {
+			                        var sp_counts = {};
+			                        var sp_ra = {};
+			                        var sp_undefined = {};
+			                        for(s in data.results) {
+			                                var sp = data.results[s];
+			                                if(sp.value===undefined) continue;
+			                                var c = {idp: sp.count, edugain: 0, spf: 0, clarin_friendly: 0, id_friendly: 0, nasty: 0};
+			                                var ra_breakdown = {};
+			                                var undef = [];
+			                                for(i in sp.pivot) {
+			                                        var idp = sp.pivot[i];
+			                                        if(idp.value===undefined) continue;
+			                                        var ra = idp2ra[idp.value];
+			                                        if(ra==null || ra=="") ra=undefined;
+			                                        if(!(ra in ra_breakdown)){
+			                                                ra_breakdown[ra] = {idp: 1, edugain: 0, spf: 0, clarin_friendly: 0, id_friendly: 0, nasty: 0};
+			                                        } else {
+			                                                ra_breakdown[ra].idp ++;
+			                                        }
+			                                        if(!ra) {
+			                                                undef.push(idp.value);
+			                                        }
+			                                        var feeds = idp2feed[idp.value];
+			                                        for(f in feeds) {
+			                                                if(feeds[f]=="edugain"){
+			                                                        c.edugain ++;
+			                                                        ra_breakdown[ra].edugain ++;
+			                                                }
+			                                                else
+			                                                if(feeds[f]=="spf"){
+			                                                        c.spf ++;
+			                                                        ra_breakdown[ra].spf ++;
+			                                                }
+			                                        }
+			                                        var nasty = false;
+			                                        var eppn = false;
+			                                        var eptid = false;
+			                                        var perid = false;
+			                                        var mail = false; 
+			                                        for(a in idp.pivot) {
+			                                                var attribute = idp.pivot[a];
+			                                                if(!attribute.field) continue;
+			                                                if(attribute.value == null) nasty = true;
+			                                                else {
+			                                                        name = attributes.name(attribute.value);
+			                                                        if(name == "eduPersonPrincipalName") eppn = true;
+			                                                        else
+			                                                        if(name == "eduPersonTargetedID") eptid = true;
+			                                                        else
+			                                                        if(name == "eduPersonTargetedID-persistentID") perid = true;
+			                                                        else
+			                                                        if(name == "mail") mail = true;
+			                                                }
+			                                        }
+			                                        if(nasty) {
+			                                                c.nasty++;
+			                                                ra_breakdown[ra].nasty++;
+			                                        }
+			                                        if(eppn || eptid) {
+			                                                c.clarin_friendly ++;
+			                                                ra_breakdown[ra].clarin_friendly ++;
+			                                        }
+			                                        if((eppn || eptid) && (perid || mail)) {
+			                                                c.id_friendly ++;
+			                                                ra_breakdown[ra].id_friendly ++;
+			                                        }
+			                                }
+			                                sp_counts[sp.value] = c;
+			                                sp_ra[sp.value] = ra_breakdown;
+			                                sp_undefined[sp.value] = undef;
+			                        }
+			                        self.obj().append(theme.show_sp_statistics(sp_counts, sp_ra, sp_undefined));
+			                    },
+			                    function(xhr, status, error){
+			                    }
+			                );
+	                    },
+	                    function(xhr, status, error){
+	                    }
+	                );			                
             },
             function(xhr, status, error){
             }
