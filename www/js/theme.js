@@ -142,15 +142,31 @@ define(['utils', 'jquery'], function (utils, jQuery) {
 				+ "<div><kbd>{1}</kbd> IdPs are registered</div>"
 				+ "<div>out of which <kbd>{2}</kbd> are in eduGAIN and <kbd>{3}</kbd> in SPF</div>"
 				+ "</strong></div>";
-		summary = summary.format(Object.keys(ra_count).length,
+		var totalFed = Object.keys(ra_count).length;
+		if(nullRA.length>0) totalFed -= 1;
+		summary = summary.format(totalFed,
 				ra_total.count, ra_total.edugain, ra_total.spf);
+		
+		var message = "<div class='alert alert-warning'><small><strong>The total IdP Counts are collected from https://wiki.edugain.org/isFederatedCheck/Federations.</strong><small></div>";		
 		var thead = "<thead><tr>" + "<th>Federation</th>"
-				+ "<th class='text-right'>Total IdPs</th>"
-				+ "<th class='text-right'>Total IdPs from our feeds</th>"
-				+ "<th class='text-right'>In eduGain</th>"
-				+ "<th class='text-right'>In SPF</th></tr></thead>";
+				+ "<th class='text-right'>IdP Counts</th>"
+				+ "<th class='text-right'>In Our Feeds</th>"
+				+ "<th class='text-right'>from eduGain</th>"
+				+ "<th class='text-right'>from SPF</th></tr></thead>";
 		var trows = "";
 		var nullRARow = "";
+		if(ra_count[null]) {
+			collapsed = "role='button' data-toggle='collapse' data-target='#null_ra_row'";
+	    	nullRARow += "<tr class='{1} {7}' style='cursor: pointer;'><td>{0}</td><td class='text-right'><strong>-</strong></td><td class='text-right'><strong>{2}</strong></td><td class='text-right {5}'>{3}</td><td class='text-right {6}'>{4}</td></tr>"
+				.format("Registration Authority Unknown", "danger", ra_count[null].our_idp_count,
+						ra_count[null].edugain, ra_count[null].spf,
+						"", "", collapsed);
+	    	nullRARow += "<tr class='small danger collapse out' id='null_ra_row'><td colspan='7'>";
+	        for(i=0;i<nullRA.length;i++) {
+	        	nullRARow += "<div>{0}</div>".format(nullRA[i]);
+	        }	
+	        nullRARow += "</td></tr>";
+		}		
 		var keys = Object.keys(ra_count);
 		keys.sort();
 		for (r=0;r<keys.length;r++) {
@@ -163,34 +179,16 @@ define(['utils', 'jquery'], function (utils, jQuery) {
 				sp_cls = "success";
 			var ra_name = "<a href='{0}'>{1}</a>".format(ra_count[ra].registration_authority, ra_count[ra].name);
 			var ra_cls = "";
-			var collapsed = "";
-			if (ra=="null") {
-				ra_name = "Registration Authority Unknown";
-				ra_cls = "danger";
-				collapsed = "role='button' data-toggle='collapse' data-target='#null_ra_row'";
-			}
-            if (ra=="null") {
-            	nullRARow += "<tr class='{1}' {7}><td>{0}</td><td class='text-right'><strong>-</strong></td><td class='text-right'><strong>{2}</strong></td><td class='text-right {5}'>{3}</td><td class='text-right {6}'>{4}</td></tr>"
-					.format(ra_name, ra_cls, ra_count[ra].our_idp_count,
-							ra_count[ra].edugain, ra_count[ra].spf,
-							edu_cls, sp_cls, collapsed);
-            	nullRARow += "<tr class='small danger collapse out' id='null_ra_row'><td colspan='7'>";
-                for(i=0;i<nullRA.length;i++) {
-                	nullRARow += "<div>{0}</div>".format(nullRA[i]);
-                }	
-                nullRARow += "</td></tr>";
-            } else {
-    			trows += "<tr class='{1}' {7}><td>{0}</td><td class='text-right'><strong>{8}</strong></td><td class='text-right'><strong>{2}</strong></td><td class='text-right {5}'>{3}</td><td class='text-right {6}'>{4}</td></tr>"
-					.format(ra_name, ra_cls, ra_count[ra].our_idp_count,
-							ra_count[ra].edugain, ra_count[ra].spf,
-							edu_cls, sp_cls, collapsed, ra_count[ra]["wiki.edugain_idp_count"]);            	
-            }			
+			trows += "<tr class='{1}' {7}><td>{0}</td><td class='text-right'><strong>{8}</strong></td><td class='text-right'><strong>{2}</strong></td><td class='text-right {5}'>{3}</td><td class='text-right {6}'>{4}</td></tr>"
+				.format(ra_name, ra_cls, ra_count[ra].our_idp_count,
+						ra_count[ra].edugain, ra_count[ra].spf,
+						edu_cls, sp_cls, collapsed, ra_count[ra]["wiki.edugain_idp_count"]);            	
 		}
 		var tbody = "<tbody>{0}{1}</tbody>".format(nullRARow, trows);
 		var table = "<table class='table table-striped'>{0}{1}</table>"
 				.format(thead, tbody);
-		return "<div class='col-md-6' style='border-right: 2px solid #C0C0C0'>{0}{1}{2}</div>"
-				.format(heading, summary, table);
+		return "<div class='col-md-6' style='border-right: 2px solid #C0C0C0'>{0}{1}{2}{3}</div>"
+				.format(heading, summary, message, table);
 	};
 
 	Html.prototype.show_sp_statistics = function(sp_counts, sp_ra,

@@ -166,6 +166,9 @@ define(['attributes', 'entities', 'utils', 'theme', 'jquery'], function (attribu
                                 	nullRA.push(idp);
                                 }                                
                         }
+                        if(!ra.value) {
+                        	ra.value = 'Unknown';
+                        }
                         ra_count[ra.value] =
                                         {
                                                 count: ra.count,
