@@ -48,8 +48,11 @@ settings = {
                     "eduPersonTargetedID-persistentID"
                 ];
                 for (var i=0; i < at_least_one.length; ++i) {
-                    if (-1 != d.indexOf(at_least_one[i])) {
-                        return '<div><i class="fa fa-4x fa-smile-o" aria-hidden="true"></i></div>ID (kind-of) friendly';
+                    var tested = at_least_one[i];
+                    for (var j=0; j < d.length; ++j) {
+                        if (-1 != d[j].indexOf(tested)) {
+                            return '<div><i class="fa fa-4x fa-smile-o" aria-hidden="true"></i></div>ID (kind-of) friendly';
+                        }
                     }
                 }
                 return false;
