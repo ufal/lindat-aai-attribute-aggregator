@@ -17,6 +17,7 @@ define([], function () {
         "urn:oid:1.3.6.1.4.1.5923.1.1.1.4": "eduPersonOrgUnitDN",
         "urn:oid:1.3.6.1.4.1.5923.1.1.1.5": "eduPersonPrimaryAffiliation",
 
+        "eppn":                             "eduPersonPrincipalName js",
         "urn:oid:1.3.6.1.4.1.5923.1.1.1.6": "eduPersonPrincipalName",
         "urn:mace:dir:attribute-def:eduPersonPrincipalName": "eduPersonPrincipalName urn-mace",
 
@@ -34,11 +35,13 @@ define([], function () {
         "urn:oid:2.5.4.3":                  "cn",
         "urn:mace:dir:attribute-def:cn":    "cn urn-mace",
 
+        "sn":                               "surName js",
         "urn:oid:2.5.4.4":                  "surName",
         "urn:mace:dir:attribute-def:sn":    "surName urn-mace",
 
         "urn:oid:2.5.4.10":                 "organizationName",
-        "urn:oid:2.5.4.42":                 "givenName",
+
+        "urn:oid:2.5.4.42":                     "givenName",
         "urn:mace:dir:attribute-def:givenName": "givenName urn-mace",
     };
 
