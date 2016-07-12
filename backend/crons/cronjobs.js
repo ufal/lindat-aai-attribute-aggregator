@@ -10,6 +10,9 @@ var feed = require('../feeds/feed');
 
 log.info("Setting up cron jobs");
 
+var run_cron_on_start = !(process.env.RUN_CRON_ON_START && "false" === process.env.RUN_CRON_ON_START.toLowerCase());
+log.info("Running cron on start: %s", run_cron_on_start);
+
 /**
  * SOLR updating of fields is not what we can use so we have to do it manually.
  */
@@ -151,7 +154,7 @@ try {
         true,
         "Europe/Prague",
         null,
-        true
+        run_cron_on_start
     );
 
 } catch(ex) {

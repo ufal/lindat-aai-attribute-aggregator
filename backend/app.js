@@ -49,15 +49,23 @@ app.use(logger('dev'));
 //
 
 app.use(cors());
-app.use('/', index_v1);
-app.use('/version', version);
-app.use('/v1/got', got_v1);
-app.use('/v1/list', list_v1);
-app.use('/v1/details', details_v1);
-app.use('/v1/entity', entity_v1);
-app.use('/v1/statistics', statistics_v1);
-app.use('/v1/statistics/idps', idps_v1);
-app.use('/v1/spf/sps', spf_v1);
+
+var bindings = [
+    ['/', index_v1],
+    ['/version', version],
+    ['/v1/got', got_v1],
+    ['/v1/list', list_v1],
+    ['/v1/details', details_v1],
+    ['/v1/entity', entity_v1],
+    ['/v1/statistics', statistics_v1],
+    ['/v1/statistics/idps', idps_v1],
+    ['/v1/spf/sps', spf_v1]
+];
+for (var i=0; i < bindings.length; ++i) {
+    app.use(bindings[i][0], bindings[i][1]);
+    // make debugging friendlier
+    app.use('/aaggreg' + bindings[i][0], bindings[i][1]);
+}
 
 // specific paths
 //
