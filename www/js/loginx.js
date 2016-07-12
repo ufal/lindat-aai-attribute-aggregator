@@ -270,7 +270,35 @@ define(['attributes', 'entities', 'utils', 'theme', 'jquery'], function (attribu
             function(xhr, status, error){
             }
         );
-    };    
+    };
+
+    Loginx.prototype.list_sps = function (url, clb) {
+        var self = this;
+        utils.simple_ajax(
+            url,
+            function(data) {
+                self.loading(false);
+                var docs = data.result;
+                var d = {};
+                for (var i=0; i<docs.length; ++i) {
+                    var doc = docs[i];
+                    var o = self.obj().append(
+                        theme.list_sp(i + 1, doc.entityID, doc)
+                    );
+                    d[doc.entityID] = doc;
+                } // for
+
+                jQuery("[data-entity-attribute]").each(function () {
+                    var this_o = jQuery(this);
+                    var o = jQuery(this).parent().parent();
+                    var entityID = o.attr("data-entity");
+                    entities.update_element(entityID, d[entityID], this_o);
+                });
+            },
+            function(xhr, status, error){
+            }
+        );
+    };
 
     return new Loginx();
 });

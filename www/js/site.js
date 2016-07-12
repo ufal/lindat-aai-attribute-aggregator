@@ -96,9 +96,18 @@ define(['entities', 'theme', 'utils', 'loginx', 'logger', 'jquery', 'bootstrap']
         });
 
         //
-        jQuery(".list-idps").click(function() {
-            theme.result_title("Last Logins");
+        jQuery(".list-spf-sps").click(function() {
+            loginx.clear();
             loginx.loading();
+            theme.result_title("SPF SPs");
+            loginx.list_sps(settings.backend.api.spf_sps);
+        });
+
+        //
+        jQuery(".list-idps").click(function() {
+            loginx.clear();
+            loginx.loading();
+            theme.result_title("Last Logins");
             loginx.list_loginx();
         });
 

@@ -68,7 +68,8 @@ settings = {
             entity: './aaggreg/v1/entity/',
             version: './aaggreg/version/',
             statistics: './aaggreg/v1/statistics/',
-            idps: './aaggreg/v1/statistics/idps'
+            idps: './aaggreg/v1/statistics/idps',
+            spf_sps: './aaggreg/v1/spf/sps'
         },
 
         authenticate_saml: {

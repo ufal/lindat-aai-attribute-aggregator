@@ -4,9 +4,9 @@ var settings = require('../../settings/settings')["backend"];
 var log = require('../libs/logger')("crons");
 var CronJob = require('cron').CronJob;
 var utils = require('../libs/utils');
-var parseString = require('xml2js').parseString;
 var client = require('../libs/solr')(settings.solr_entities_core);
 var app = require('../app');
+var feed = require('../feeds/feed');
 
 log.info("Setting up cron jobs");
 
@@ -41,21 +41,29 @@ function merge_documents(doc, doc_to_merge) {
     }
 }
 
-function get_english(arr) {
-    for (var i =0; i < arr.length; ++i) {
-        if ("en" == arr[i]["$"]["xml:lang"]) {
-            return arr[i]["_"];
-        }
-    }
-    return 0 < arr.length ? arr[0]["_"] : "N/A";
+function entity_ftor(entities, entities_entry, last_one) {
+    var doc = {
+        entityID: entities_entry.entityID,
+        type: entities_entry.entity_type,
+        registrationAuthority: entities_entry.registrationAuthority,
+        registrationAuthorityDate: entities_entry.registrationAuthorityDate,
+        displayName_en: entities_entry.displayName_en,
+        displayDesc_en: entities_entry.displayDesc_en,
+        logo: entities_entry.logo,
+        requested: entities_entry.requested,
+        requested_required: entities_entry.requested_required,
+        email_support: entities_entry.emails["support"],
+        email_administrative: entities_entry.emails["administrative"],
+        email_technical: entities_entry.emails["technical"],
+        entityAttributes: entities_entry.eattrs,
+        feeds: entities_entry.feeds
+    };
+
+    merge_documents(entities_entry, doc);
 }
 
-function dbg(o) {
-    log.info(JSON.stringify(o, null, 4));
-}
 
-
-// help solr guessing
+// help solr guessing - (not really used just informative)
 //
 var example_doc = {
     entityID: "TESTenitityID",
@@ -74,210 +82,6 @@ var example_doc = {
     feeds: ["array"]
 };
 
-/**
- * Parse xml to json and add each entity to solr, then commit.
- */
-function parse_entities_and_commit(g_entities, result, name_file_friendly, log_errors)
-{
-    var entities = result["md:EntitiesDescriptor"]["md:EntityDescriptor"];
-    log.info("Parsing {0} entities [{1}]".format(entities.length, name_file_friendly));
-
-    for (var i = 0; i < entities.length; ++i) {
-        var entity = entities[i];
-        var entityID = entity["$"]["entityID"];
-
-        var entities_entry = g_entities[entityID];
-        if (!entities_entry) {
-            entities_entry = {};
-            g_entities[entityID] = entities_entry;
-        }
-
-        try {
-            var registrationAuthority = null;
-            var registrationAuthorityDate = null;
-            try {
-                var extensions = entity["md:Extensions"];
-                for (var j=0; j < extensions.length; ++j) {
-                    var extension = extensions[j];
-                    if (extension.hasOwnProperty("mdrpi:RegistrationInfo")) {
-                        var reg_info = extension["mdrpi:RegistrationInfo"][0];
-                        registrationAuthority = reg_info["$"]["registrationAuthority"];
-                        registrationAuthorityDate = reg_info["$"]["registrationInstant"];
-                        break;
-                    }
-                }
-            } catch (err) {
-            }
-
-            // entity attributes
-            //
-            var eattrs = [];
-            try {
-                var entityattrs = entity["md:Extensions"][0]["mdattr:EntityAttributes"];
-                for (var j = 0; j < entityattrs.length; ++j) {
-                    var ea = entityattrs[j];
-                    for (var k = 0; k < ea["saml:Attribute"].length; ++k) {
-                        eattrs.push(ea["saml:Attribute"][k]["saml:AttributeValue"][0].trim());
-                    }
-                }
-            }catch(err){
-            }
-
-
-            // idp/sp
-            //
-
-            var type = null;
-            var desc = null;
-            if (entity.hasOwnProperty("md:IDPSSODescriptor")) {
-                desc = entity["md:IDPSSODescriptor"][0];
-                type = "idp";
-            }else if (entity.hasOwnProperty("md:SPSSODescriptor")){
-                desc = entity["md:SPSSODescriptor"][0];
-                type = "sp";
-            }else if (entity.hasOwnProperty("md:AttributeAuthorityDescriptor")) {
-                continue;
-            }else {
-                log.info("[{0}]: unrecognised entity - not IdP, SP, AA".format(entityID));
-                continue;
-            }
-            var mdui = null;
-            try {
-                mdui = desc["md:Extensions"][0]["mdui:UIInfo"][0];
-            }catch(err){
-                if (log_errors) {
-                    log.info("[{0}]: missing mdui:UIInfo".format(entityID));
-                }
-            }
-
-            // display names
-            //
-
-            var displayName_en = null;
-            var displayDesc_en = null;
-            try {
-                displayName_en = get_english(mdui["mdui:DisplayName"]);
-                displayDesc_en = get_english(mdui["mdui:Description"]);
-            } catch (err) {
-            }
-
-            var logo = null;
-            try {
-                logo = mdui["mdui:Logo"][0]["_"];
-                if (!logo.startsWith("http")) {
-                    logo = null;
-                }
-            } catch (err) {
-            }
-
-            // requested
-            //
-
-            try {
-                var requested_required = [];
-                var requested = [];
-                var requested_arr = desc["md:AttributeConsumingService"][0]["md:RequestedAttribute"];
-                for (var j = 0; j < requested_arr.length; ++j) {
-                    requested.push(requested_arr[j]["$"]["Name"]);
-                    requested_required.push("{0}_{1}".format(
-                        requested_arr[j]["$"]["Name"],
-                        requested_arr[j]["$"]["isRequired"]
-                    ));
-                }
-            } catch (err) {
-                if(log_errors) {
-                    log.info("[{0}]: missing RequestedAttribute".format(entityID));
-                }
-            }
-
-            // contacts
-            //
-
-            var emails = {};
-            var people = entity["md:ContactPerson"];
-            if (people != null) {
-                for (var j = 0; j < people.length; ++j) {
-                    var person = people[j];
-                    try {
-                        emails[person["$"]["contactType"]] = person["md:EmailAddress"][0].replace("mailto:", "");
-                    } catch (err) {
-                        // could be a telephone
-                        if (log_errors) {
-                            log.info("[{0}]: missing EmailAddress".format(entityID));
-                        }
-                    }
-                }
-            }else {
-                log.info("[{0}]: missing ContactPerson".format(entityID));
-            }
-
-            //feeds
-            var feed = name_file_friendly.split("_")[0];
-            var feeds = [];
-            if(entities_entry["feeds"]){
-                feeds = entities_entry["feeds"].slice();
-                feeds.push(feed);
-            }else{
-                feeds = [feed];
-            }
-
-            // now this approach has some issues (e.g., race conditions, performance)
-            // but the changed data are not that important and performance is not an issue...
-
-            // this is our doc
-            var doc = {
-                entityID: entityID,
-                type: type,
-                registrationAuthority: registrationAuthority,
-                registrationAuthorityDate: registrationAuthorityDate,
-                displayName_en: displayName_en,
-                displayDesc_en: displayDesc_en,
-                logo: logo,
-                requested: requested,
-                requested_required: requested_required,
-                email_support: emails["support"],
-                email_administrative: emails["administrative"],
-                email_technical: emails["technical"],
-                entityAttributes: eattrs,
-                feeds: feeds
-            };
-
-            merge_documents(entities_entry, doc);
-
-        }catch(exc) {
-            log.warn("[{0}] parsing error - {1}".format(entityID, exc));
-            throw exc;
-        }
-
-    } // for
-
-    log.info("Finished parsing [{0}]".format(name_file_friendly))
-}
-
-
-function download_and_parse(entities, url_feed, name_file_friendly, log_errors) {
-    log.warn("Downloading {0}".format(name_file_friendly));
-    var output_file = path.join(utils.temp_dir(settings.temp_dir), name_file_friendly);
-
-    utils.download(url_feed, output_file, function(err) {
-        log.warn("Download complete [{0}]".format(name_file_friendly));
-        if (err) {
-            log.error(err);
-            return;
-        }
-        log.warn("Converting xml to json [{0}]".format(name_file_friendly));
-        fs.readFile(output_file, 'utf8', function (err, data) {
-            if (err) {
-                log.error(err);
-                return
-            }
-            parseString(data, function (err, result) {
-                parse_entities_and_commit(entities, result, name_file_friendly, log_errors);
-                entities["done"] += 1;
-            });
-        });
-    });
-}
 
 // cron jobs
 //
@@ -295,13 +99,23 @@ try {
 
             // parse
             //
-            var entities = {};
-
-            entities["done"] = 0;
-            download_and_parse(entities, settings.feeds.spf_idp_feed, "spf_idp_feed");
-            download_and_parse(entities, settings.feeds.spf_sp_feed, "spf_sp_feed");
-            download_and_parse(entities, settings.feeds.edugain_feed, "edugain_feed");
-            download_and_parse(entities, settings.feeds.spf_homeless_feed, "spf_homeless_feed");
+            var entities = {
+                done: 0
+            };
+            // now this approach has some issues (e.g., race conditions, performance)
+            // but the changed data are not that important and performance is not an issue...
+            feed.download_and_parse(
+                entity_ftor, entities, settings.feeds.spf_idp_feed, "spf_idp_feed", settings.temp_dir
+            );
+            feed.download_and_parse(
+                entity_ftor, entities, settings.feeds.spf_sp_feed, "spf_sp_feed", settings.temp_dir
+            );
+            feed.download_and_parse(
+                entity_ftor, entities, settings.feeds.edugain_feed, "edugain_feed", settings.temp_dir
+            );
+            feed.download_and_parse(
+                entity_ftor, entities, settings.feeds.spf_homeless_feed, "spf_homeless_feed", settings.temp_dir
+            );
 
             Object.values = obj => Object.keys(obj).map(key => obj[key]);
 

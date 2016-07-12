@@ -20,7 +20,36 @@ define(['utils', 'jquery'], function (utils, jQuery) {
             "#160F08",
             "#644516",
         ];
+
+        this.entity_info =
+            '<hr><div class="entity-info-name" data-entity-attribute="displayName_en"></div>' +
+            '<hr><div class="entity-contacts" data-entity-attribute="contacts"></div>' +
+            '<hr><div class="entity-info-value entity-info-height-two" data-entity-attribute="displayDesc_en"><i class="fa fa-home" aria-hidden="true"></i> </div>' +
+            '<hr><div class="entity-info-value" data-entity-attribute="registrationAuthority"><i class="fa fa-registered" aria-hidden="true"></i> Registrator: </div>' +
+            '<hr><div class="entity-info-value" data-entity-attribute="entityAttributes"></div>' +
+            '<hr><div class="entity-info-value" data-entity-attribute="requested_required"></div>' +
+            '<hr><div class="entity-info-value" data-entity-attribute="feeds"></div>'
+        ;
     }
+
+	Html.prototype.list_sp = function (pos, entityID, entity) {
+        return (
+        '<div class="row entry" data-entity="{1}">' +
+            '<div class="text-left text-muted">' +
+                '<h3><i class="fa fa-cogs"> {0}. {1} </i></h3>' +
+            '</div>' +
+            '<div class="col-sm-4">' +
+                '<div class="entity-info-value" data-entity-attribute="registrationAuthority"><i class="fa fa-registered" aria-hidden="true"></i> Registrator: </div>' +
+                '<hr><div class="entity-info-name" data-entity-attribute="displayName_en"></div>' +
+                '<div class="entity-info-value entity-info-height-two" data-entity-attribute="displayDesc_en"><i class="fa fa-home" aria-hidden="true"></i> </div>' +
+                '<hr><div class="entity-contacts" data-entity-attribute="contacts"></div>' +
+            '</div>' +
+            '<div class="col-sm-4">' +
+                '<div class="entity-info-value" data-entity-attribute="feeds"></div><hr>' +
+                '<div class="entity-info-value" data-entity-attribute="requested_required"></div>' +
+            '</div>' +
+        '</div><hr class="entity-hr">').format(pos, entityID, entity, this.entity_info);
+	};
 
     Html.prototype.list_login_item = function (pos, idp, sp, attributes, ts, result_label, result) {
         var attributes_html = "";
@@ -32,16 +61,6 @@ define(['utils', 'jquery'], function (utils, jQuery) {
             attributes_html = "<li>MISSING!</li>";
         }
         attributes_html = '<ul class="entity-attributes">{0}</ul>'.format(attributes_html);
-
-        var entity_info =
-            '<hr><div class="entity-info-name" data-entity-attribute="displayName_en"></div>' +
-            '<hr><div class="entity-contacts" data-entity-attribute="contacts"></div>' +
-            '<hr><div class="entity-info-value entity-info-height-two" data-entity-attribute="displayDesc_en"><i class="fa fa-home" aria-hidden="true"></i> </div>' +
-            '<hr><div class="entity-info-value" data-entity-attribute="registrationAuthority"><i class="fa fa-registered" aria-hidden="true"></i> Registrator: </div>' +
-            '<hr><div class="entity-info-value" data-entity-attribute="entityAttributes"></div>' +
-            '<hr><div class="entity-info-value" data-entity-attribute="requested_required"></div>' +
-            '<hr><div class="entity-info-value" data-entity-attribute="feeds"></div>'
-        ;
 
         return ('<div class="row entry">' +
                 '<div class="row page-header">' +
@@ -73,7 +92,7 @@ define(['utils', 'jquery'], function (utils, jQuery) {
                         '</div>' +
                     '</div>' +
                 '</div>' +
-            '</div>').format(idp, sp, result_label, result, attributes_html, ts, pos, entity_info);
+            '</div>').format(idp, sp, result_label, result, attributes_html, ts, pos, this.entity_info);
     };
 
     Html.prototype.link = function(text, href) {

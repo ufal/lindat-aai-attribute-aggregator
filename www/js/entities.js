@@ -31,19 +31,31 @@ define(['attributes', 'utils', 'theme', 'jquery'], function (attributes, utils, 
     };
 
     Entities.prototype.update_element = function(entityID, entity_obj, o, entityID_other, released_attrs) {
+        // we use this function from two data sources, one has arrays for each attribute and one does not
+        function _get_value(o) {
+            return Array.isArray(o) ? o[0] : o;
+        }
+        function _get_values(o) {
+            return Array.isArray(o) ? o.join("<br>") : o;
+        }
+
         if (!entity_obj) {
             return;
         }
         var attr = o.attr("data-entity-attribute");
+        var entity_type = entity_obj.entity_type;
+        if (entity_obj.hasOwnProperty("type")) {
+            entity_type = entity_obj.type[0];
+        }
         switch(attr) {
             case 'displayName_en':
                 var html = "";
                 if (entity_obj.logo) {
-                    var logo_url = entity_obj.logo[0];
+                    var logo_url = _get_value(entity_obj.logo);
                     html += '<img src="{0}" alt="{1}"> '.format(logo_url, entityID);
                 }
                 if (entity_obj.hasOwnProperty(attr)) {
-                    html += ' <span>{0}</span>'.format(entity_obj[attr].join("<br>"));
+                    html += ' <span>{0}</span>'.format(_get_value(entity_obj[attr]));
                 }
                 o.append("<h4>{0}</h4>".format(html));
                 break;
@@ -51,26 +63,39 @@ define(['attributes', 'utils', 'theme', 'jquery'], function (attributes, utils, 
             case 'contacts':
                 var whom_to_send = null;
                 var any_email = null;
-                for (var key in entity_obj) {
-                    if (entity_obj.hasOwnProperty(key)) {
-                        if (key.startsWith("email_")) {
-                            var ekey = key.substr(6);
-                            var email = entity_obj[key][0];
-                            if (ekey == "technical") {
-                                whom_to_send = email;
-                            }
-                            if (!any_email) {
-                                any_email = email;
-                            }
+                if (entity_obj.hasOwnProperty("emails")) {
+                    var contacts = entity_obj["emails"];
+                    for (var key in contacts) {
+                        if (contacts.hasOwnProperty(key)) {
                             o.append(theme.contact(
-                                email,
-                                '<span class="label label-default">{0}</span> {1}'.format(ekey, email)
+                                contacts[key],
+                                '<span class="label label-default">{0}</span> {1}'.format(key, contacts[key])
                             ));
+                        }
+                    }
+
+                }else {
+                    for (var key in entity_obj) {
+                        if (entity_obj.hasOwnProperty(key)) {
+                            if (key.startsWith("email_")) {
+                                var ekey = key.substr(6);
+                                var email = _get_value(entity_obj[key]);
+                                if (ekey == "technical") {
+                                    whom_to_send = email;
+                                }
+                                if (!any_email) {
+                                    any_email = email;
+                                }
+                                o.append(theme.contact(
+                                    email,
+                                    '<span class="label label-default">{0}</span> {1}'.format(ekey, email)
+                                ));
+                            }
                         }
                     }
                 }
                 //
-                if ("idp" == entity_obj.type[0]) {
+                if ("idp" == entity_type) {
                     email = whom_to_send || any_email;
                     var entity_obj_other = this.d[entityID_other];
                     var msg = settings.frontend.howler.body.format(entityID_other, released_attrs);
@@ -133,12 +158,23 @@ define(['attributes', 'utils', 'theme', 'jquery'], function (attributes, utils, 
                 }
                 break;
 
+            case 'registrationAuthority':
+                if (entity_obj.hasOwnProperty(attr)) {
+                    var html = _get_values(entity_obj[attr]);
+                    if (entity_obj.hasOwnProperty("registrationAuthorityDate")) {
+                        html += ' ({0})'.format(entity_obj["registrationAuthorityDate"]);
+                    }
+                    o.append(html);
+                }
+                break;
+
             default:
                 if (entity_obj.hasOwnProperty(attr)) {
+                    var vals = _get_values(entity_obj[attr]);
                     if (o.children() && 1 == o.children().length && o.children().first().prop("tagName") !== "I") {
-                        o.children().first().append(entity_obj[attr].join("<br>"));
+                        o.children().first().append(vals);
                     }else {
-                        o.append(entity_obj[attr].join("<br>"));
+                        o.append(vals);
                     }
                 }
         }

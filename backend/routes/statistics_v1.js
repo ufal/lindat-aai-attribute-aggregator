@@ -4,7 +4,7 @@ var express = require('express');
 var settings = require('../../settings/settings')["backend"];
 var utils = require('../libs/utils');
 var router = express.Router();
-var log = require('../libs/logger')("/v1/got/");
+var log = require('../libs/logger')("/v1/statistics/");
 var loginx = require('../libs/solr')(settings.solr_loginx_core);
 var entities = require('../libs/solr')(settings.solr_entities_core);
 

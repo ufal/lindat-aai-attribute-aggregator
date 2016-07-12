@@ -28,6 +28,7 @@ var list_v1 = require('./routes/list_v1');
 var details_v1 = require('./routes/details_v1');
 var entity_v1 = require('./routes/entity_v1');
 var statistics_v1 = require('./routes/statistics_v1');
+var spf_v1 = require('./routes/spf_v1');
 var idps_v1 = require('./routes/idps_v1');
 //var attributes_v1 = require('./routes/attributes_v1');
 
@@ -56,6 +57,7 @@ app.use('/v1/details', details_v1);
 app.use('/v1/entity', entity_v1);
 app.use('/v1/statistics', statistics_v1);
 app.use('/v1/statistics/idps', idps_v1);
+app.use('/v1/spf/sps', spf_v1);
 
 // specific paths
 //
