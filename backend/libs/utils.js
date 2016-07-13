@@ -5,6 +5,10 @@ var http = require('http');
 var https = require('https');
 var path = require('path');
 
+function is_number(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
 String.prototype.endsWith = function(suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
@@ -17,7 +21,7 @@ if (!String.prototype.format) {
     String.prototype.format = function() {
        var args = arguments;
         return this.replace(/{(\d+)}/g, function(match, number) {
-            return typeof args[number] != 'undefined'
+            return typeof args[number] !== 'undefined'
                 ? args[number] : match ;
         });
     };
@@ -31,7 +35,7 @@ function list_files( dir, ftor ) {
         var filepath = dir + '/' + file;
         if (fs.statSync(filepath).isFile()) {
             files.push(file);
-            if ( !(null == ftor) ) {
+            if (ftor) {
                 ftor(file);
             }
         }
@@ -82,11 +86,21 @@ function download(url, output, callback) {
             file.close(callback); // close() is async, call callback after close completes.
         });
         file.on('error', function (err) {
-            fs.unlink(dest); // Delete the file async. (But we don't check the result)
-            if (callback)
+            fs.unlink(output); // Delete the file async. (But we don't check the result)
+            if (callback) {
                 callback(err.message);
+            }
         });
     });
+}
+
+function exists_file(f) {
+    try {
+        var stats = fs.lstatSync(f);
+        return stats.isFile();
+    }catch(e){
+        return false;
+    }
 }
 
 function exists_in(dir_arr, f) {
@@ -105,15 +119,6 @@ function exists_in(dir_arr, f) {
         }
     }
     return null;
-}
-
-function exists_file(f) {
-    try {
-        var stats = fs.lstatSync(f);
-        return stats.isFile();
-    }catch(e){
-        return false;
-    }
 }
 
 function exists_dir(f) {
@@ -154,11 +159,12 @@ var walk_files = function (p, ftor, rel_p) {
 };
 
 function array_eq (a1, a2) {
-    if (!a1 || !a2)
+    if (!a1 || !a2) {
         return false;
+    }
 
     // compare lengths - can save a lot of time
-    if (a1.length != a2.length) {
+    if (a1.length !== a2.length) {
         return false;
     }
 
@@ -173,10 +179,10 @@ function array_eq (a1, a2) {
             var pl = 1000000;
             var n1 = Math.round(a1[i] * pl) / pl;
             var n2 = Math.round(a2[i] * pl) / pl;
-            if (n1 != n2) {
+            if (n1 !== n2) {
                 return false;
             }
-        }else if (a1[i] != a2[i]) {
+        }else if (a1[i] !== a2[i]) {
             return false;
         }
     }
@@ -184,13 +190,14 @@ function array_eq (a1, a2) {
 }
 
 function dict_eq(d1, d2) {
-    if (!d1 || !d2)
+    if (!d1 || !d2) {
         return false;
+    }
 
     // compare lengths - can save a lot of time
     var k1 = Object.keys(d1);
     var k2 = Object.keys(d2);
-    if (k1.length != k2.length) {
+    if (k1.length !== k2.length) {
         return false;
     }
 
@@ -202,10 +209,6 @@ function dict_eq(d1, d2) {
         }
     }
     return true;
-}
-
-function is_number(n) {
-    return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
 exports.cmd_exec = cmd_exec;

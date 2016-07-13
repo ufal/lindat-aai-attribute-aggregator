@@ -10,10 +10,6 @@ var router = express.Router();
 var log = require('../libs/logger')("/v1/got/");
 var client = require('../libs/solr')(settings.solr_loginx_core);
 
-router.get('/', function(req, res) {
-    return handle(req, res);
-});
-
 function handle(req, res) {
     var ret = {
         "ok": false
@@ -22,7 +18,7 @@ function handle(req, res) {
 
         var d = req.query;
         var query = client.createQuery();
-        q = !d.q ? '*:*' : d.q;
+        var q = !d.q ? '*:*' : d.q;
         query.q(q);
         query.rows(0).facet({
             on: true,
@@ -49,5 +45,9 @@ function handle(req, res) {
         res.json(ret);
     }
 }
+
+router.get('/', function(req, res) {
+    return handle(req, res);
+});
 
 module.exports = router;

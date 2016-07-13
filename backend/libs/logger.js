@@ -17,8 +17,8 @@ module.exports = function(module_name) {
     });
 
     logger.log = function(){
-        if ( !(null==module_name) ) {
-            arguments[1] = "[" + module_name + "]" + " " + arguments[1];
+        if (module_name) {
+            arguments[1] = "[" + module_name + "]" + " " + arguments[1]; // jshint ignore:line
         }
         winston.Logger.prototype.log.apply(this, arguments);
     };

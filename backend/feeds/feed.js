@@ -30,7 +30,7 @@ function parse_entities(entity_ftor, entities, result, feed_name)
 
         try {
             // do something reasonable
-            var last_one = (i == es.length - 1);
+            var last_one = (i === es.length - 1);
             entity_ftor(entities, e_inst, last_one);
 
         }catch(exc) {

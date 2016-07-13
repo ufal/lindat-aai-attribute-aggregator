@@ -11,7 +11,8 @@
   "scripts": {
     "start": "node backend/app.js",
     "test": "node_modules/.bin/mocha",
-    "release": "npm version patch"
+    "release": "npm version patch",
+    "jshint": "jshint -c .jshintrc ."
   },
   "dependencies": {
     "body-parser": "~1.14.1",
@@ -35,6 +36,8 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^2.4.5"
-  }
+    "mocha": "^2.4.5",
+    "pre-commit": "^1.1.3"
+  },
+  "pre-commit": [ "jshint" ]
 }

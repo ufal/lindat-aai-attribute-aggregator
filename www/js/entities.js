@@ -80,7 +80,7 @@ define(['attributes', 'utils', 'theme', 'jquery'], function (attributes, utils, 
                             if (key.startsWith("email_")) {
                                 var ekey = key.substr(6);
                                 var email = _get_value(entity_obj[key]);
-                                if (ekey == "technical") {
+                                if (ekey === "technical") {
                                     whom_to_send = email;
                                 }
                                 if (!any_email) {
@@ -95,8 +95,8 @@ define(['attributes', 'utils', 'theme', 'jquery'], function (attributes, utils, 
                     }
                 }
                 //
-                if ("idp" == entity_type) {
-                    email = whom_to_send || any_email;
+                if ("idp" === entity_type) {
+                    var email = whom_to_send || any_email;
                     var entity_obj_other = this.d[entityID_other];
                     var msg = settings.frontend.howler.body.format(entityID_other, released_attrs);
                     var email_cc = "";
@@ -124,7 +124,7 @@ define(['attributes', 'utils', 'theme', 'jquery'], function (attributes, utils, 
                     for (var i=0; i < values.length; ++i) {
                         var value = values[i];
                         var j = value.lastIndexOf("_");
-                        var mandatory = value.substring(j + 1) == "true";
+                        var mandatory = value.substring(j + 1) === "true";
                         value = attributes.name(value.substring(0, j));
                         html += '<li>{1} {0}</li>'.format(
                                 value, mandatory ? theme.mandatory("mandatory") : theme.optional("optional")
@@ -171,7 +171,10 @@ define(['attributes', 'utils', 'theme', 'jquery'], function (attributes, utils, 
             default:
                 if (entity_obj.hasOwnProperty(attr)) {
                     var vals = _get_values(entity_obj[attr]);
-                    if (o.children() && 1 == o.children().length && o.children().first().prop("tagName") !== "I") {
+                    if (o.children()
+                            && 1 === o.children().length
+                                && o.children().first().prop("tagName") !== "I")
+                    {
                         o.children().first().append(vals);
                     }else {
                         o.append(vals);
@@ -183,13 +186,15 @@ define(['attributes', 'utils', 'theme', 'jquery'], function (attributes, utils, 
     Entities.prototype.assign = function(entities, clb) {
         var d = { done: 0 };
 
+        function ftor() {
+            d["done"] += 1;
+            if (d["done"] === entities.length) {
+                clb();
+            }
+        }
+
         for (var i = 0; i < entities.length; ++i) {
-            this.entity(entities[i], function() {
-                d["done"] += 1;
-                if (d["done"] == entities.length) {
-                    clb();
-                }
-            });
+            this.entity(entities[i], ftor);
         }
     };
 
@@ -223,6 +228,7 @@ define(['attributes', 'utils', 'theme', 'jquery'], function (attributes, utils, 
                         var entityID_other = o.attr("data-entity-brother");
                         var ent = self.d[entityID];
                         var released_attrs = [];
+                        /*jshint -W083 */
                         jQuery("li", o.next().find(".entity-attributes")).each(function() {
                             released_attrs.push(jQuery(this).text());
                         });

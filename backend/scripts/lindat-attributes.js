@@ -35,7 +35,7 @@ fs.readFile(input_file, 'utf8', function (err, data) {
                     }
                 }
             }
-            if (0 == attrs_to_import.length){
+            if (0 === attrs_to_import.length){
                 log.info("NO ATTRIBUTES [{0}]".format(entityID));
             }
 

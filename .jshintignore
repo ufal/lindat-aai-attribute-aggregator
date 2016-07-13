@@ -1,0 +1,10 @@
+__*
+.idea
+.vagrant
+*.log
+*.bak
+node_modules
+vendor
+solr
+*.bat
+www/js/lib/

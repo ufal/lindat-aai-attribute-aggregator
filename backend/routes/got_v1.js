@@ -10,15 +10,6 @@ var router = express.Router();
 var log = require('../libs/logger')("/v1/got/");
 var client = require('../libs/solr')(settings.solr_loginx_core);
 
-// not storing dialogue
-router.post('/', function(req, res) {
-    return handle(req, res);
-});
-
-router.get('/', function(req, res) {
-    return handle(req, res);
-});
-
 function handle(req, res) {
     var ret = {
         "ok": false
@@ -82,5 +73,14 @@ function handle(req, res) {
 
     res.json(ret);
 }
+
+// not storing dialogue
+router.post('/', function(req, res) {
+    return handle(req, res);
+});
+
+router.get('/', function(req, res) {
+    return handle(req, res);
+});
 
 module.exports = router;

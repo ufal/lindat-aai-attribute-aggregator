@@ -43,6 +43,12 @@ define([], function () {
 
         "urn:oid:2.5.4.42":                     "givenName",
         "urn:mace:dir:attribute-def:givenName": "givenName urn-mace",
+
+	"urn:oid:2.16.840.1.113730.3.1.241":      "displayName",
+	"urn:mace:dir:attribute-def:displayName": "displayName",
+
+	"urn:oid:0.9.2342.19200300.100.1.1":    "uid",
+	"urn:mace:dir:attribute-def:uid":       "uid",
     };
 
     function Attributes() {

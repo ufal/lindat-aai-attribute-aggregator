@@ -1,6 +1,5 @@
 var log = require('../libs/logger')("entity");
 
-
 /**
  * Takes as an input a json like object of the entity metadata and stores
  * important information about it.
@@ -115,7 +114,7 @@ var entity_cls = function(entity) {
         // contacts
         //
         var people = entity["md:ContactPerson"];
-        if (people != null) {
+        if (people) {
             for (var j = 0; j < people.length; ++j) {
                 var person = people[j];
                 try {
@@ -139,7 +138,7 @@ var entity_cls = function(entity) {
 
 entity_cls.get_english = function(arr) {
     for (var i =0; i < arr.length; ++i) {
-        if ("en" == arr[i]["$"]["xml:lang"]) {
+        if ("en" === arr[i]["$"]["xml:lang"]) {
             return arr[i]["_"];
         }
     }

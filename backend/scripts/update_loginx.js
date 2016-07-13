@@ -13,6 +13,12 @@ var query = client.createQuery();
 query.q("-attributes_count:[* TO *]");
 query.rows(300);
 client.search(query, function(err, obj) {
+    function check(err,obj){
+        if(err){
+            log.error(err);
+        }
+    }
+
     if (err) {
         log.error(err);
     } else {
@@ -35,11 +41,7 @@ client.search(query, function(err, obj) {
 
             if (updated) {
                 log.info(JSON.stringify(doc));
-                client.add(doc,function(err,obj){
-                    if(err){
-                        log.error(err);
-                    }
-                });
+                client.add(doc, check);
             }
         } // for
 

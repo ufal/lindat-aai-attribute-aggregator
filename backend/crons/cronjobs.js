@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 var fs = require('fs');
 var path = require('path');
 var settings = require('../../settings/settings')["backend"];
@@ -19,7 +21,7 @@ log.info("Running cron on start: %s", run_cron_on_start);
 function merge_documents(doc, doc_to_merge) {
     for (var key in doc_to_merge) {
         // would conflict - do not merge it
-        if ("_version_" == key) {
+        if ("_version_" === key) {
             continue;
         }
         if (doc_to_merge.hasOwnProperty(key)) {
@@ -124,7 +126,7 @@ try {
 
             function check_and_commit() {
                 log.info("Done {0} items...".format(entities["done"]));
-                if (4 == entities["done"]){
+                if (4 === entities["done"]){
                     delete entities["done"];
                     // ouch
                     var values = Object.values(entities);
