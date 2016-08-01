@@ -47,7 +47,10 @@ var entity_cls = function(entity) {
             for (var j = 0; j < entityattrs.length; ++j) {
                 var ea = entityattrs[j];
                 for (var k = 0; k < ea["saml:Attribute"].length; ++k) {
-                    this.eattrs.push(ea["saml:Attribute"][k]["saml:AttributeValue"][0].trim());
+                    var samlAttr = ea["saml:Attribute"][k];
+                    for (var m = 0; m < samlAttr.length; ++m){
+                        this.eattrs.push(samlAttr["saml:AttributeValue"][m].trim());
+                    }
                 }
             }
         }catch(err){
