@@ -16,7 +16,6 @@ var entity_cls = function(entity) {
     this.eattrs = [];
     // idp/sp
     this.entity_type = null;
-    this.mdui = null;
     this.displayName_en = null;
     this.displayDesc_en = null;
     this.logo = null;
@@ -74,8 +73,9 @@ var entity_cls = function(entity) {
             }
             return;
         }
+        var mdui = null;
         try {
-            this.mdui = desc["md:Extensions"][0]["mdui:UIInfo"][0];
+            mdui = desc["md:Extensions"][0]["mdui:UIInfo"][0];
         }catch(err){
             if (log_errors) {
                 log.info("[{0}]: missing mdui:UIInfo".format(this.entityID));
@@ -85,13 +85,13 @@ var entity_cls = function(entity) {
         // display names
         //
         try {
-            this.displayName_en = entity_cls.get_english(this.mdui["mdui:DisplayName"]);
-            this.displayDesc_en = entity_cls.get_english(this.mdui["mdui:Description"]);
+            this.displayName_en = entity_cls.get_english(mdui["mdui:DisplayName"]);
+            this.displayDesc_en = entity_cls.get_english(mdui["mdui:Description"]);
         } catch (err) {
         }
 
         try {
-            this.logo = this.mdui["mdui:Logo"][0]["_"];
+            this.logo = mdui["mdui:Logo"][0]["_"];
             if (!this.logo.startsWith("http")) {
                 this.logo = null;
             }
