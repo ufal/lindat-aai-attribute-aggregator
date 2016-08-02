@@ -7,22 +7,25 @@ var log = require('../libs/logger')("entity");
  * @param entity js dict
  */
 var entity_cls = function(entity) {
+    //XXX members should not be objects, SOLR gets mad if you pass objects. Don't use null
+    
     var log_errors = false;
     this.entityID = entity_cls.get_entityID(entity);
     // reg info
-    this.registrationAuthority = null;
-    this.registrationAuthorityDate = null;
+    this.registrationAuthority = "";
+    this.registrationAuthorityDate = "";
     // entity attributes
-    this.eattrs = [];
+    this.entityAttributes = [];
     // idp/sp
-    this.entity_type = null;
-    this.mdui = null;
-    this.displayName_en = null;
-    this.displayDesc_en = null;
-    this.logo = null;
+    this.type = "";
+    this.displayName_en = "";
+    this.displayDesc_en = "";
+    this.logo = "";
     this.requested_required = [];
     this.requested = [];
-    this.emails = {};
+    this.email_administrative = "";
+    this.email_technical = "";
+    this.email_support = "";
     this.feeds = [];
 
     try {
@@ -50,7 +53,7 @@ var entity_cls = function(entity) {
                     var attr = ea['saml:Attribute'][k];
                     var attrVals = attr['saml:AttributeValue']
                     for (var m = 0; m < attrVals.length; ++m){
-                        this.eattrs.push(attrVals[m].trim());
+                        this.entityAttributes.push(attrVals[m].trim());
                     }
                 }
             }
@@ -59,13 +62,13 @@ var entity_cls = function(entity) {
 
         // idp/sp
         //
-        var desc = null;
+        var desc = "";
         if (entity.hasOwnProperty("md:IDPSSODescriptor")) {
             desc = entity["md:IDPSSODescriptor"][0];
-            this.entity_type = "idp";
+            this.type = "idp";
         }else if (entity.hasOwnProperty("md:SPSSODescriptor")){
             desc = entity["md:SPSSODescriptor"][0];
-            this.entity_type = "sp";
+            this.type = "sp";
         }else if (entity.hasOwnProperty("md:AttributeAuthorityDescriptor")) {
             return;
         }else {
@@ -74,26 +77,19 @@ var entity_cls = function(entity) {
             }
             return;
         }
-        try {
-            this.mdui = desc["md:Extensions"][0]["mdui:UIInfo"][0];
-        }catch(err){
-            if (log_errors) {
-                log.info("[{0}]: missing mdui:UIInfo".format(this.entityID));
-            }
-        }
 
         // display names
         //
         try {
-            this.displayName_en = entity_cls.get_english(this.mdui["mdui:DisplayName"]);
-            this.displayDesc_en = entity_cls.get_english(this.mdui["mdui:Description"]);
+            this.displayName_en = entity_cls.get_english(desc["md:Extensions"][0]["mdui:UIInfo"][0]["mdui:DisplayName"]);
+            this.displayDesc_en = entity_cls.get_english(desc["md:Extensions"][0]["mdui:UIInfo"][0]["mdui:Description"]);
         } catch (err) {
         }
 
         try {
-            this.logo = this.mdui["mdui:Logo"][0]["_"];
+            this.logo = desc["md:Extensions"][0]["mdui:UIInfo"][0]["mdui:Logo"][0]["_"];
             if (!this.logo.startsWith("http")) {
-                this.logo = null;
+                this.logo = "";
             }
         } catch (err) {
         }
@@ -122,7 +118,16 @@ var entity_cls = function(entity) {
             for (var j = 0; j < people.length; ++j) {
                 var person = people[j];
                 try {
-                    this.emails[person["$"]["contactType"]] = person["md:EmailAddress"][0].replace("mailto:", "");
+                    var contactType = person["$"]["contactType"];
+                    if(contactType === 'technical'){
+                        this.email_technical = person["md:EmailAddress"][0].replace("mailto:", "");
+                    }
+                    else if(contactType === 'support'){
+                        this.email_support = person["md:EmailAddress"][0].replace("mailto:", "");
+                    }
+                    else if(contactType === 'administrative'){
+                        this.email_administrative = person["md:EmailAddress"][0].replace("mailto:", "");
+                    }
                 } catch (err) {
                     // could be a telephone
                     if (log_errors) {

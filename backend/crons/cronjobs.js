@@ -49,7 +49,7 @@ function merge_documents(doc, doc_to_merge) {
 function entity_ftor(entities, entities_entry, last_one) {
     var doc = {
         entityID: entities_entry.entityID,
-        type: entities_entry.entity_type,
+        type: entities_entry.type,
         registrationAuthority: entities_entry.registrationAuthority,
         registrationAuthorityDate: entities_entry.registrationAuthorityDate,
         displayName_en: entities_entry.displayName_en,
@@ -57,13 +57,13 @@ function entity_ftor(entities, entities_entry, last_one) {
         logo: entities_entry.logo,
         requested: entities_entry.requested,
         requested_required: entities_entry.requested_required,
-        email_support: entities_entry.emails["support"],
-        email_administrative: entities_entry.emails["administrative"],
-        email_technical: entities_entry.emails["technical"],
-        entityAttributes: entities_entry.eattrs,
+        email_support: entities_entry.email_support,
+        email_administrative: entities_entry.email_administrative,
+        email_technical: entities_entry.email_technical,
+        entityAttributes: entities_entry.entityAttributes,
         feeds: entities_entry.feeds
     };
-
+    
     merge_documents(entities_entry, doc);
 }
 

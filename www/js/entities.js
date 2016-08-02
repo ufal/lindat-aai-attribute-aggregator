@@ -43,7 +43,7 @@ define(['attributes', 'utils', 'theme', 'jquery'], function (attributes, utils, 
             return;
         }
         var attr = o.attr("data-entity-attribute");
-        var entity_type = entity_obj.entity_type;
+        var entity_type = entity_obj.type;
         if (entity_obj.hasOwnProperty("type")) {
             entity_type = entity_obj.type[0];
         }
