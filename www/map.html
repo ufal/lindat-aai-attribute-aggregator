@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>IdP Statistics Map</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 550px;
+        width: 900px;
+        margin: 0 auto 0 auto;
+      }
+      /* Optional: Makes the sample page fill the window. */
+	  
+	  html, body {height:100%;}
+	  
+      body {
+      	width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        text-align:center;
+      }
+    </style>
+    <script type="text/javascript" src="./settings/settings.js"></script>
+    <script type="text/javascript" src="./js/require-setup.js"></script>    
+    <script data-main="./js/site.js"
+            type="text/javascript" src="./js/lib/require.min.js"></script>
+  </head>
+  <body>
+  	<h1>IdP Statistics Map</h1>
+    <div id="map">
+    </div>
+    <script>
+    
+      function initMap() {
+    	
+    	var geocoder = new google.maps.Geocoder();
+    	
+    	var known = {
+    			 "United Kingdom" : {lat: 55.378051, lng: -3.43597299999999},
+    			 "United States" : {lat: 37.09024, lng: -95.71289100000001},
+    			 "France" : {lat: 46.227638, lng: 2.213749000000007},
+    			 "Brazil" : {lat: -14.235004, lng: -51.92527999999999},
+    			 "Germany" : {lat: 51.165691, lng: 10.451526000000058},
+    			 "Netherlands" : {lat: 52.132633, lng: 5.2912659999999505},
+    			 "Italy" : {lat: 41.87194, lng: 12.567379999999957},
+    			 "Czech Republic" : {lat: 49.81749199999999, lng: 15.472962000000052},
+    			 "Denmark" : {lat: 56.26392, lng: 9.50178500000004},
+    			 "Sweden" : {lat: 60.12816100000001, lng: 18.643501000000015},
+    			 "Austria" : {lat: 47.516231, lng: 14.550072},
+    			 "Greece" : {lat: 39.074208, lng: 21.824311999999964},
+    			 "Switzerland" : {lat: 46.818188, lng: 8.227511999999933},
+    			 "Ireland" : {lat: 53.41291, lng: -8.243889999999965},
+    			 "Belgium" : {lat: 50.503887, lng: 4.4699359999999615},
+    			 "Canada" : {lat: 56.130366, lng: -106.34677099999999},
+    			 "Spain" : {lat: 40.46366700000001, lng: -3.7492200000000366},
+    			 "Latvia" : {lat: 56.879635, lng: 24.60318899999993},
+    			 "Slovenia" : {lat: 46.151241, lng: 14.995462999999972},
+    			 "Finland" : {lat: 61.92410999999999, lng: 25.748151000000007},
+    			 "Hungary" : {lat: 47.162494, lng: 19.50330400000007},
+    			 "Poland" : {lat: 51.919438, lng: 19.14513599999998},
+    			 "Luxembourg" : {lat: 49.815273, lng: 6.129583000000025},
+    			 "Estonia" : {lat: 58.595272, lng: 25.01360699999998},
+    			 "Lithuania" : {lat: 55.169438, lng: 23.88127499999996},
+    			 "Colombia" : {lat: 4.570868, lng: -74.29733299999998},
+    			 "Chile" : {lat: -35.675147, lng: -71.54296899999997},
+    			 "Moldova, lng: Republic of" : {lat: 46.9821667, lng: 28.83653389999995},
+    			 "Georgia" : {lat: 32.1656221, lng: -82.90007509999998},
+    			 "Ukraine" : {lat: 48.379433, lng: 31.165579999999977},
+    			 "Portugal" : {lat: 39.39987199999999, lng: -8.224454000000037},
+    			 "Japan" : {lat: 36.204824, lng: 138.252924},
+    			 "Norway" : {lat: 60.47202399999999, lng: 8.46894599999996},
+    			 "Israel" : {lat: 31.046051, lng: 34.85161199999993},
+    			 "Croatia" : {lat: 45.1, lng: 15.200000000000045},
+    			 "Australia" : {lat: -25.274398, lng: 133.77513599999997},
+    			 "Armenia" : {lat: 40.069099, lng: 45.03818899999999},
+    			 "Ecuador" : {lat: -1.831239, lng: -78.18340599999999},
+    			 "China" : {lat: 35.86166, lng: 104.19539699999996},
+    			 "India" : {lat: 20.593684, lng: 78.96288000000004},
+    			 "Slovakia" : {lat: 48.669026, lng: 19.69902400000001},
+    			 "New Zealand" : {lat: -40.900557, lng: 174.88597100000004},
+    			 "Russian Federation" : {lat: 61.52401, lng: 105.31875600000001},    			
+    	};
+    	
+    	  
+        var myLatLng = {lat: 30, lng: 35};
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 2,
+          minZoom: 2,
+          center: myLatLng
+        });
+        
+        define(['utils', 'jquery'], function (utils, jQuery) {
+        	
+        	utils.simple_ajax(
+        	'https://lindat.mff.cuni.cz/services/aaggreg/aaggreg/v1/statistics/idps',
+        	function(data) {
+            	
+        		var items = data["results"];
+        		var delay = 100;
+            	
+        		jQuery.each(items, function(key, value) {
+        			
+        			if(key == null || key == "null") return;
+        			if(value["country"]=="n/a") return;
+        			
+        			if(value["country"] in known) {
+  	            		var marker = new google.maps.Marker({
+  	            			position: known[value["country"]], 
+  	            			map: map,
+  	            			title: value["name"],
+  	            		});
+  	            		                    	
+                    	addInfoWindow(marker, value);
+  	            		
+        			} else {
+            			setTimeout(function(){
+                    		geocoder.geocode({ 'address': value["country"] },
+                    			function(results, status) {
+                  					if (status == google.maps.GeocoderStatus.OK) {
+                  	            		var marker = new google.maps.Marker({
+                  	            			position: results[0].geometry.location, 
+                  	            			map: map,
+                  	            			title: value["name"],
+                  	            		});
+                  	            		
+                  	            		addInfoWindow(marker, value);
+                  	            		
+                  					} else {
+                  						console.log(status);
+                  						console.log(value["country"]);
+                  					}
+        					});
+                    		} , delay);
+                			delay = delay + 100;
+        			}	
+            	});
+        	});
+        });
+        
+        /*var marker = new google.maps.Marker({
+          position: myLatLng,
+          map: map,
+          title: 'Hello World!'
+        });*/
+      }
+      
+      var infoWindow = null;
+      
+      function addInfoWindow(marker, value) {    	  
+          google.maps.event.addListener(marker, 'click', function () {
+        	  
+				if(infoWindow) {
+					infoWindow.close();
+				}
+        	  
+				var message =
+                	"<div id='content' style='text-align: left; min-width: 200px;'>" +
+                		"<h3 id='firstHeading' style='margin-bottom: 0px;'>" + value["name"] + "</h3>" +
+                		"<div id='bodyContent'>" +
+        	        		"<div style='margin-bottom: 10px;'><strong><a href='" + value["registration_authority"] + "'>" + value["registration_authority"] + "</a></strong></span></div>" +
+        	        		"<div><span>Total IdPs: </span><span><strong>" + value["wiki.edugain_idp_count"] + "</strong></span></div>" +
+        	        		"<div><span>In our feeds: </span><span><strong>" + value["our_idp_count"] + "</strong></span></div>" +
+        	        		"<div><span>From eduGain: </span><span><strong>" + value["edugain"] + "</strong></span></div>" +
+        	        		"<div><span>From spf: </span><span><strong>" + value["spf"] + "</strong></span></div>" +
+                		"</div>" +
+                	"</div>";
+                	
+				infoWindow = new google.maps.InfoWindow({
+				    content: message
+				});
+				  	  
+				infoWindow.open(map, this);
+          });
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCz5-AL02YDsy9VXScWMd6Zss01szJNxNc&callback=initMap">
+    </script>
+  </body>
+</html>

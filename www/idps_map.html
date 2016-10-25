@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>IdPs Map</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 550px;
+        width: 900px;
+        margin: 0 auto 0 auto;
+      }
+      /* Optional: Makes the sample page fill the window. */
+	  
+	  html, body {height:100%;}
+	  
+      body {
+      	width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        text-align:center;
+      }
+    </style>
+    <script type="text/javascript" src="./settings/settings.js"></script>
+    <script type="text/javascript" src="./js/require-setup.js"></script>    
+    <script data-main="./js/site.js"
+            type="text/javascript" src="./js/lib/require.min.js"></script>
+  </head>
+  <body>
+  	<h2>IdP Map (LINDAT/CLARIN Users)</h2>
+    <div id="map">
+    </div>
+    <script>
+    
+      function initMap() {
+    	  
+        var myLatLng = {lat: 30, lng: -10};
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 2,
+          minZoom: 2,
+          center: myLatLng
+        });
+        
+        
+        setTimeout(
+        define(['utils', 'jquery'], function (utils, jQuery) {
+        	
+        	var locationMap = {};
+        	
+        	utils.simple_ajax('https://lindat.mff.cuni.cz/repository/xmlui/discojuice/feeds', function(data) {
+        	
+        		jQuery.each(JSON.parse(data), function(index, item) {
+        			if("geo" in item) {
+        				locationMap[item["entityID"]] = {"lat": parseInt(item["geo"]["lat"]), "lng": parseInt(item["geo"]["lon"])};
+        			}
+        		});
+        		
+	        	utils.simple_ajax('https://lindat.mff.cuni.cz/services/aaggreg/aaggreg/v1/details', function(data) {
+	        		
+	        		var idps = data["result"]["facets"]["idp"];
+	        		
+	        		jQuery.each(idps, function(key, value) {
+	        			if(value in locationMap) {
+	  	            		var marker = new google.maps.Marker({
+	  	            			position: locationMap[value], 
+	  	            			map: map,
+	  	            			title: value,
+	  	            			icon: {
+	  	            		        path: google.maps.SymbolPath.CIRCLE,
+	  	            		        scale: 5,
+	  	            		        fillColor: "#F00",
+	  	            		        fillOpacity: 0.8,
+	  	            		        strokeWeight: 0.4
+	  	            		    },	  	            			
+	  	            		});
+	  	            		addInfoWindow(marker, value);
+	        			}
+  	            		                    	
+	            	});	        		
+	            	
+	        	});
+        	});
+        }), 500);
+        
+      }
+      
+      var infoWindow = null;
+      
+      function addInfoWindow(marker, value) {    	  
+          google.maps.event.addListener(marker, 'click', function () {
+        	  
+				if(infoWindow) {
+					infoWindow.close();
+				}
+        	  
+				var message =
+                	"<div id='content' style='text-align: left; min-width: 200px;'>" +
+                		"<h3 id='firstHeading' style='margin-bottom: 0px;'>" + value + "</h3>" +
+                		"<div id='bodyContent'>" +
+                		"</div>" +
+                	"</div>";
+                	
+				infoWindow = new google.maps.InfoWindow({
+				    content: message
+				});
+				  	  
+				infoWindow.open(map, this);
+          });
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCz5-AL02YDsy9VXScWMd6Zss01szJNxNc&callback=initMap">
+    </script>
+  </body>
+</html>

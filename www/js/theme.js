@@ -155,7 +155,8 @@ define(['utils', 'jquery'], function (utils, jQuery) {
 
     Html.prototype.show_idp_statistics = function(ra_count, ra_total, nullRA) {
 		var heading = "<h3>IdP Statistics</h3>";
-		var summary = "<div class='well'><strong>"
+		var summary = "<a class='btn btn-primary btn-sm pull-right' style='margin: 4px;' href='./map.html' target='_blank'><i class='fa fa-map-o'></i> View Map</a>" +
+				"<div class='well'><strong>"
 				+ "<div>In total <kbd>{0}</kbd> Federations</div>"
 				+ "<div><kbd>{1}</kbd> IdPs are registered</div>"
 				+ "<div>out of which <kbd>{2}</kbd> are in eduGAIN and <kbd>{3}</kbd> in SPF</div>"
