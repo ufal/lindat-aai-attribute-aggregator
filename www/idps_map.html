@@ -23,14 +23,24 @@
         padding: 0;
         text-align:center;
       }
+      
+      .labels{
+      	font-size: 8px;
+      	font-family: verdana;
+      	font-weight: bold;
+      	color: #FFF;
+      }
+      
     </style>
-    <script type="text/javascript" src="./settings/settings.js"></script>
-    <script type="text/javascript" src="./js/require-setup.js"></script>    
-    <script data-main="./js/site.js"
-            type="text/javascript" src="./js/lib/require.min.js"></script>
+    <link rel="stylesheet" href="./css/font-awesome.min.css">
+    <script type="text/javascript" src="./js/lib/jquery-2.2.3.min.js"></script>  
+    <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCz5-AL02YDsy9VXScWMd6Zss01szJNxNc">
+    </script>
+    <script type="text/javascript" src="./js/lib/markerwithlabel.js"></script>
+      
   </head>
-  <body>
-  	<h2>IdP Map (LINDAT/CLARIN Users)</h2>
+  <body onload="initMap()">
+  	<h2>IdP Map (LINDAT/CLARIN Users) <i id="loading" class="fa fa-spinner fa-pulse fa-lg fa-fw"></i></h2>  	
     <div id="map">
     </div>
     <script>
@@ -46,45 +56,72 @@
         });
         
         
-        setTimeout(
-        define(['utils', 'jquery'], function (utils, jQuery) {
-        	
-        	var locationMap = {};
-        	
-        	utils.simple_ajax('https://lindat.mff.cuni.cz/repository/xmlui/discojuice/feeds', function(data) {
-        	
-        		jQuery.each(JSON.parse(data), function(index, item) {
-        			if("geo" in item) {
-        				locationMap[item["entityID"]] = {"lat": parseInt(item["geo"]["lat"]), "lng": parseInt(item["geo"]["lon"])};
-        			}
-        		});
+       	var locationMap = {};
+       	
+       	jQuery.ajax({
+       		url: 'https://lindat.mff.cuni.cz/repository/xmlui/discojuice/feeds',
+       		type: 'get',
+       		processData: false,
+       		crossDomain: true
+       	}).success(function(data) {
+       	
+       		jQuery.each(JSON.parse(data), function(index, item) {
+       			if("geo" in item) {
+       				locationMap[item["entityID"]] = {"lat": parseFloat(item["geo"]["lat"]), "lng": parseFloat(item["geo"]["lon"])};
+       			}
+       		});
+       		
+           	jQuery.ajax({
+           		url: 'https://lindat.mff.cuni.cz/services/aaggreg/aaggreg/v1/details',
+           		type: 'get',
+           		processData: false,
+           		crossDomain: true
+           	}).success(function(data) {
         		
-	        	utils.simple_ajax('https://lindat.mff.cuni.cz/services/aaggreg/aaggreg/v1/details', function(data) {
-	        		
-	        		var idps = data["result"]["facets"]["idp"];
-	        		
-	        		jQuery.each(idps, function(key, value) {
-	        			if(value in locationMap) {
-	  	            		var marker = new google.maps.Marker({
-	  	            			position: locationMap[value], 
-	  	            			map: map,
-	  	            			title: value,
-	  	            			icon: {
-	  	            		        path: google.maps.SymbolPath.CIRCLE,
-	  	            		        scale: 5,
-	  	            		        fillColor: "#F00",
-	  	            		        fillOpacity: 0.8,
-	  	            		        strokeWeight: 0.4
-	  	            		    },	  	            			
-	  	            		});
-	  	            		addInfoWindow(marker, value);
-	        			}
-  	            		                    	
-	            	});	        		
-	            	
-	        	});
+        		var idps = data["result"]["facets"]["idp"];
+        		
+        		var markers = {};
+        		var positions = {};
+        		
+        		for(index in idps) {
+        			var value = idps[index];
+        			if(typeof value == "number") continue;
+        			if(value in locationMap) {
+        				var key = locationMap[value]["lat"] + "," + locationMap[value]["lng"];
+        				if(key in markers) {
+        					markers[key].push(value);
+        				} else {
+        					markers[key] = [value];
+        					positions[key] = locationMap[value];
+        				}
+        			}
+            	}
+        		
+        		for(p in markers) {
+        		
+	          		var marker = new MarkerWithLabel({
+	          			position: positions[p], 
+	          			map: map,
+	          		    labelContent: "" + (markers[p].length==1?"":markers[p].length),
+	          		    labelInBackground: false,
+	          		    labelClass: "labels",
+	          		    labelAnchor: new google.maps.Point(3, 5),
+	          			icon: {
+	          		        path: google.maps.SymbolPath.CIRCLE,
+	          		        scale: 4 + markers[p].length,
+	          		        fillColor: "#F00",
+	          		        fillOpacity: 0.8,
+	          		        strokeWeight: 0.4
+	          		    },
+	          		    
+	          		});
+	          		addInfoWindow(marker, markers[p].join("<BR>"));
+        		}
+        		
+        		jQuery("#loading").hide();
+            	
         	});
-        }), 500);
+       	});
         
       }
       
@@ -111,9 +148,6 @@
 				infoWindow.open(map, this);
           });
       }
-    </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCz5-AL02YDsy9VXScWMd6Zss01szJNxNc&callback=initMap">
     </script>
   </body>
 </html>
