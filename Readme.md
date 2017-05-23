@@ -58,13 +58,25 @@ See installation/setup.sh or manually install `solr`, `node`, clone this reposit
 
 Do a `vagrant up` to see all in action.
 
-##
+## Obsolete - use pm2
 
 Deploy to your production machine using (see `installation/setup.sh`)
 ```
 git remote add deploy user@deployed machine:deploy dir
 git push deploy master
 ```
+
+## pm2 deploy
+
+See pm2.json and pm2 deploy tutorials.
+
+Add node user on ubuntu*
+```
+useradd node
+```
+disable password login for node user in sshd_config, add permissions to pm2.
+
+
 
 ## Install new modules and save them to package.json
 
