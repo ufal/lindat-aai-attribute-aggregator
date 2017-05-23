@@ -43,13 +43,13 @@ Much more information should be here but the above is, I think, quite illustrati
 ## Requirements
 
 - node.js
-- web server
+- web server (nginx)
 - solr
 
 ## Installation
 
 See installation/setup.sh or manually install `solr`, `node`, clone this repository, install `npm` modules, install web server (+ssl and proxy),
- link to ./www, start the backend.
+ link to ./www, link to ./settings from www, start the backend.
 
 
 # New dev related
@@ -75,7 +75,6 @@ Add node user on ubuntu*
 useradd node
 ```
 disable password login for node user in sshd_config, add permissions to pm2.
-
 
 
 ## Install new modules and save them to package.json

@@ -108,7 +108,8 @@ define(['entities', 'theme', 'utils', 'loginx', 'logger', 'jquery', 'bootstrap']
             loginx.clear();
             loginx.loading();
             theme.result_title("Last Logins");
-            loginx.list_loginx();
+            var params = (utils.urlParam("rows")) ? "rows={0}".format(utils.urlParam("rows")) : null;
+            loginx.list_loginx(params);
         });
 
         // load the list
