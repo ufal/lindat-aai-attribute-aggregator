@@ -2,6 +2,7 @@
   "apps": [
     {
       "name": "java-solr-for-aaggregator",
+      "exec_mode": "fork",
       "cwd": "/opt/aaggregator/solr/",
       "args": [
         "start",
@@ -18,22 +19,20 @@
         "-V",
         "-f"
       ],
-      "env": {
-      },
       "script": "bin/solr",
-      "watch" : ["/opt/aaggregator/solr/installation/entities/conf", "/opt/aaggregator/solr/installation/loginx/conf"],
+      "watch" : [],
+      "autorestart": true,
       "node_args": [],
       "log_date_format": "YYYY-MM-DD HH:mm Z",
       "exec_interpreter": "bash",
-      "exec_mode": "fork"
+      "env": {}
     },
     {
       "name": "node-aaggregator",
       "exec_mode": "fork_mode",
-      "cwd": "",
-      "script": "/opt/aaggregator/aaggreg/backend/app.js",
-      "watch" : ["/opt/aaggregator/aaggreg/backend"],
-      "ignore_watch" : ["node_modules", "www"],
+      "cwd": "./",
+      "script": "backend/app.js",
+      "watch" : [],
       "autorestart": true,
       "env": {
         "NODE_ENV": "production",
@@ -41,5 +40,17 @@
         "PORT": "3001"
       }
     }
-  ]
+  ],
+
+  "deploy" : {
+    "clarin-aa" : {
+      "user" : "node",
+      "host" : "clarin-aa.ms.mff.cuni.cz",
+      "repo" : "https://github.com/ufal/lindat-aai-attribute-aggregator.git",
+      "ref"  : "origin/master",
+      "path" : "/opt/aaggregator/installation/",
+      "post-deploy" : "npm install && npm run compile && pm2 startOrRestart pm2.json --env production"
+    }
+  }
+
 }

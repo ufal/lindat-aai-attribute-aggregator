@@ -48,7 +48,7 @@ Much more information should be here but the above is, I think, quite illustrati
 
 ## Installation
 
-See installation/setup.sh or manually install node, clone this repository, install npm modules, install web server (+ssl),
+See installation/setup.sh or manually install `solr`, `node`, clone this repository, install `npm` modules, install web server (+ssl and proxy),
  link to ./www, start the backend.
 
 

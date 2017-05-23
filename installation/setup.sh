@@ -60,9 +60,9 @@ npm install
 ln -s $PROJDIR/settings $PROJDIR/www/settings
 
 
-echo -e $PREF "Running all applications through pm2 - from $DIR/pm2.apps.json"
-cd $DIR
-sudo pm2 start pm2.apps.json
+echo -e $PREF "Running all applications through pm2 - from $DIR/../pm2.apps.json"
+cd $DIR/..
+sudo pm2 start pm2.json
 
 # http://pm2.keymetrics.io/docs/usage/quick-start/
 echo -e $PREF "Make pm2 persistent during restarts"
