@@ -59,7 +59,8 @@ define(['attributes', 'entities', 'utils', 'theme', 'jquery'], function (attribu
                 loader.remove();
                 try {
                     if (timestamp !== data.result[0].timestamp) {
-                        obj.children().first().append(' ... removed because newer entry available... ');
+                        var idp_hidden = obj.find("div[data-entity]").attr("data-entity");
+                        obj.children().first().append(' ... removed because newer entry for [{0}] available... '.format(idp_hidden));
                         obj.children().last().fadeOut();
                         return;
                     }
