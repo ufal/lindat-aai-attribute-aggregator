@@ -20,7 +20,7 @@
         "-f"
       ],
       "script": "bin/solr",
-      "watch" : [],
+      "watch" : false,
       "autorestart": true,
       "node_args": [],
       "log_date_format": "YYYY-MM-DD HH:mm Z",
@@ -32,7 +32,7 @@
       "exec_mode": "fork_mode",
       "cwd": "./",
       "script": "backend/app.js",
-      "watch" : [],
+      "watch" : false,
       "autorestart": true,
       "env": {
         "NODE_ENV": "production",
