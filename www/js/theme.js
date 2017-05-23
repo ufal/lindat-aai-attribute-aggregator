@@ -69,7 +69,7 @@ define(['utils', 'jquery'], function (utils, jQuery) {
                 '<div class="row">' +
                     '<div class="col-sm-4" data-entity="{0}" data-entity-brother="{1}" data-type="idp">' +
                         '<div class="text-right text-muted">' +
-                            '<h5><a href="https://met.refeds.org/met/entity/{0}">{0}</a> <i class="fa fa-university fa-2x"></i></h5>' +
+                            '<h5><a href="https://met.refeds.org/met/entity/{0}" target="_blank">{0}</a> <i class="fa fa-university fa-2x"></i></h5>' +
                         '</div>' +
                         '<div class="text-center entity-info entity-idp">{7}</div>' +
                     '</div>' +
