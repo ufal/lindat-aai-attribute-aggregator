@@ -69,6 +69,12 @@ function handle(req, res) {
         log.info("Got attributes [%s] from [%s] on [%s] at [%s]", attributes, idp, sp, timestamp);
         email_if_new_idp(idp);
 
+        // todo remove in future
+        if (idp === "lindat_test") {
+            res.json({"ok": "test"})
+            return;
+        }
+
         client.add({
             idp: idp,
             sp: sp,
