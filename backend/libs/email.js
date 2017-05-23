@@ -1,18 +1,34 @@
 var nodemailer = require('nodemailer');
 var log = require('./logger')("email");
 
-var transporter = nodemailer.createTransport({
-    'host': 'localhost'
-});
+var transporter = null;
+if (process.env.EMAIL_BACKEND === "sendmail") {
+    transporter = nodemailer.createTransport({
+        sendmail: true,
+        newline: 'unix',
+        path: '/usr/sbin/sendmail'
+    });
+}else {
+    log.info("No email backend specified.")
+}
 
-function send_email(from, to, subject, body) {
+
+function send_email(from, to, subject, text, html) {
+    if (!transporter) {
+        return;
+    }
     transporter.sendMail({
         sender: from,
         to: to,
         subject: subject,
-        body: body
+        text: text,
+        html: html
     }, function (error, success) {
-        log.info('Email ' + (success ? 'sent' : 'failed') + ': ' + error);
+        if (success) {
+            log.info('Email sent');
+        }else {
+            log.info('Email sending problem: ' + error);
+        }
     });
 }
 

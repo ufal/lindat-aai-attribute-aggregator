@@ -28,7 +28,8 @@ function email_if_new_idp(idp) {
                     settings.notify.from,
                     settings.notify.to.replace('$', '@'),
                     settings.notify.subject.format(idp),
-                    settings.notify.body
+                    settings.notify.text.format(idp),
+                    settings.notify.html.format(idp)
                 );
             }
         }
