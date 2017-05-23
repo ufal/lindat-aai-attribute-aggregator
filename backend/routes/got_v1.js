@@ -5,10 +5,36 @@ var fs = require('fs');
 var path = require('path');
 var express = require('express');
 var settings = require('../../settings/settings')["backend"];
-var utils = require('../libs/utils');
+var email = require('../libs/email');
 var router = express.Router();
 var log = require('../libs/logger')("/v1/got/");
 var client = require('../libs/solr')(settings.solr_loginx_core);
+
+function email_if_new_idp(idp) {
+    if (!settings.notify.to) {
+        return;
+    }
+
+    var query = client.createQuery();
+    var q = "idp:" + idp;
+    query.q(q);
+    query.rows(0);
+    client.search(query, function(err, obj) {
+        if (err) {
+            log.error(err);
+        } else {
+            if (obj.response.numFound === 0) {
+                email.send(
+                    settings.notify.from,
+                    settings.notify.to.replace('$', '@'),
+                    settings.notify.subject.format(idp),
+                    settings.notify.body
+                );
+            }
+        }
+    });
+
+}
 
 function handle(req, res) {
     var ret = {
@@ -41,6 +67,7 @@ function handle(req, res) {
             }
 
         log.info("Got attributes [%s] from [%s] on [%s] at [%s]", attributes, idp, sp, timestamp);
+        email_if_new_idp(idp);
 
         client.add({
             idp: idp,
@@ -52,7 +79,7 @@ function handle(req, res) {
             warn: warn,
             timestamp: timestamp,
             our_timestamp: our_timestamp
-        },function(err,obj){
+        },function(err, obj){
             if(err){
                 log.error(err);
             }else{
@@ -61,6 +88,7 @@ function handle(req, res) {
                         log.error(err);
                     }
                 });
+
             }
         });
         

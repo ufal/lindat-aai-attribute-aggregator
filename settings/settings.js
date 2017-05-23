@@ -73,7 +73,13 @@ settings = {
         },
 
         authenticate_saml: {
+        },
 
+        notify: {
+            from: 'noreply',
+            to: 'lindat-technical$ufal.mff.cuni.cz',
+            body: 'Check https://lindat.mff.cuni.cz/services/aaggreg/.\n',
+            subject: 'New IdP [{0}] used to sign in to CLARIN infrastructure'
         },
 
         temp_dir: "./temp",
