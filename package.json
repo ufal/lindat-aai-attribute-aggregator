@@ -15,28 +15,28 @@
     "jshint": "jshint -c .jshintrc ."
   },
   "dependencies": {
-    "body-parser": "~1.14.1",
-    "cors": "~2.7.1",
+    "body-parser": "~1.17.2",
+    "cors": "~2.8.3",
     "cron": "^1.1.0",
     "crypto": "0.0.3",
-    "debug": "~2.2.0",
+    "debug": "~2.6.8",
     "ejs": "^2.3.4",
-    "express": "~4.13.3",
+    "express": "~4.15.3",
     "http": "0.0.0",
     "https": "^1.0.0",
-    "jade": "^1.11.0",
+    "pug": "^2.0.0-rc.1",
     "mkdirp": "^0.5.1",
-    "morgan": "~1.6.1",
+    "morgan": "~1.8.1",
     "request": "^2.73.0",
-    "serve-favicon": "~2.3.0",
-    "solr-client": "^0.6.0",
-    "uuid": "^2.0.2",
+    "serve-favicon": "~2.4.3",
+    "solr-client": "^0.7.0",
+    "uuid": "^3.0.1",
     "winston": "^2.0.0",
     "xml2js": "^0.4.16"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^2.4.5",
+    "mocha": "^3.4.1",
     "pre-commit": "^1.1.3"
   },
   "pre-commit": [

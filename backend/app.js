@@ -3,6 +3,7 @@
 
 var express = require('express');
 var path = require('path');
+var log = require('./libs/logger')("app");
 var logger = require('morgan');
 var mkdirp = require('mkdirp');
 
@@ -110,6 +111,7 @@ if (!utils.exists_dir(temp_dir)) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
+    log.info("In development mode!");
     app.use(function(err, req, res, next) {
         res.status(err.status || 500);
         res.render('error', {
@@ -132,9 +134,10 @@ app.use(function(err, req, res, next) {
 
 app.set('port', process.env.PORT || 3001);
 app.set('hostname', process.env.HOSTNAME || "127.0.0.1");
+log.info('Env variable hostname [%s] and port [%s]', process.env.HOSTNAME, process.env.PORT);
 
 var server = app.listen(app.get('port'), app.get('hostname'), function() {
-  debug('Express server listening on port ' + server.address().port);
+  log.info('Express server listening on port ' + server.address().port);
 });
 
 // set up repetitive tasks
