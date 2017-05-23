@@ -69,7 +69,7 @@ define(['utils', 'jquery'], function (utils, jQuery) {
                 '<div class="row">' +
                     '<div class="col-sm-4" data-entity="{0}" data-entity-brother="{1}" data-type="idp">' +
                         '<div class="text-right text-muted">' +
-                            '<h5>{0} <i class="fa fa-university fa-2x"></i></h5>' +
+                            '<h5><a href="https://met.refeds.org/met/entity/{0}">{0}</a> <i class="fa fa-university fa-2x"></i></h5>' +
                         '</div>' +
                         '<div class="text-center entity-info entity-idp">{7}</div>' +
                     '</div>' +
@@ -123,7 +123,7 @@ define(['utils', 'jquery'], function (utils, jQuery) {
             encodeURI(email_cc || ""),
             encodeURI(msg_body.format())
         );
-        return '<div class="alert"><a href="mailto:{0}?{1}" class="alert-danger"><i class="fa fa-envelope fa-3x"></i> {2}</a></div>'.format(
+        return '<div><a href="mailto:{0}?{1}" class="alert-danger"><i class="fa fa-envelope fa-2x"></i> {2}</a></div>'.format(
             email, mailto_msg, msg_link
         );
     };
