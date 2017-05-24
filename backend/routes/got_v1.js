@@ -16,7 +16,7 @@ function email_if_new_idp(idp) {
     }
 
     var query = client.createQuery();
-    var q = "idp:" + idp;
+    var q = 'idp:"{0}"'.format(idp);
     query.q(q);
     query.rows(0);
     client.search(query, function(err, obj) {
