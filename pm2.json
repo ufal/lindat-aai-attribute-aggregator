@@ -49,7 +49,7 @@
       "repo" : "https://github.com/ufal/lindat-aai-attribute-aggregator.git",
       "ref"  : "origin/master",
       "path" : "/opt/aaggregator/installation/",
-      "post-deploy" : "npm install && EMAIL_BACKEND=sendmail pm2 startOrRestart pm2.json --env production"
+      "post-deploy" : ". ~/.profile ; npm install && EMAIL_BACKEND=sendmail pm2 startOrRestart pm2.json --env production"
     }
   }
 
