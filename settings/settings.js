@@ -79,7 +79,7 @@ settings = {
             from: 'noreply',
             to: 'lindat-technical$ufal.mff.cuni.cz',
             text: 'Visit https://lindat.mff.cuni.cz/services/aaggreg/.\n',
-            html: 'New IdP: [{0}].<br>' +
+            html: 'New IdP: [<a href="https://met.refeds.org/met/entity/{0}">{0}</a>].<br>' +
             'Check <a href="https://lindat.mff.cuni.cz/services/aaggreg/">CLARIN attribute aggregator</a>.<br><br>' +
             'Yours,<br>' +
             'CLARIN attribute aggregator',

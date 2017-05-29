@@ -10,6 +10,9 @@ var router = express.Router();
 var log = require('../libs/logger')("/v1/got/");
 var client = require('../libs/solr')(settings.solr_loginx_core);
 
+settings.notify.to = process.env.AAGGREG_NOTIFY || settings.notify.to;
+log.info("Email notification set to [%s]", settings.notify.to);
+
 function email_if_new_idp(idp) {
     if (!settings.notify.to) {
         return;
