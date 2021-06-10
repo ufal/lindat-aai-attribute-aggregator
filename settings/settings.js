@@ -29,7 +29,7 @@ settings = {
             'Attributes released:\n{1}\n\n' +
             'Please, see the recommendation from the DFN federation which attributes to\n'+
             'release to CLARIN SPF SPs and how to do it:\n'+
-            'https://wiki.aai.dfn.de/de:shibidp3attrfilter#freigabe_der_wichtigsten_attribute_fuer_clarin-sps\n'+
+            'https://doku.tid.dfn.de/de:shibidp:config-attributes-clarin\n'+
             'or see the CLARIN\'s attribute profile described at\n'+
             'https://www.clarin.eu/content/attributes-service-provider-federation .\n\n'+
             'Kind Regards,\n' +
