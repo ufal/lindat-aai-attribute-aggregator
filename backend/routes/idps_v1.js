@@ -102,6 +102,9 @@ function handle(req, res) {
 					}
 				}
 
+				// 2021/06: Fix `Error: unable to verify the first certificate`
+				process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0
+
 				request({
 					url: "https://wiki.edugain.org/isFederatedCheck/Federations/?format=json",
 					json: true
