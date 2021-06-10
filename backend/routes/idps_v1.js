@@ -106,8 +106,12 @@ function handle(req, res) {
 					url: "https://wiki.edugain.org/isFederatedCheck/Federations/?format=json",
 					json: true
 				}, function (error, response, body) {
-					if (error && response.statusCode !== 200) {
+					if (error && (!response || response.statusCode !== 200)) {
 						log.error(error);
+					}
+
+					if (!response) {
+						return;
 					}
 
 					for(var name in response.body.Federations) {
