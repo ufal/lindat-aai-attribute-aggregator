@@ -2,7 +2,7 @@
  *
  */
 
-/*jslint nomen: true, unparam: true, regexp: true */
+/*jslint nomen: true, unparam: true, regexp: true, browser:true */
 define([], function () {
 
     // Array Remove - By John Resig (MIT Licensed)
@@ -56,7 +56,7 @@ define([], function () {
 
     Utils.prototype.urlParam = function(name){
         var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-        if (results==null){
+        if (results===null){
             return null;
         }
         else{

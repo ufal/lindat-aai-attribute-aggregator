@@ -4,6 +4,7 @@ var fs = require('fs');
 var http = require('http');
 var https = require('https');
 var path = require('path');
+var log = require('./logger')("utils");
 
 function is_number(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
@@ -75,6 +76,7 @@ function is_url(s) {
 }
 
 function download(url, output, callback) {
+    log.info("Downloading {0} ".format(url));
     var file = fs.createWriteStream(output);
     var mod = http;
     if (url.startsWith('https')) {

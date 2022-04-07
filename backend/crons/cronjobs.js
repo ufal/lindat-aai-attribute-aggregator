@@ -92,6 +92,8 @@ var example_doc = {
 //
 
 try {
+    // 2022/04 - disable to avoid problems when npm gets old
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     var job = new CronJob('00 30 * * * *', 
         function() {
 

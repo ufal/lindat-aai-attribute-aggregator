@@ -9,7 +9,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "start": "node backend/app.js",
+    "start": "nodejs backend/app.js",
     "test": "node_modules/.bin/mocha",
     "release": "npm version patch",
     "jshint": "jshint -c .jshintrc ."
