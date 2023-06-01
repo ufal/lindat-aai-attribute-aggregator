@@ -93,7 +93,8 @@ settings = {
         solr_loginx_core: "loginx",
         solr_entities_core: "entities",
         feeds: {
-            edugain_feed: "http://mds.edugain.org/",
+            /*edugain_feed: "http://mds.edugain.org/",*/
+            edugain_feed: "https://mds.edugain.org/edugain-v2.xml",
             spf_idp_feed: "https://infra.clarin.eu/aai/prod_md_about_spf_sps.xml",
             spf_sp_feed: "https://infra.clarin.eu/aai/prod_md_about_spf_idps.xml",
             spf_homeless_feed: "https://infra.clarin.eu/aai/prod_md_about_clarin_erics_idp.xml"
